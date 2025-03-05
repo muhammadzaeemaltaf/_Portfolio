@@ -15,7 +15,7 @@ const GridBackground = () => {
       if (!gridContainer) return;
       gridContainer.innerHTML = ''; // Clear existing grid
       // Create vertical lines
-      for (let x = 0; x <= width; x += gridSize) {
+      for (let x = 0; x <= width; x += gridSize) {  
         const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
         line.setAttribute('x1', (x).toString());
         line.setAttribute('y1', (0).toString());

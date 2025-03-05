@@ -38,20 +38,20 @@ const HeroSection = () => {
     };
   }, []);
   return (
-    <section className="relative isolate flex min-h-screen max-w-[100vw] items-center overflow-x-hidden py-16">
+    <section className="relative isolate flex min-h-[85vh] md:min-h-screen max-w-[100vw] items-center overflow-x-hidden py-16 px-6 px-sm-4">
       {/* Background effects */}
-      <div className="flex justify-between w-full absolute top-0 z-[-1] h-[70vh]">
+      <div className="flex justify-between w-full absolute top-0 left-0  z-[-1] h-[70vh]">
         {/* Left Blur with Reflection */}
-        <div className="absolute left-[20%] top-1/2 z-[-1] h-[80vh] w-20 -translate-x-1/2 -translate-y-1/2 -rotate-50 bg-blue-700 blur-[180px] 
+        <div className="absolute left-[20%] top-1/2 z-[-1] h-[55vh] md:h-[80vh] w-20 -translate-x-1/2 -translate-y-1/2 -rotate-50 bg-blue-700 blur-[180px] 
         after:absolute after:left-1/2 after:top-0 after:h-full after:w-[2px] after:bg-gradient-to-b after:from-white/60 after:to-transparent"></div>
 
         {/* Right Blur with Reflection */}
-        <div className="absolute right-[15%] top-1/2 z-[-1] h-[80vh] w-20 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-blue-700 blur-[180px] 
+        <div className="absolute right-[15%] top-1/2 z-[-1] h-[55vh] md:h-[80vh] w-20 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-blue-700 blur-[180px] 
         after:absolute after:left-1/2 after:top-0 after:h-full after:w-[2px] after:bg-gradient-to-b after:from-white/60 after:to-transparent"></div>
       </div>
     
       <div
-        className="pointer-events-none absolute left-0 top-0 h-screen w-full opacity-50  [mask-image:linear-gradient(to_bottom,white_1%,transparent_80%)]"
+        className="pointer-events-none absolute left-0 top-0 h-full w-full opacity-50  [mask-image:linear-gradient(to_bottom,white_1%,transparent_80%)]"
       >
         <GridBackground />
       </div>
@@ -73,7 +73,9 @@ const HeroSection = () => {
           <div className="relative isolate">
             <h1 className="__h1 mt-5 text-balance text-center tracking-wide md:mt-8 lg:mt-10 [&_*]:inline-block [&_*]:bg-clip-text [&_*]:text-transparent [&_span]:[background-image:-webkit-linear-gradient(90deg,#ececec_0%,#aaaaaa_33%,#e0e0e0_67%)] [&_strong]:font-medium [&_strong]:[background-image:-webkit-linear-gradient(45deg,#2563eb_6%,#1e40af_19%,#2563eb_100%)]">
               <span>Elevate</span> <span>Your</span> <span>Brand</span>{" "}
+              <br className="sm:!hidden" />
               <strong>With A</strong> <strong>Dynamic Web</strong>{" "}
+              <br className="sm:!hidden" />
               <strong>Experience</strong>
             </h1>
           </div>

@@ -17,29 +17,8 @@ body {
 }
 
 .__h1 {
-  font-size: 2.5rem;
-  line-height: 1.2;
-  font-weight: 700;
+  @apply text-2xl leading-[1.2] font-bold whitespace-nowrap sm:whitespace-normal
 }
-
-@media (min-width: 640px) {
-  .__h1 {
-    font-size: 3rem;
-  }
-}
-
-@media (min-width: 768px) {
-  .__h1 {
-    font-size: 3.5rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .__h1 {
-    font-size: 4rem;
-  }
-}
-
 
 
 .__liquid-button-wrapper {
@@ -63,3 +42,39 @@ body {
   transform: translateY(0);
 }
 
+.content__img{
+  will-change: transform;
+    transform: translateZ(0);
+    display: flex;
+    width: 100%;
+    overflow: visible;
+    padding: 1vw;
+    border-radius: 11.093vw;
+    width: 60vw;
+}
+
+.__h1{
+  font-size: 2rem;
+}
+
+@media (min-width: 640px) {
+  .__h1 {
+    font-size: 3rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .__h1 {
+    font-size: 3.5rem;
+  }
+
+  .content__img{
+      width: 37.493vw;
+  }
+}
+
+@media (min-width: 1024px) {
+  .__h1 {
+    font-size: 4rem;
+  }
+}
