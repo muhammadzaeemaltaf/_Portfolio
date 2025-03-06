@@ -45,9 +45,10 @@ export default function About() {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
-        start: "top 90%",
-        end: "center top",
-        scrub: 3,
+        start: "top bottom",
+        end: "center 80%",
+        scrub: 2,
+        // markers: true,
       },
     });
 
@@ -80,9 +81,11 @@ export default function About() {
     gsap.from(allWords, {
       scrollTrigger: {
         trigger: containerRef.current,
-        start: "top center",
-        end: "center center",
+        start: "top 80%",
+        end: "center bottom",
         scrub: 1,
+        // markers: true,
+
       },
       opacity: 0,
       y: 20,
@@ -98,7 +101,7 @@ export default function About() {
 
       <div
         ref={containerRef}
-        className="flex flex-col md:flex-row items-center gap-8 md:gap-16 pt-20"
+        className="flex flex-col md:flex-row items-center gap-8 md:gap-16 pt-40"
       >
         <div className="w-full md:w-1/2 relative">
           <svg
