@@ -81,13 +81,13 @@ export default function About() {
     gsap.from(allWords, {
       scrollTrigger: {
         trigger: containerRef.current,
-        start: "top 80%",
-        end: "center bottom",
-        scrub: 1,
+        start: "top center",
+        end: "center 90%",
+        scrub: 0.1,
         // markers: true,
 
       },
-      opacity: 0,
+      opacity: 0.4,
       y: 20,
       stagger: 0.005,
       duration: 0.1,

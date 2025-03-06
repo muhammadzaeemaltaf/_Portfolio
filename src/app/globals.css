@@ -17,7 +17,7 @@ body {
 }
 
 .__h1 {
-  @apply text-2xl leading-[1.2] font-bold whitespace-nowrap sm:whitespace-normal
+  @apply text-2xl leading-[1.2] whitespace-nowrap sm:whitespace-normal
 }
 
 

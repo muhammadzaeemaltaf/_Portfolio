@@ -27,7 +27,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="overflow-hidden" ref={scrollRef} data-scroll data-scroll-speed="0.0000009" data-scroll-position="top">
+    <div className="overflow-hidden" ref={scrollRef} data-scroll data-scroll-speed="-5">
       {loading && <LogoLoader />}
       <HeroSection />
       <About />
