@@ -53,9 +53,6 @@ body {
     width: 60vw;
 }
 
-.__h1{
-  font-size: 2rem;
-}
 
 @media (min-width: 640px) {
   .__h1 {
@@ -64,10 +61,6 @@ body {
 }
 
 @media (min-width: 768px) {
-  .__h1 {
-    font-size: 3.5rem;
-  }
-
   .content__img{
       width: 37.493vw;
   }

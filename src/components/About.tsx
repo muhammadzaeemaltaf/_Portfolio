@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -15,7 +15,7 @@ export default function About() {
   const firstParaRef = useRef<HTMLParagraphElement>(null);
   const secondParaRef = useRef<HTMLParagraphElement>(null);
 
-  useGSAP(() => {
+  useEffect(() => {
     if (
       !containerRef.current ||
       !circleRef.current ||
@@ -45,7 +45,7 @@ export default function About() {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
-        start: "top bottom",
+        start: "top center",
         end: "center 80%",
         scrub: 2,
         // markers: true,
@@ -81,13 +81,13 @@ export default function About() {
     gsap.from(allWords, {
       scrollTrigger: {
         trigger: containerRef.current,
-        start: "top center",
-        end: "center 90%",
+        start: "top 30%",
+        end: "center center",
         scrub: 0.1,
+        
         // markers: true,
-
       },
-      opacity: 0.4,
+      opacity: 0,
       y: 20,
       stagger: 0.005,
       duration: 0.1,
@@ -97,11 +97,11 @@ export default function About() {
 
   return (
     <section className="relative w-full max-w-7xl mx-auto py-16 md:py-24 px-4 bg-black">
-        <Heading heading="About Me" />
+      <Heading heading="About Me" />
 
       <div
         ref={containerRef}
-        className="flex flex-col md:flex-row items-center gap-8 md:gap-16 pt-40"
+        className="flex flex-col md:flex-row items-center gap-8 md:gap-16 pt-20"
       >
         <div className="w-full md:w-1/2 relative">
           <svg

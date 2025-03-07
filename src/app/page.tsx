@@ -3,6 +3,7 @@
 import About from "@/components/About";
 import HeroSection from "@/components/Hero";
 import LogoLoader from "@/components/logoLoader";
+import Skills from "@/components/Skills";
 import locomotiveScroll from "locomotive-scroll";
 import { useEffect, useRef, useState } from "react";
 
@@ -11,14 +12,14 @@ export default function Home() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(true)
 
-
   useEffect(() => {
-    if (!scrollRef.current) return;
-    const scroll = new locomotiveScroll({
-      el: scrollRef.current,
-      smooth: true
-    });
-  });
+    if (typeof window !== 'undefined' && scrollRef.current) {
+      const scroll = new locomotiveScroll({
+        el: scrollRef.current,
+        smooth: true
+      });
+    }
+  }, []);
 
   useEffect(() => {
     setTimeout(() => {
@@ -27,10 +28,11 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="overflow-hidden" ref={scrollRef} data-scroll data-scroll-speed="-5">
+    <div className="overflow-hidden" >
       {loading && <LogoLoader />}
       <HeroSection />
       <About />
+      <Skills/>
     </div>
   );
 }
