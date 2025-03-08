@@ -1,19 +1,18 @@
 "use client"
 
-import React, { useState, useRef, useEffect } from "react"
+import type React from "react"
+import { useEffect, useRef, useState } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { skills } from "@/libs/data"
 import Heading from "./Heading"
-import SkillTag from "@/components/skill-tag"
 
 gsap.registerPlugin(ScrollTrigger)
 
 export default function Skills() {
   const containerRef = useRef<HTMLDivElement>(null)
   const [isHovering, setIsHovering] = useState(false)
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-  const [containerRect, setContainerRect] = useState<DOMRect | null>(null)
+  const [mousePosition, setMousePosition] = useState({ clientX: 0, clientY: 0 })
 
   // Scroll animation for skill items
   useEffect(() => {
@@ -32,22 +31,17 @@ export default function Skills() {
           opacity: 1,
           y: 0,
           stagger: 0.1,
+          scrub: true,
           ease: "power2.out",
         },
       )
     }
   }, [])
 
-  // Track mouse position relative to the container
+  // Track mouse position over the container
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      if (containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect()
-        setContainerRect(rect)
-        const x = e.clientX - rect.left
-        const y = e.clientY - rect.top
-        setMousePosition({ x, y })
-      }
+      setMousePosition({ clientX: e.clientX, clientY: e.clientY })
     }
 
     const container = containerRef.current
@@ -58,18 +52,17 @@ export default function Skills() {
   }, [])
 
   return (
-    <section 
-    ref={containerRef}
-    className="flex justify-center w-full">
-      <div id="skills" className="mb-28 scroll-mt-28 w-full text-center sm:mb-40">
+    <section className="flex justify-center">
+      <div id="skills" className="mb-28 max-w-[53rem] scroll-mt-28 text-center sm:mb-40">
         <Heading heading="Skills" />
         <div
-          className="grid gap-8 mt-5 justify-center relative"
+          ref={containerRef}
+          className="grid gap-8 mt-5 relative"
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
         >
           {skills.map((category, catIndex) => (
-            <div key={catIndex} className="skill-category text-left mt-6 relative z-10 max-w-[53rem]">
+            <div key={catIndex} className="skill-category text-left mt-6 relative z-10">
               <h3 className="text-xl text-center font-semibold text-gray-900 dark:text-white mb-4">
                 {category.type}
               </h3>
@@ -80,7 +73,6 @@ export default function Skills() {
                     skill={skill}
                     isHovering={isHovering}
                     mousePosition={mousePosition}
-                    containerRect={containerRect}
                   />
                 ))}
               </ul>
@@ -89,5 +81,60 @@ export default function Skills() {
         </div>
       </div>
     </section>
+  )
+}
+
+interface SkillTagProps {
+  skill: {
+    label: string
+    icon: React.ElementType
+  }
+  isHovering: boolean
+  mousePosition: { clientX: number; clientY: number }
+}
+
+function SkillTag({ skill, isHovering, mousePosition }: SkillTagProps) {
+  const IconComponent = skill.icon
+  const tagRef = useRef<HTMLLIElement>(null)
+  const borderRef = useRef<HTMLDivElement>(null)
+
+  // Update border position based on mouse coordinates
+  useEffect(() => {
+    if (!tagRef.current || !borderRef.current) return
+
+    const rect = tagRef.current.getBoundingClientRect()
+    const x = mousePosition.clientX - rect.left
+    const y = mousePosition.clientY - rect.top
+    const xPercent = (x / rect.width) * 100
+    const yPercent = (y / rect.height) * 100
+
+    gsap.set(borderRef.current, {
+      "--x-percentage": `${xPercent}%`,
+      "--y-percentage": `${yPercent}%`,
+    })
+  }, [mousePosition])
+
+  return (
+    <li
+      ref={tagRef}
+      className="relative flex items-center gap-2 border border-white/15 bg-white text-center rounded-xl px-5 py-3 text-gray-800 dark:bg-white/10 dark:text-white/80 overflow-hidden"
+    >
+      {/* Animated border element */}
+      <div
+        ref={borderRef}
+        className="absolute inset-[1px] -m-px rounded-xl pointer-events-none"
+        style={{
+          maskImage: "radial-gradient(80px 80px at var(--x-percentage) var(--y-percentage), black, transparent)",
+          WebkitMaskImage: "radial-gradient(80px 80px at var(--x-percentage) var(--y-percentage), black, transparent)",
+          border: "1px solid rgb(29, 78, 216)",
+          opacity: isHovering ? 1 : 0,
+          transition: "opacity 0.3s ease",
+        }}
+      />
+      <div className="absolute inset-0 -top-1 -left-1 opacity-30">
+        <IconComponent className="h-10 w-10" />
+      </div>
+      <span className="font-semibold relative z-10">{skill.label}</span>
+    </li>
   )
 }
