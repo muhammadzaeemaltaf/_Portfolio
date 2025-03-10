@@ -30,8 +30,7 @@ export default function Skills() {
         {
           opacity: 1,
           y: 0,
-          stagger: 0.1,
-          scrub: true,
+          stagger: 0.09,
           ease: "power2.out",
         },
       )
@@ -124,8 +123,8 @@ function SkillTag({ skill, isHovering, mousePosition }: SkillTagProps) {
         ref={borderRef}
         className="absolute inset-[1px] -m-px rounded-xl pointer-events-none"
         style={{
-          maskImage: "radial-gradient(80px 80px at var(--x-percentage) var(--y-percentage), black, transparent)",
-          WebkitMaskImage: "radial-gradient(80px 80px at var(--x-percentage) var(--y-percentage), black, transparent)",
+          maskImage: "radial-gradient(150px 150px at var(--x-percentage) var(--y-percentage), black, transparent)",
+          WebkitMaskImage: "radial-gradient(150px 150px at var(--x-percentage) var(--y-percentage), black, transparent)",
           border: "1px solid rgb(29, 78, 216)",
           opacity: isHovering ? 1 : 0,
           transition: "opacity 0.3s ease",

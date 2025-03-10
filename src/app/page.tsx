@@ -3,6 +3,7 @@
 import About from "@/components/About";
 import HeroSection from "@/components/Hero";
 import LogoLoader from "@/components/logoLoader";
+import Project from "@/components/Project";
 import Skills from "@/components/Skills";
 import { useEffect, useState } from "react";
 
@@ -24,6 +25,7 @@ export default function Home() {
       <HeroSection />
       <About />
       <Skills/>
+      <Project/>
     </div>
   );
 }
