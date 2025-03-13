@@ -27,27 +27,29 @@ body {
 }
 
 
+/* Add these styles to your global CSS */
 .__liquid-button-wrapper {
   position: relative;
   overflow: hidden;
+  transition: all 0.3s ease;
 }
 
-.__liquid-button-wrapper .__liquid {
+.__liquid-button-wrapper::before {
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(10, 207, 131, 0.1);
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to top left, #000000, rgba(10, 60, 207, 0.4));
+  opacity: 0;
+  transition: opacity 0.3s ease;
   z-index: -1;
-  transform: translateY(100%);
-  transition: transform 0.3s cubic-bezier(0.77, 0, 0.18, 1);
 }
 
-.__liquid-button-wrapper:hover .__liquid {
-  transform: translateY(0);
+.__liquid-button-wrapper.expanded::before {
+  opacity: 1;
 }
-
 .content__img{
   will-change: transform;
     transform: translateZ(0);

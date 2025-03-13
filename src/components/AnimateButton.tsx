@@ -1,35 +1,72 @@
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
 export const AnimatedButton = ({
   text = "Book a call",
   arrow = false,
   href = "#",
-  bg = ""
+  bg = "",
+  expanded = false,
+  onClick,
 }: {
-  text?: string;
+  text?: string | React.ReactNode;
   arrow?: boolean;
   href?: string;
   bg?: string;
+  expanded?: boolean;
+  onClick?: (e: React.MouseEvent) => void;
 }) => {
-  return (
-    <Link 
-      className={`group/button flex w-fit items-center justify-center gap-x-2 font-bricolage shadow-[inset_0_2px_2px_rgba(10,60,207,0.5),inset_0_-2px_#1d4ed8,_0_0_0_4px_rgba(10,60,207,0.05),_0_20px_80px_-10px_rgba(10,60,207,0.43)] duration-300 hover:shadow-[inset_0_2px_2px_rgba(10,60,207,0.5),inset_0_-2px_#1d4ed8,_0_0_0_4px_rgba(10,60,207,0.05),_0_20px_80px_-10px_rgba(10,60,207,0.8),0_0_5px_#60a5fa,inset_0_0_5px_#60a5fa] __liquid-button-wrapper h-11 rounded-[1.5rem] px-6 text-base/4 font-medium md:h-10 md:px-6 md:text-sm ${bg}`}
-      style={{ '--is-animation-running': 'running' } as React.CSSProperties}
-      href={href}
-      target="_blank"
-    >
+  const [prevText, setPrevText] = useState(text);
+  const [currentText, setCurrentText] = useState(text);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  useEffect(() => {
+    if (text !== currentText) {
+      setIsAnimating(true);
+      setPrevText(currentText);
+      setCurrentText(text);
+      const timer = setTimeout(() => setIsAnimating(false), 300);
+      return () => clearTimeout(timer);
+    }
+  }, [text]);
+
+  // Determine if the button should be a Link or a regular button
+  const isLink = href && href !== "#" && href !== "";
+
+  // Common classes for both Link and button
+  const commonClasses = `group/button cursor-pointer flex w-fit items-center justify-center gap-x-2 font-bricolage shadow-[inset_0_2px_2px_rgba(10,60,207,0.5),inset_0_-2px_#1d4ed8,_0_0_0_4px_rgba(10,60,207,0.05),_0_20px_80px_-10px_rgba(10,60,207,0.43)] duration-300 hover:shadow-[inset_0_2px_2px_rgba(10,60,207,0.5),inset_0_-2px_#1d4ed8,_0_0_0_4px_rgba(10,60,207,0.05),_0_20px_80px_-10px_rgba(10,60,207,0.8),0_0_5px_#60a5fa,inset_0_0_5px_#60a5fa] __liquid-button-wrapper h-11 rounded-[1.5rem] px-6 text-base/4 font-medium md:h-10 md:px-6 md:text-sm ${bg} ${
+    expanded ? "expanded" : ""
+  }`;
+
+  // Common button content
+  const buttonContent = (
+    <>
       <span className="relative inline-block overflow-hidden">
-        {text.split('').map((char, index) => (
-          <span key={index} className="inline-block whitespace-pre duration-500 [transition-timing-function:cubic-bezier(0.77,0,0.18,1)] group-hover/button:-translate-y-full">
-            {char}
-          </span>
-        ))}
-        <span className="absolute left-0 top-0">
-          {text.split('').map((char, index) => (
-            <span key={index} className="inline-block translate-y-full whitespace-pre duration-500 [transition-timing-function:cubic-bezier(0.77,0,0.18,1)] group-hover/button:translate-y-0">
+        {typeof text === "string" ? (
+          text.split("").map((char, index) => (
+            <span
+              key={index}
+              className="inline-block whitespace-pre duration-500 [transition-timing-function:cubic-bezier(0.77,0,0.18,1)] group-hover/button:-translate-y-full"
+            >
               {char}
             </span>
-          ))}
+          ))
+        ) : (
+          text
+        )}
+        <span className="absolute left-0 top-0">
+          {typeof text === "string" ? (
+            text.split("").map((char, index) => (
+              <span
+                key={index}
+                className="inline-block translate-y-full whitespace-pre duration-500 [transition-timing-function:cubic-bezier(0.77,0,0.18,1)] group-hover/button:translate-y-0"
+              >
+                {char}
+              </span>
+            ))
+          ) : (
+            text
+          )}
         </span>
       </span>
       {arrow && (
@@ -60,6 +97,37 @@ export const AnimatedButton = ({
           </svg>
         </span>
       )}
-    </Link>
+    </>
   );
+
+  // Render Link or button based on href
+  if (isLink) {
+    return (
+      <Link
+        className={commonClasses}
+        style={{ "--is-animation-running": "running" } as React.CSSProperties}
+        href={href}
+        target="_blank"
+        onClick={(e) => {
+          e.stopPropagation(); // Prevent event bubbling to parent
+          if (onClick) onClick(e);
+        }}
+      >
+        {buttonContent}
+      </Link>
+    );
+  } else {
+    return (
+      <button
+        className={commonClasses}
+        style={{ "--is-animation-running": "running" } as React.CSSProperties}
+        onClick={(e) => {
+          e.stopPropagation(); // Prevent event bubbling to parent
+          if (onClick) onClick(e);
+        }}
+      >
+        {buttonContent}
+      </button>
+    );
+  }
 };

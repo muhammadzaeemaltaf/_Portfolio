@@ -9,6 +9,7 @@ import Image from "next/image";
 import StackLogo from "@/components/StackLogo";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { AnimatedButton } from "./AnimateButton";
+import { X } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -34,14 +35,14 @@ const Project = () => {
     initialRect: DOMRect | null;
   }>({ element: null, placeholder: null, initialRect: null });
 
-  const isDesktop = useMediaQuery("(max-width: 992px)");
+  const isMobile = useMediaQuery("(max-width: 992px)");
 
   // Added state to track the visibility of the section for mobile
   const [sectionInView, setSectionInView] = useState(false);
 
   // Observe section visibility on mobile
   useEffect(() => {
-    if (!sectionRef.current || !isDesktop) return;
+    if (!sectionRef.current || !isMobile) return;
     const observer = new IntersectionObserver(
       (entries) => {
         setSectionInView(entries[0].isIntersecting);
@@ -50,7 +51,7 @@ const Project = () => {
     );
     observer.observe(sectionRef.current);
     return () => observer.disconnect();
-  }, [isDesktop]);
+  }, [isMobile]);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -126,7 +127,7 @@ const Project = () => {
     if (!rightColumnRef.current || !sectionRef.current) return;
 
     // Only apply pin on desktop
-    if (!isDesktop) {
+    if (!isMobile) {
       const pinTrigger = ScrollTrigger.create({
         trigger: rightColumnRef.current,
         start: "top 100px",
@@ -140,7 +141,7 @@ const Project = () => {
         pinTrigger.kill();
       };
     }
-  }, [isDesktop]);
+  }, [isMobile]);
 
   const handleCardClick = (
     project: any,
@@ -174,18 +175,19 @@ const Project = () => {
       backgroundColor: "black",
       zIndex: 100,
     });
-  
-    gsap.to(cardEl.querySelector('img'), {
-      width: '100%',
-      height: '100%',
+
+    gsap.to(cardEl.querySelector("img"), {
+      width: "100%",
+      height: "100%",
       duration: 0.5,
     });
-    
-    gsap.to(cardEl.querySelector('.text'), {
-      position: 'relative',
+
+    gsap.to(cardEl.querySelector(".text"), {
+      position: "relative",
       top: "auto",
-      width: 'auto',
-      marginTop: '56px'
+      width: "auto",
+      marginTop: "56px",
+      padding: "1rem",
     });
 
     gsap.to(cardEl, {
@@ -193,8 +195,9 @@ const Project = () => {
       left: "50%",
       xPercent: -50,
       yPercent: -50,
-      height: "80vh",
-      width: isDesktop ? "90vw" : undefined,
+      height: isMobile ? "100dvh" : "80vh",
+      width: isMobile ? "100vw" : undefined,
+      padding: 0,
       duration: 0.5,
       onComplete: () => setExpandedProject(project),
     });
@@ -209,6 +212,7 @@ const Project = () => {
       left: window.innerWidth < 767 ? "50%" : "30% ",
       width: initialRect.width,
       height: initialRect.height,
+      padding: "1rem",
       duration: 0.5,
       onComplete: () => {
         // Clean up
@@ -222,21 +226,21 @@ const Project = () => {
         };
       },
     });
-    gsap.to(element.querySelector('img'), {
-      position: 'relative',
+    gsap.to(element.querySelector("img"), {
+      position: "relative",
       top: "auto",
       left: "auto",
-      width: isDesktop ? "" : '200px',
+      width: isMobile ? "" : "200px",
     });
-    gsap.to(element.querySelector('.text'), {
-      position: isDesktop ? '' : 'absolute',
+    gsap.to(element.querySelector(".text"), {
+      position: isMobile ? "" : "absolute",
       top: "16px",
-      width: isDesktop ? '' : '70%',
-      marginTop: '0',
-      duration: 0.5
+      width: isMobile ? "" : "60%",
+      marginTop: "0",
+      padding: 0,
+      duration: 0.5,
     });
   };
-
 
   const scrollToStack = (stack: string) => {
     const element = stackRefsMap.current[stack]?.current;
@@ -274,14 +278,29 @@ const Project = () => {
               {projectsData[stack]?.map((project, i) => (
                 <div
                   key={`${stack}-${i}`}
-                  onClick={(e) => handleCardClick(project, e)}
-                  className={`relative lg:h-[160px]  border border-white/20 text-white p-4 m-2 rounded-lg shadow project-card cursor-pointer ${
+                  onClick={(e) => {
+                    if (expandedProject?.title !== project.title) {
+                      handleCardClick(project, e); // Expand if not expanded
+                    }
+                  }}
+                  className={`relative lg:h-[160px] border border-white/20 text-white p-4 lg:m-2 rounded-lg shadow project-card cursor-pointer ${
                     expandedProject?.title === project.title
-                      ? "overflow-y-auto "
+                      ? "overflow-y-auto"
                       : ""
-                    }`}
+                  }`}
                 >
-                    <div className="flex items-center justify-end">
+                  {expandedProject === project && (
+                    <AnimatedButton
+                      text={<X className="h-3 w-3" />}
+                      bg={`!absolute right-2 top-2 !p-2 !h-7 z-[100] bg-black lg:!hidden ${
+                        expandedProject?.title === project.title
+                          ? "!opacity-100"
+                          : "!opacity-0"
+                      }`}
+                      onClick={handleOverlayClick}
+                    />
+                  )}
+                  <div className="flex items-center justify-end">
                     <Image
                       src={
                         project.imageUrl ||
@@ -293,15 +312,34 @@ const Project = () => {
                       className="rounded object-center aspect-video  lg:w-[200px] object-cover relative"
                     />
                   </div>
-                  <div className="text relative lg:absolute top-4 lg:w-[70%] lg:pr-10 mb-4" >
+                  <div className="text relative lg:absolute top-4 lg:w-[60%] lg:pr-10 mb-4">
                     <h3 className="font-bold">{project.title}</h3>
                     <p className="line-clamp-2 mb-4">{project.description}</p>
-                  <AnimatedButton
-                   text={expandedProject?.title === project.title ? "View Project" : "Overview"}
-                   arrow={expandedProject?.title === project.title}
-                    href={expandedProject?.title === project.title ? project.link : ""}
-                    bg={expandedProject?.title === project.title ? "bg-gradient-to-tl to-black from-blue-700/40" : ""}
-                   />
+                    <AnimatedButton
+                      text={
+                        expandedProject?.title === project.title
+                          ? "View Project"
+                          : "Overview"
+                      }
+                      arrow={expandedProject?.title === project.title}
+                      href={
+                        expandedProject?.title === project.title
+                          ? project.link
+                          : ""
+                      }
+                      expanded={expandedProject?.title === project.title}
+                      onClick={
+                        expandedProject?.title !== project.title
+                          ? (e) => {
+                              e.stopPropagation();
+                              const card = (e.currentTarget as HTMLElement).closest('.project-card');
+                              if (card) {
+                                handleCardClick(project, { ...e, currentTarget: card } as React.MouseEvent<HTMLDivElement, MouseEvent>);
+                              }
+                            }
+                          : undefined
+                      }
+                    />
                   </div>
                 </div>
               ))}
