@@ -8,6 +8,7 @@ import { projectsData } from "@/libs/data";
 import Image from "next/image";
 import StackLogo from "@/components/StackLogo";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import { AnimatedButton } from "./AnimateButton";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -33,14 +34,14 @@ const Project = () => {
     initialRect: DOMRect | null;
   }>({ element: null, placeholder: null, initialRect: null });
 
-  const isMobile = useMediaQuery("(max-width: 768px)");
+  const isDesktop = useMediaQuery("(max-width: 992px)");
 
   // Added state to track the visibility of the section for mobile
   const [sectionInView, setSectionInView] = useState(false);
 
   // Observe section visibility on mobile
   useEffect(() => {
-    if (!sectionRef.current || !isMobile) return;
+    if (!sectionRef.current || !isDesktop) return;
     const observer = new IntersectionObserver(
       (entries) => {
         setSectionInView(entries[0].isIntersecting);
@@ -49,7 +50,7 @@ const Project = () => {
     );
     observer.observe(sectionRef.current);
     return () => observer.disconnect();
-  }, [isMobile]);
+  }, [isDesktop]);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -125,7 +126,7 @@ const Project = () => {
     if (!rightColumnRef.current || !sectionRef.current) return;
 
     // Only apply pin on desktop
-    if (!isMobile) {
+    if (!isDesktop) {
       const pinTrigger = ScrollTrigger.create({
         trigger: rightColumnRef.current,
         start: "top 100px",
@@ -139,7 +140,7 @@ const Project = () => {
         pinTrigger.kill();
       };
     }
-  }, [isMobile]);
+  }, [isDesktop]);
 
   const handleCardClick = (
     project: any,
@@ -193,7 +194,7 @@ const Project = () => {
       xPercent: -50,
       yPercent: -50,
       height: "80vh",
-      width: isMobile ? "90vw" : undefined,
+      width: isDesktop ? "90vw" : undefined,
       duration: 0.5,
       onComplete: () => setExpandedProject(project),
     });
@@ -225,12 +226,12 @@ const Project = () => {
       position: 'relative',
       top: "auto",
       left: "auto",
-      width: isMobile ? "" : '200px',
+      width: isDesktop ? "" : '200px',
     });
     gsap.to(element.querySelector('.text'), {
-      position: isMobile ? '' : 'absolute',
+      position: isDesktop ? '' : 'absolute',
       top: "16px",
-      width: isMobile ? '' : '70%',
+      width: isDesktop ? '' : '70%',
       marginTop: '0',
       duration: 0.5
     });
@@ -259,9 +260,9 @@ const Project = () => {
         />
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-[65%_auto] gap-4 mt-8">
+      <div className="grid grid-cols-1 lg:grid-cols-[65%_auto] gap-4 mt-8">
         {/* Left Column: Projects */}
-        <div className="project-container relative md:pr-10">
+        <div className="project-container relative lg:pr-10 grid md:grid-cols-2 gap-4 lg:grid-cols-1">
           {stacks.map((stack) => (
             <div
               key={stack}
@@ -274,7 +275,7 @@ const Project = () => {
                 <div
                   key={`${stack}-${i}`}
                   onClick={(e) => handleCardClick(project, e)}
-                  className={`relative h-[320px] md:h-[160px] border border-white/20 text-white p-4 m-2 rounded-lg shadow project-card cursor-pointer ${
+                  className={`relative lg:h-[160px]  border border-white/20 text-white p-4 m-2 rounded-lg shadow project-card cursor-pointer ${
                     expandedProject?.title === project.title
                       ? "overflow-y-auto "
                       : ""
@@ -289,15 +290,18 @@ const Project = () => {
                       alt={project.title}
                       width={1000}
                       height={1000}
-                      className="rounded object-center aspect-video  md:w-[200px] object-cover relative"
+                      className="rounded object-center aspect-video  lg:w-[200px] object-cover relative"
                     />
                   </div>
-                  <div className="text relative md:absolute top-4 md:w-[70%] md:pr-10" >
+                  <div className="text relative lg:absolute top-4 lg:w-[70%] lg:pr-10 mb-4" >
                     <h3 className="font-bold">{project.title}</h3>
-                    <p className="line-clamp-2">{project.description}</p>
-                    <button className="border mt-4 px-4 py-1 rounded-2xl cursor-pointer">
-                      Overview
-                    </button>
+                    <p className="line-clamp-2 mb-4">{project.description}</p>
+                  <AnimatedButton
+                   text={expandedProject?.title === project.title ? "View Project" : "Overview"}
+                   arrow={expandedProject?.title === project.title}
+                    href={expandedProject?.title === project.title ? project.link : ""}
+                    bg={expandedProject?.title === project.title ? "bg-gradient-to-tl to-black from-blue-700/40" : ""}
+                   />
                   </div>
                 </div>
               ))}
@@ -308,7 +312,7 @@ const Project = () => {
         {/* Right Column: Active Stack Logo */}
         <div
           ref={rightColumnRef}
-          className="hidden md:flex flex-col justify-center items-center h-[calc(100vh-200px)] md:h-[300px] sticky top-[100px]"
+          className="hidden lg:flex flex-col justify-center items-center h-[calc(100vh-200px)] md:h-[300px] sticky top-[100px]"
         >
           <div className="w-[70%] h-[70%] mb-4">
             {activeStack && <StackLogo stack={activeStack} />}
