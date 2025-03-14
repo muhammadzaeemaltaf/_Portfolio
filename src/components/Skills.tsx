@@ -52,11 +52,11 @@ export default function Skills() {
 
   return (
     <section className="flex justify-center">
-      <div id="skills" className="mb-28 max-w-[53rem] scroll-mt-28 text-center sm:mb-40">
+      <div id="skills" className="mb-28 max-w-[53rem] scroll-mt-28 text-center sm:mb-40 px-4 md:px-0">
         <Heading heading="Skills" />
         <div
           ref={containerRef}
-          className="grid gap-8 mt-5 relative"
+          className="grid gap-8 md:mt-5 relative"
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
         >
@@ -116,7 +116,7 @@ function SkillTag({ skill, isHovering, mousePosition }: SkillTagProps) {
   return (
     <li
       ref={tagRef}
-      className="relative flex items-center gap-2 border border-white/15 bg-white text-center rounded-xl px-5 py-3 text-gray-800 dark:bg-white/10 dark:text-white/80 overflow-hidden"
+      className="relative flex items-center gap-2 border border-white/15 bg-white text-center rounded-xl px-4 py-2 md:px-5 md:py-3 text-gray-800 dark:bg-white/10 dark:text-white/80 overflow-hidden"
     >
       {/* Animated border element */}
       <div

@@ -179,6 +179,7 @@ const Project = () => {
     gsap.to(cardEl.querySelector("img"), {
       width: "100%",
       height: "100%",
+      borderRadius: 0,
       duration: 0.5,
     });
 
@@ -188,6 +189,11 @@ const Project = () => {
       width: "auto",
       marginTop: "56px",
       padding: "1rem",
+    });
+    
+    gsap.to(cardEl.querySelector(".text h3"), {
+      fontSize: "2.5rem",
+      marginBottom: "1rem",
     });
 
     gsap.to(cardEl, {
@@ -201,6 +207,16 @@ const Project = () => {
       duration: 0.5,
       onComplete: () => setExpandedProject(project),
     });
+
+    gsap.to(cardEl.querySelector(".text .tags"), {
+      position: "relative",
+      opacity: 1,
+      duration: 0.5,
+      delay: 0.5,
+      stagger: 0.1,
+      marginBottom: "2.5rem",
+    y: 10,
+     });
   };
 
   const handleOverlayClick = () => {
@@ -230,6 +246,7 @@ const Project = () => {
       position: "relative",
       top: "auto",
       left: "auto",
+      borderRadius: "4px",
       width: isMobile ? "" : "200px",
     });
     gsap.to(element.querySelector(".text"), {
@@ -240,15 +257,21 @@ const Project = () => {
       padding: 0,
       duration: 0.5,
     });
-  };
 
-  const scrollToStack = (stack: string) => {
-    const element = stackRefsMap.current[stack]?.current;
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
+    gsap.to(element.querySelector(".text h3"), {
+      fontSize: "1rem",
+      marginBottom: "0",
+    })
 
+    gsap.to(element.querySelector(".text .tags"), {
+      position: "absolute",
+      opacity: 0,
+      marginBottom: "0",
+    y: 0,
+     });
+  }
+
+  
   return (
     <section
       ref={sectionRef}
@@ -315,6 +338,21 @@ const Project = () => {
                   <div className="text relative lg:absolute top-4 lg:w-[60%] lg:pr-10 mb-4">
                     <h3 className="font-bold">{project.title}</h3>
                     <p className="line-clamp-2 mb-4">{project.description}</p>
+                    <div className="tags flex justify-start items-center gap-2"
+                      style={{
+                        opacity: 0,
+                        position: "absolute",
+                      }}
+                    >
+                      {project.tags.map((Tag, i) => (
+                        <span
+                          key={i}
+                          className="text-xs p-1 rounded mr-1"
+                        >
+                          <Tag className="h-8 w-8"/>
+                        </span>
+                      ))}
+                    </div>
                     <AnimatedButton
                       text={
                         expandedProject?.title === project.title

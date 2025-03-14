@@ -23,7 +23,7 @@ body {
 }
 
 .__h1 {
-  @apply text-2xl leading-[1.2] whitespace-nowrap sm:whitespace-normal
+  @apply text-4xl leading-[1.2] tracking-tight whitespace-nowrap sm:whitespace-normal
 }
 
 

@@ -1,6 +1,8 @@
 import {
   FaBootstrap,
+  FaCss3Alt,
   FaGithub,
+  FaJs,
   FaLaravel,
   FaPython,
   FaReact,
@@ -9,7 +11,7 @@ import {
 import { IoLogoNodejs } from "react-icons/io";
 import { IoLogoVercel } from "react-icons/io5";
 import { PiFramerLogoFill } from "react-icons/pi";
-import { RiNextjsFill } from "react-icons/ri";
+import { RiNextjsFill, RiTailwindCssFill } from "react-icons/ri";
 import {
   SiGreensock,
   SiJquery,
@@ -17,8 +19,9 @@ import {
   SiSanity,
   SiShadcnui,
   SiTailwindcss,
+  SiTypescript,
 } from "react-icons/si";
-import { TbBrandMysql, TbBrandTypescript } from "react-icons/tb";
+import { TbBrandFramerMotion, TbBrandMysql, TbBrandTypescript } from "react-icons/tb";
 
 import NextJsMini from "../../public/nextjs-mini.png";
 import AppleIphone from "../../public/apple.jpg";
@@ -31,6 +34,7 @@ import Polymath from "../../public/polymath.jpg";
 import Wardrobe from "../../public/wardrobe.jpg";
 import VaultSneak from "../../public/vaultsneaks.png";
 import { StaticImageData } from "next/image";
+import { ImHtmlFive } from "react-icons/im";
 
 
 const zustand = (height?: string, width?: string) => {
@@ -1546,6 +1550,47 @@ const groq = (height?: string, width?: string) => {
   );
 };
 
+
+const FakeStoreAPi = () => {
+  return(
+    <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+ width="32px" height="32px" viewBox="0 0 516.000000 472.000000"
+ preserveAspectRatio="xMidYMid meet">
+
+<g transform="translate(0.000000,472.000000) scale(0.100000,-0.100000)"
+fill="#ffffff" stroke="none">
+<path d="M388 4704 c-185 -44 -329 -189 -373 -376 -22 -95 -22 -3841 0 -3936
+45 -189 188 -332 377 -377 95 -22 4281 -22 4376 0 189 45 332 188 377 377 22
+95 22 3841 0 3936 -45 189 -188 332 -377 377 -91 21 -4292 21 -4380 -1z m892
+-859 l0 -85 -92 0 c-51 0 -110 -5 -130 -10 -51 -15 -97 -56 -122 -110 -20 -43
+-21 -65 -27 -545 -5 -477 -6 -503 -27 -565 -25 -75 -68 -132 -120 -160 -21
+-10 -31 -19 -25 -20 23 0 94 -73 119 -121 45 -89 47 -112 53 -639 7 -562 7
+-558 77 -619 44 -39 90 -51 202 -51 l92 0 0 -85 0 -85 -153 0 c-107 0 -169 5
+-204 15 -60 18 -135 81 -164 137 -44 87 -49 145 -49 640 0 307 -4 485 -11 520
+-23 108 -77 176 -155 198 l-44 13 0 82 0 82 46 13 c83 24 130 81 153 188 7 35
+11 209 11 505 0 467 5 546 41 627 55 124 136 158 372 159 l157 1 0 -85z m3005
+50 c70 -35 116 -90 142 -168 15 -45 18 -119 23 -577 5 -470 8 -530 24 -572 22
+-60 82 -114 141 -129 l45 -11 0 -82 0 -82 -45 -12 c-57 -15 -116 -73 -141
+-138 -16 -44 -18 -99 -24 -579 -5 -388 -10 -541 -19 -570 -31 -96 -78 -153
+-161 -196 -41 -21 -61 -24 -217 -27 l-173 -4 0 85 0 85 108 4 c122 4 172 22
+209 78 45 65 46 84 53 610 7 521 8 538 50 620 20 39 102 120 122 120 6 0 -9
+13 -34 29 -47 30 -83 81 -115 161 -15 40 -18 104 -23 540 -7 516 -9 535 -53
+600 -37 56 -87 74 -209 78 l-108 4 0 85 0 85 173 -4 c168 -3 173 -4 232 -33z
+m-1104 -515 c10 -6 90 -104 176 -218 l158 -207 0 -700 0 -700 -24 -53 c-31
+-69 -106 -137 -174 -157 -76 -22 -1398 -22 -1474 0 -68 20 -143 88 -174 157
+l-24 53 0 700 0 700 157 207 c87 114 166 212 175 217 25 14 1177 15 1204 1z"/>
+<path d="M2005 3113 l-66 -88 320 -3 c177 -1 465 -1 642 0 l320 3 -66 88 -66
+87 -509 0 -509 0 -66 -87z"/>
+<path d="M1840 2197 l0 -624 26 -24 26 -24 688 0 688 0 26 24 26 24 0 624 0
+623 -740 0 -740 0 0 -623z m429 415 c21 -21 29 -41 35 -85 17 -149 133 -257
+276 -257 143 0 259 108 276 257 6 44 14 64 35 85 52 53 141 26 155 -47 3 -19
+1 -62 -5 -96 -39 -224 -235 -389 -461 -389 -226 0 -422 165 -461 389 -6 34 -8
+77 -5 96 14 73 103 100 155 47z"/>
+</g>
+</svg>
+  )
+}
+
 export const skills = [
   {
     type: "Programming Language",
@@ -1606,7 +1651,7 @@ export const experiencesData = [
 export const projectsData: { [key: string]: {
   title: string;
   description: string;
-  tags: string[];
+  tags: React.ElementType[];
   imageUrl: StaticImageData;
   link: string;
 }[] } = {
@@ -1615,7 +1660,7 @@ export const projectsData: { [key: string]: {
       title: "VaultSneaks",
       description:
         "I created a website named VaultSneaks, a sneaker e-commerce platform using Next.js and Tailwind CSS with dynamic features.",
-      tags: ["Next JS", "Tailwind", "Typescript", "Sanity", "Sanity Typegen"],
+      tags: [RiNextjsFill , RiTailwindCssFill, SiTypescript, SiSanity],
       imageUrl: VaultSneak,
       link: "https://vaultsneaks.vercel.app/",
     },
@@ -1623,42 +1668,42 @@ export const projectsData: { [key: string]: {
       title: "Wardrobe",
       description:
         "I created an Ecommerce website UI using third-party API where users can add products to the cart, view product details, and add to the wishlist.",
-      tags: ["Next JS", "Tailwind", "Typescript", "Gsap", "FakeStoreAPi"],
+      tags: [RiNextjsFill , RiTailwindCssFill, SiTypescript, SiGreensock, FakeStoreAPi],
       imageUrl: Wardrobe,
       link: "https://wardrobee.vercel.app/",
     },
     {
       title: "Zentry",
       description: "I cloned a Zentry Website using Gsap.",
-      tags: ["Next JS", "Tailwind", "Typescript", "Gsap"],
+      tags: [RiNextjsFill , RiTailwindCssFill, SiTypescript, SiGreensock],
       imageUrl: Zentry,
       link: "https://zentry-clonee.vercel.app/",
     },
     {
       title: "Polymath",
       description: "I created a Blog Website UI where users can read blogs, like, share, and add reviews on blogs.",
-      tags: ["Next JS", "Tailwind", "Typescript"],
+      tags: [RiNextjsFill , RiTailwindCssFill, SiTypescript],
       imageUrl: Polymath,
       link: "https://polymath-pro.vercel.app/",
     },
     {
       title: "Apple iPhone 15",
       description: "I created an animated website for Apple iPhone 15.",
-      tags: ["Next.js", "Tailwind", "Typescript", "React", "GSAP", "React Three Fiber"],
+      tags: [RiNextjsFill, RiTailwindCssFill, SiTypescript, SiGreensock],
       imageUrl: AppleIphone,
       link: "https://apple-iphone-pro.vercel.app/",
     },
     {
       title: "AI SEO",
       description: "I created an AI SEO website. It is built using Next.js and Tailwind CSS. It is hosted on Vercel.",
-      tags: ["React", "Tailwind", "Typescript", "Next.js", "Framer Motion"],
+      tags: [  RiNextjsFill, RiTailwindCssFill, SiTypescript, TbBrandFramerMotion ],
       imageUrl: AiSEO,
       link: "https://ai-seo-ruby.vercel.app/",
     },
     {
       title: "Next.js Mini Project",
       description: "I created a Weather search widget using \"weatherapi\". It is built using Next.js, Tailwind CSS, and Firebase. It is hosted on Vercel.",
-      tags: ["React", "TypeScript", "Next.js", "Tailwind", "Shadcn Ui", "Framer Motion", "Vercel"],
+      tags: [ RiNextjsFill, SiTypescript, RiTailwindCssFill, SiShadcnui, TbBrandFramerMotion, IoLogoVercel],
       imageUrl: NextJsMini,
       link: "https://nextjs-mini-project-omega.vercel.app/",
     },
@@ -1668,21 +1713,21 @@ export const projectsData: { [key: string]: {
     {
       title: "ResuMap",
       description: "I created a Resume builder where users can build their resumes and also change themes.",
-      tags: ["HTML", "CSS", "Typescript", "Javascript", "HTML2Canvas"],
+      tags: [ImHtmlFive, FaCss3Alt, SiTypescript, FaJs],
       imageUrl: ResuMap,
       link: "https://resumap.vercel.app/",
     },
     {
       title: "Snap Peak",
       description: "I created a Snap Peak website using Unsplash API. It is an image gallery where users can search, view, and download images.",
-      tags: ["HTML", "CSS", "Javascript", "Bootstrap"],
+      tags: [ImHtmlFive, FaCss3Alt, FaJs, FaBootstrap],
       imageUrl: SnapPeak,
       link: "https://snap-peak.vercel.app/",
     },
     {
       title: "MetaMagine",
       description: "I created an interactive landing page named MetaMagine. It has a user-friendly UI with a lot of transitions.",
-      tags: ["HTML", "CSS", "Javascript", "Bootstrap"],
+      tags: [ImHtmlFive, FaCss3Alt, FaJs, FaBootstrap],
       imageUrl: Metamagine,
       link: "https://metamagine.atwebpages.com/",
     },
