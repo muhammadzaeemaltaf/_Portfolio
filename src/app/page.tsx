@@ -21,7 +21,7 @@ export default function Home() {
 
   return (
     <div className="overflow-hidden" >
-      {/* {loading && <LogoLoader />} */}
+      {loading && <LogoLoader />}
       <HeroSection />
       <About />
       <Skills/>
