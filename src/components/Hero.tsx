@@ -1,11 +1,18 @@
-"use client"
+"use client";
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import GridBackground from "./bg";
+import { Typewriter } from "react-simple-typewriter";
+
+const data = [
+  "Full-Stack Developer",
+  "Frontend Developer",
+  "Next.js Developer",
+  "PHP/Laravel Developer",
+];
 
 const HeroSection = () => {
-
   const maskRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -42,28 +49,31 @@ const HeroSection = () => {
       {/* Background effects */}
       <div className="flex justify-between w-full absolute top-0 left-0  z-[-1] h-[70vh]">
         {/* Left Blur with Reflection */}
-        <div className="absolute left-[20%] top-1/2 z-[-1] h-[55vh] md:h-[80vh] w-20 -translate-x-1/2 -translate-y-1/2 -rotate-50 bg-blue-700 blur-[180px] 
-        after:absolute after:left-1/2 after:top-0 after:h-full after:w-[2px] after:bg-gradient-to-b after:from-white/60 after:to-transparent"></div>
+        <div
+          className="absolute left-[20%] top-1/2 z-[-1] h-[55vh] md:h-[80vh] w-20 -translate-x-1/2 -translate-y-1/2 -rotate-50 bg-blue-700 blur-[180px] 
+        after:absolute after:left-1/2 after:top-0 after:h-full after:w-[2px] after:bg-gradient-to-b after:from-white/60 after:to-transparent"
+        ></div>
 
         {/* Right Blur with Reflection */}
-        <div className="absolute right-[15%] top-1/2 z-[-1] h-[55vh] md:h-[80vh] w-20 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-blue-700 blur-[180px] 
-        after:absolute after:left-1/2 after:top-0 after:h-full after:w-[2px] after:bg-gradient-to-b after:from-white/60 after:to-transparent"></div>
+        <div
+          className="absolute right-[15%] top-1/2 z-[-1] h-[55vh] md:h-[80vh] w-20 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-blue-700 blur-[180px] 
+        after:absolute after:left-1/2 after:top-0 after:h-full after:w-[2px] after:bg-gradient-to-b after:from-white/60 after:to-transparent"
+        ></div>
       </div>
-    
-      <div
-        className="pointer-events-none absolute left-0 top-0 h-full w-full opacity-50  [mask-image:linear-gradient(to_bottom,white_1%,transparent_80%)]"
-      >
+
+      <div className="pointer-events-none absolute left-0 top-0 h-full w-full opacity-50  [mask-image:linear-gradient(to_bottom,white_1%,transparent_80%)]">
         <GridBackground />
       </div>
-    {/* Masked Background */}
-    <div
+      {/* Masked Background */}
+      <div
         ref={maskRef}
         className="absolute w-full h-full top-0 left-0 pointer-events-none opacity-10 transition-all duration-500"
         style={{
           backgroundImage: "url(/bg.svg)",
           backgroundSize: "cover",
           backgroundPosition: "center",
-          WebkitMaskImage: "radial-gradient(0px at 0px 0px, black, transparent)",
+          WebkitMaskImage:
+            "radial-gradient(0px at 0px 0px, black, transparent)",
         }}
       ></div>
 
@@ -82,7 +92,20 @@ const HeroSection = () => {
 
           {/* Subtitle */}
           <p className="relative mx-auto mt-4 max-w-[800px] text-center text-muted xs:mt-6 sm:mt-7 sm:text-lg md:mt-8 md:text-xl">
-            Hi I am Muhammad Zaeem Altaf. A full stack web developer with a passion for creating beautiful and functional websites.
+            Hi I am Muhammad Zaeem Altaf.{" "}
+            <Typewriter
+              words={data}
+              loop={0}
+              cursor
+              cursorStyle=""
+              typeSpeed={50}
+              deleteSpeed={50}
+              delaySpeed={1000}
+            />{" "}
+            <span className="inline-block w-0.5 h-6 ml-1 -mb-1 bg-blue-500 animate-pulse"></span>
+          </p>
+          <p className="relative mx-auto mt-2 max-w-[800px] text-center text-muted sm:mt-5 sm:text-lg md:text-xl">
+            I am passionate for creating beautiful and functional websites.
           </p>
         </div>
       </div>

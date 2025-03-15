@@ -67,10 +67,10 @@ module.exports = {
             to: { height: 0 },
           },
         },
-        animation: {
-          "accordion-down": "accordion-down 0.2s ease-out",
-          "accordion-up": "accordion-up 0.2s ease-out",
-        },
+        // animation: {
+        //   "accordion-down": "accordion-down 0.2s ease-out",
+        //   "accordion-up": "accordion-up 0.2s ease-out",
+        // },
         screens: {
           xs: "480px",
         },
