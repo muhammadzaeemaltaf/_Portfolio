@@ -46,7 +46,7 @@ const HeroSection = () => {
     };
   }, []);
   return (
-    <section className="relative isolate flex min-h-[85vh] md:min-h-screen max-w-[100vw] items-center overflow-x-hidden py-16 px-6 px-sm-4">
+    <section className="relative isolate flex min-h-[85vh] md:min-h-screen max-w-[100vw] items-center overflow-x-hidden py-16 px-4">
       {/* Background effects */}
       <div className="flex justify-between w-full absolute top-0 left-0  z-[-1] h-[70vh]">
         {/* Left Blur with Reflection */}
@@ -83,10 +83,11 @@ const HeroSection = () => {
           {/* Main heading */}
           <div className="relative isolate">
             <h1 className="__h1 mt-5 text-balance text-center tracking-wide md:mt-8 lg:mt-10 [&_*]:inline-block [&_*]:bg-clip-text [&_*]:text-transparent [&_span]:[background-image:-webkit-linear-gradient(90deg,#ececec_0%,#aaaaaa_33%,#e0e0e0_67%)] [&_strong]:font-medium [&_strong]:[background-image:-webkit-linear-gradient(45deg,#2563eb_6%,#1e40af_19%,#2563eb_100%)]">
-              <span>Full-Stack</span> <span>Development</span>
+              <span>Full-Stack</span> <span>Development</span> {" "}
               <br className="sm:!hidden" />
                <span>Services</span>{" "}
               <strong>For Seamless</strong>
+              {" "}
               <br className="sm:!hidden" />
                <strong>Web</strong>{" "}
               <strong>Experience</strong>

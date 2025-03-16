@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Muhammad Zaeem ALtaf | Full-Stack Web Developer | Next.js Developer",
+  title: "Muhammad Zaeem Altaf | Full-Stack Web Developer | Next.js Developer",
   description: "Full stack web developer with expertise in Next is, tailwind CSS. Specializing in creating responsive, user-friendly websites with a focus on individual user experience and performance optimization",
 };
 

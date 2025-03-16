@@ -35,7 +35,7 @@ const Project = () => {
     initialRect: DOMRect | null;
   }>({ element: null, placeholder: null, initialRect: null });
 
-  const isMobile = useMediaQuery("(max-width: 992px)");
+  const isMobile = useMediaQuery("(max-width: 767px)");
 
   // Added state to track the visibility of the section for mobile
   const [sectionInView, setSectionInView] = useState(false);
@@ -230,8 +230,8 @@ const Project = () => {
     if (!element || !placeholder || !initialRect) return;
 
     gsap.to(element, {
-      top: window.innerWidth < 767 ? initialRect.top + 190 : initialRect.top + 72,
-      left: window.innerWidth < 767 ? "50%" : "31% ",
+      top: window.innerWidth < 767 ? initialRect.top + 170 : initialRect.top + 78,
+      left: window.innerWidth < 767 ? "50%" : "32% ",
       width: initialRect.width,
       height: initialRect.height,
       padding: "1rem",
@@ -287,7 +287,7 @@ const Project = () => {
   return (
     <section
       ref={sectionRef}
-      className="min-h-screen pb-20 relative px-4 md:px-10"
+      className="min-h-screen pb-20 relative px-4 md:px-10 max-w-[1400px] mx-auto"
     >
       <Heading heading="Projects" />
 
@@ -301,7 +301,7 @@ const Project = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-[65%_auto] gap-4 mt-8">
         {/* Left Column: Projects */}
-        <div className="project-container relative lg:pr-10 grid md:grid-cols-2 gap-4 lg:grid-cols-1 ">
+        <div className="project-container relative lg:pr-10 grid  gap-4 md:grid-cols-1 ">
           {stacks.map((stack) => (
             <div
               key={stack}
@@ -318,7 +318,7 @@ const Project = () => {
                       handleCardClick(project, e); // Expand if not expanded
                     }
                   }}
-                  className={`relative lg:h-[160px] border border-white/20 text-white p-4  rounded-lg shadow project-card cursor-pointer ${
+                  className={`relative md:h-[160px] border border-white/20 text-white p-4  rounded-lg shadow project-card cursor-pointer ${
                     expandedProject?.title === project.title
                       ? "overflow-y-auto"
                       : ""
@@ -327,7 +327,7 @@ const Project = () => {
                   {expandedProject === project && (
                     <AnimatedButton
                       text={<X className="h-3 w-3" />}
-                      bg={`!absolute right-2 top-2 !p-2 !h-7 z-[100] bg-black lg:!hidden ${
+                      bg={`!absolute right-2 top-2 !p-2 !h-7 z-[100] bg-black md:!hidden ${
                         expandedProject?.title === project.title
                           ? "!opacity-100"
                           : "!opacity-0"
@@ -344,10 +344,10 @@ const Project = () => {
                       alt={project.title}
                       width={1000}
                       height={1000}
-                      className="rounded object-center aspect-video  lg:w-[200px] object-cover relative"
+                      className="rounded object-center aspect-video  md:w-[200px] object-cover relative"
                     />
                   </div>
-                  <div className="text relative lg:absolute top-4 lg:w-[60%] lg:pr-10 mb-4">
+                  <div className="text relative md:absolute top-4 md:w-[60%] md:pr-10 mb-4">
                     <h3 className="font-bold">{project.title}</h3>
                     <p className="line-clamp-2 mb-4">{project.description}</p>
                     <div className="tags flex justify-start items-center gap-2"

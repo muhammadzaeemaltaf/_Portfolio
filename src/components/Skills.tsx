@@ -62,7 +62,7 @@ export default function Skills() {
         >
           {skills.map((category, catIndex) => (
             <div key={catIndex} className="skill-category text-left mt-6 relative z-10">
-              <h3 className="text-xl text-center font-semibold text-gray-900 dark:text-white mb-4">
+              <h3 className="text-xl text-center font-semibold text-white mb-4">
                 {category.type}
               </h3>
               <ul className="flex flex-wrap justify-center gap-3">
@@ -116,7 +116,7 @@ function SkillTag({ skill, isHovering, mousePosition }: SkillTagProps) {
   return (
     <li
       ref={tagRef}
-      className="relative flex items-center gap-2 border border-white/15 bg-white text-center rounded-xl px-4 py-2 md:px-5 md:py-3 text-gray-800 dark:bg-white/10 dark:text-white/80 overflow-hidden"
+      className="relative flex items-center gap-2 border border-white/15 text-center rounded-xl px-4 py-2 md:px-5 md:py-3 bg-white/10 text-white/80 overflow-hidden"
     >
       {/* Animated border element */}
       <div
