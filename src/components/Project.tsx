@@ -217,6 +217,12 @@ const Project = () => {
       marginBottom: "2.5rem",
     y: 10,
      });
+
+     gsap.to('.overlay', {
+      opacity: 1,
+      pointerEvents: 'auto',
+      duration: 0.5
+     })
   };
 
   const handleOverlayClick = () => {
@@ -224,8 +230,8 @@ const Project = () => {
     if (!element || !placeholder || !initialRect) return;
 
     gsap.to(element, {
-      top: initialRect.top,
-      left: window.innerWidth < 767 ? "50%" : "30% ",
+      top: window.innerWidth < 767 ? initialRect.top + 190 : initialRect.top + 72,
+      left: window.innerWidth < 767 ? "50%" : "31% ",
       width: initialRect.width,
       height: initialRect.height,
       padding: "1rem",
@@ -269,6 +275,12 @@ const Project = () => {
       marginBottom: "0",
     y: 0,
      });
+
+     gsap.to('.overlay', {
+      opacity: 0,
+      pointerEvents: 'none',
+      duration: 0.5
+     })
   }
 
   
@@ -280,22 +292,22 @@ const Project = () => {
       <Heading heading="Projects" />
 
       {/* Render overlay when a project is expanded */}
-      {expandedProject && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-md z-50 cursor-pointer"
+          className="fixed inset-0 bg-black/50 backdrop-blur-md z-50 cursor-pointer pointer-events-none opacity-0 overlay"
+          
           onClick={handleOverlayClick}
         />
-      )}
+      
 
       <div className="grid grid-cols-1 lg:grid-cols-[65%_auto] gap-4 mt-8">
         {/* Left Column: Projects */}
-        <div className="project-container relative lg:pr-10 grid md:grid-cols-2 gap-4 lg:grid-cols-1">
+        <div className="project-container relative lg:pr-10 grid md:grid-cols-2 gap-4 lg:grid-cols-1 ">
           {stacks.map((stack) => (
             <div
               key={stack}
               ref={stackRefsMap.current[stack]}
               data-stack={stack}
-              className="mb-12 md:px-4"
+              className="mb-12 md:px-4 space-y-3"
               id={`stack-${stack}`}
             >
               {projectsData[stack]?.map((project, i) => (
@@ -306,7 +318,7 @@ const Project = () => {
                       handleCardClick(project, e); // Expand if not expanded
                     }
                   }}
-                  className={`relative lg:h-[160px] border border-white/20 text-white p-4 lg:m-2 rounded-lg shadow project-card cursor-pointer ${
+                  className={`relative lg:h-[160px] border border-white/20 text-white p-4  rounded-lg shadow project-card cursor-pointer ${
                     expandedProject?.title === project.title
                       ? "overflow-y-auto"
                       : ""
