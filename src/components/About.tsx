@@ -150,17 +150,15 @@ export default function About() {
         </div>
 
         <div className="left-right__step-inner w-full md:w-1/2 md:pl-8">
-          <div className="text-[16px] text-center md:text-xl md:text-start leading-relaxed text-gray-400">
+          <div className="text-base text-center md:text-[18px] md:text-start leading-relaxed text-gray-400">
             <p ref={firstParaRef} className="mb-5">
-              After completing Intermediate with in Pre-Engineering, I pursued
-              my passion for web development. at Memon Industrial & Technical
-              Institute, where I developed and maintained responsive,
-              user-friendly, and visually appealing websites. My favorite part
-              of web development is creating intuitive user experiences and
-              optimizing website performance. My core stack includes Next.js,
-              React.js, Typescript, and Tailwind CSS. I also work with HTML,
-              CSS, JavaScript, PHP, MySQL, WordPress, Bootstrap, AJAX, Framer
-              Motion, and GSAP.
+            I as a full-stack developer, have experience working with HTML, CSS, JavaScript, TypeScript, PHP, 
+            WordPress, Next.js, and React.js as well as Tailwind CSS. I possess the ability to create 
+            responsive and friendly web applications. Currently, I am employed at Innovative Widget where 
+            I work with awesome groups of people bringing forth high-end web solutions and maintaining them. 
+            I started with pre engineering studies and specialized training at Memon Industrial & Technical 
+            Institute. At the moment, I am pursuing Bachelor of Computer Science from Virtual University and 
+            have a Cloud Applied Generative AI Engineering certification from GIAIC to ensure that I don’t get left behind in this swiftly evolving technology. I'm an AI enthusiast and an open-source contributor. I love learning and constantly growing. I’m ready and open to full-time opportunities, feel free to connect with me on LinkedIn or email!
             </p>
 
             <p ref={secondParaRef}>

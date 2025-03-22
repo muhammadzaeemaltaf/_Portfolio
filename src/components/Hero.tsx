@@ -68,9 +68,9 @@ const HeroSection = () => {
       {/* Masked Background */}
       <div
         ref={maskRef}
-        className="absolute w-full h-full top-0 left-0 pointer-events-none opacity-10 transition-all duration-500"
+        className="absolute w-full h-full top-0 left-0 pointer-events-none opacity-5 transition-all duration-500"
         style={{
-          backgroundImage: "url(/bg.svg)",
+          backgroundImage: "url(/background-01.svg)",
           backgroundSize: "cover",
           backgroundPosition: "center",
           WebkitMaskImage:
