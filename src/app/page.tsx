@@ -6,6 +6,8 @@ import LogoLoader from "@/components/logoLoader";
 import Project from "@/components/Project";
 import Skills from "@/components/Skills";
 import { useEffect, useState } from "react";
+import Experience from "../components/Experience";
+import Education from "@/components/Education";
 
 
 export default function Home() {
@@ -26,6 +28,8 @@ export default function Home() {
       <About />
       <Skills/>
       <Project/>
+      <Experience />
+      <Education />
     </div>
   );
 }

@@ -190,7 +190,7 @@ const Project = () => {
       marginTop: "56px",
       padding: "1rem",
     });
-    
+
     gsap.to(cardEl.querySelector(".text h3"), {
       fontSize: "2.5rem",
       marginBottom: "1rem",
@@ -215,14 +215,14 @@ const Project = () => {
       delay: 0.5,
       stagger: 0.1,
       marginBottom: "2.5rem",
-    y: 10,
-     });
+      y: 10,
+    });
 
-     gsap.to('.overlay', {
+    gsap.to('.overlay', {
       opacity: 1,
       pointerEvents: 'auto',
       duration: 0.5
-     })
+    })
   };
 
   const handleOverlayClick = () => {
@@ -273,31 +273,33 @@ const Project = () => {
       position: "absolute",
       opacity: 0,
       marginBottom: "0",
-    y: 0,
-     });
+      y: 0,
+    });
 
-     gsap.to('.overlay', {
+    gsap.to('.overlay', {
       opacity: 0,
       pointerEvents: 'none',
       duration: 0.5
-     })
+    })
   }
 
-  
+
   return (
     <section
       ref={sectionRef}
       className="min-h-screen pb-20 relative px-4 md:px-10 max-w-[1400px] mx-auto"
     >
-      <Heading heading="Projects" />
+      <Heading heading="Personal Projects" />
+
+      <p className="mt-4 text-center max-w-2xl mx-auto">Engaged in self-initiated projects to explore new technologies and methodologies, resulting in a diverse portfolio that demonstrates my commitment to continuous learning and professional growth.</p>
 
       {/* Render overlay when a project is expanded */}
-        <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-md z-50 cursor-pointer pointer-events-none opacity-0 overlay"
-          
-          onClick={handleOverlayClick}
-        />
-      
+      <div
+        className="fixed inset-0 bg-black/50 backdrop-blur-md z-50 cursor-pointer pointer-events-none opacity-0 overlay"
+
+        onClick={handleOverlayClick}
+      />
+
 
       <div className="grid grid-cols-1 lg:grid-cols-[65%_auto] gap-4 mt-8">
         {/* Left Column: Projects */}
@@ -318,20 +320,18 @@ const Project = () => {
                       handleCardClick(project, e); // Expand if not expanded
                     }
                   }}
-                  className={`relative md:h-[160px] border border-white/20 text-white p-4  rounded-lg shadow project-card cursor-pointer ${
-                    expandedProject?.title === project.title
+                  className={`relative md:h-[160px] border border-white/20 text-white p-4  rounded-lg shadow project-card cursor-pointer ${expandedProject?.title === project.title
                       ? "overflow-y-auto"
                       : ""
-                  }`}
+                    }`}
                 >
                   {expandedProject === project && (
                     <AnimatedButton
                       text={<X className="h-3 w-3" />}
-                      bg={`!absolute right-2 top-2 !p-2 !h-7 z-[100] bg-black md:!hidden ${
-                        expandedProject?.title === project.title
+                      bg={`!absolute right-2 top-2 !p-2 !h-7 z-[100] bg-black md:!hidden ${expandedProject?.title === project.title
                           ? "!opacity-100"
                           : "!opacity-0"
-                      }`}
+                        }`}
                       onClick={handleOverlayClick}
                     />
                   )}
@@ -361,7 +361,7 @@ const Project = () => {
                           key={i}
                           className="text-xs p-1 rounded mr-1"
                         >
-                          <Tag className="h-8 w-8"/>
+                          <Tag className="h-8 w-8" />
                         </span>
                       ))}
                     </div>
@@ -381,12 +381,12 @@ const Project = () => {
                       onClick={
                         expandedProject?.title !== project.title
                           ? (e) => {
-                              e.stopPropagation();
-                              const card = (e.currentTarget as HTMLElement).closest('.project-card');
-                              if (card) {
-                                handleCardClick(project, { ...e, currentTarget: card } as React.MouseEvent<HTMLDivElement, MouseEvent>);
-                              }
+                            e.stopPropagation();
+                            const card = (e.currentTarget as HTMLElement).closest('.project-card');
+                            if (card) {
+                              handleCardClick(project, { ...e, currentTarget: card } as React.MouseEvent<HTMLDivElement, MouseEvent>);
                             }
+                          }
                           : undefined
                       }
                     />
@@ -400,9 +400,9 @@ const Project = () => {
         {/* Right Column: Active Stack Logo */}
         <div
           ref={rightColumnRef}
-          className="hidden lg:flex flex-col justify-center items-center h-[calc(100vh-200px)] md:h-[300px] sticky top-[100px]"
+          className="hidden lg:flex flex-col justify-center items-center h-[calc(100vh-200px)] md:h-[300px] sticky top-[60px]"
         >
-          <div className="w-[70%] h-[70%] mb-4">
+          <div className="w-[60%] h-[60%] mb-4">
             {activeStack && <StackLogo stack={activeStack} />}
           </div>
         </div>

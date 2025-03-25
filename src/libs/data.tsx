@@ -6,11 +6,12 @@ import {
   FaLaravel,
   FaPython,
   FaReact,
+  FaSchool,
   FaWordpress,
 } from "react-icons/fa6";
 import { IoLogoNodejs } from "react-icons/io";
-import { IoLogoVercel } from "react-icons/io5";
-import { PiFramerLogoFill } from "react-icons/pi";
+import { IoLogoVercel, IoSchoolOutline } from "react-icons/io5";
+import { PiCertificateBold, PiFramerLogoFill } from "react-icons/pi";
 import { RiNextjsFill, RiTailwindCssFill } from "react-icons/ri";
 import {
   SiGreensock,
@@ -21,7 +22,7 @@ import {
   SiTailwindcss,
   SiTypescript,
 } from "react-icons/si";
-import { TbBrandFramerMotion, TbBrandMysql, TbBrandTypescript } from "react-icons/tb";
+import { TbBrandFramerMotion, TbBrandMysql, TbBrandTypescript, TbCertificate } from "react-icons/tb";
 
 import NextJsMini from "../../public/nextjs-mini.png";
 import AppleIphone from "../../public/apple.jpg";
@@ -35,6 +36,8 @@ import Wardrobe from "../../public/wardrobe.jpg";
 import VaultSneak from "../../public/vaultsneaks.png";
 import { StaticImageData } from "next/image";
 import { ImHtmlFive } from "react-icons/im";
+import { LuGraduationCap } from "react-icons/lu";
+import { BiSolidInstitution } from "react-icons/bi";
 
 
 const zustand = (height?: string, width?: string) => {
@@ -1609,11 +1612,16 @@ export const skills = [
       { label: "Zustand", icon: zustand },
       { label: "Shadcn UI", icon: SiShadcnui },
       { label: "Laravel", icon: FaLaravel },
-      { label: "MySQL", icon: TbBrandMysql },
       { label: "Bootstrap", icon: FaBootstrap },
       { label: "Ajax", icon: ajax },
       { label: "JQuery", icon: SiJquery },
     ],
+  },
+  {
+type: "Database",
+name: [
+  { label: "MySQL", icon: TbBrandMysql },
+]
   },
   {
     type: "CMS",
@@ -1640,10 +1648,11 @@ export const experiencesData = [
     title: "Fronted Developer",
     location: "Innovative Widget",
     description:
-      "I'm now a Frontent Developer working at Innovative Widget. My stack includes HTML, CSS, JavaScript,Bootstrap, PHP, Wordpress. I'm open to full-time opportunities.",
+      "Full Stack Developer with experties in Next.JS, Laravel. Design, developed and deployed user-friendly full-stack web applications.",
     icon: FaReact,
     date: "Oct-2024 - present",
   },
+ 
 ] as const;
 
 
@@ -1659,53 +1668,17 @@ export const projectsData: { [key: string]: {
     {
       title: "VaultSneaks",
       description:
-        "I created a website named VaultSneaks, a sneaker e-commerce platform using Next.js and Tailwind CSS with dynamic features.",
+        "Create a website named VaultSneaks, a sneaker e-commerce platform using Next.js and Tailwind CSS with dynamic features.",
       tags: [RiNextjsFill , RiTailwindCssFill, SiTypescript, SiSanity],
       imageUrl: VaultSneak,
       link: "https://vaultsneaks.vercel.app/",
     },
     {
-      title: "Wardrobe",
-      description:
-        "I created an Ecommerce website UI using third-party API where users can add products to the cart, view product details, and add to the wishlist.",
-      tags: [RiNextjsFill , RiTailwindCssFill, SiTypescript, SiGreensock, FakeStoreAPi],
-      imageUrl: Wardrobe,
-      link: "https://wardrobee.vercel.app/",
-    },
-    {
       title: "Zentry",
-      description: "I cloned a Zentry Website using Gsap.",
+      description: "Cloned a Zentry Website using Next.js Gsap.",
       tags: [RiNextjsFill , RiTailwindCssFill, SiTypescript, SiGreensock],
       imageUrl: Zentry,
       link: "https://zentry-clonee.vercel.app/",
-    },
-    {
-      title: "Polymath",
-      description: "I created a Blog Website UI where users can read blogs, like, share, and add reviews on blogs.",
-      tags: [RiNextjsFill , RiTailwindCssFill, SiTypescript],
-      imageUrl: Polymath,
-      link: "https://polymath-pro.vercel.app/",
-    },
-    {
-      title: "Apple iPhone 15",
-      description: "I created an animated website for Apple iPhone 15.",
-      tags: [RiNextjsFill, RiTailwindCssFill, SiTypescript, SiGreensock],
-      imageUrl: AppleIphone,
-      link: "https://apple-iphone-pro.vercel.app/",
-    },
-    {
-      title: "AI SEO",
-      description: "I created an AI SEO website. It is built using Next.js and Tailwind CSS. It is hosted on Vercel.",
-      tags: [  RiNextjsFill, RiTailwindCssFill, SiTypescript, TbBrandFramerMotion ],
-      imageUrl: AiSEO,
-      link: "https://ai-seo-ruby.vercel.app/",
-    },
-    {
-      title: "Next.js Mini Project",
-      description: "I created a Weather search widget using \"weatherapi\". It is built using Next.js, Tailwind CSS, and Firebase. It is hosted on Vercel.",
-      tags: [ RiNextjsFill, SiTypescript, RiTailwindCssFill, SiShadcnui, TbBrandFramerMotion, IoLogoVercel],
-      imageUrl: NextJsMini,
-      link: "https://nextjs-mini-project-omega.vercel.app/",
     },
   ],
   
@@ -1724,20 +1697,55 @@ export const projectsData: { [key: string]: {
       imageUrl: SnapPeak,
       link: "https://snap-peak.vercel.app/",
     },
-    {
-      title: "MetaMagine",
-      description: "I created an interactive landing page named MetaMagine. It has a user-friendly UI with a lot of transitions.",
-      tags: [ImHtmlFive, FaCss3Alt, FaJs, FaBootstrap],
-      imageUrl: Metamagine,
-      link: "https://metamagine.atwebpages.com/",
-    },
   ],
   
-  python: [
-    // Add Python projects here
-  ],
-  
-  laravel: [
-    // Add Laravel projects here
-  ]
 };
+
+
+export const educationData = [
+  {
+    title: "Bachelor of Computer Science",
+    institution: "Virtual University of Pakistan (VU)",
+    fields: ["Computer Science"],
+    icon: BiSolidInstitution,
+    date: "2024 - Ongoing",
+    type: "university",
+  },
+  {
+    title: "Certified Cloud Applied Generative Ai Engineer",
+    institution: "Governor Sindh Initiative for GenAI, Web3, and Metaverse",
+    description:
+      "Pursuing certification in Generative Ai Engineering.",
+    fields: ["Typescript", "Next.js", "Python", "Ai"],
+    icon: TbCertificate ,
+    date: "2024",
+    type: "certificate",
+  },
+  {
+    title: "Web Engineering (E-Commerce)",
+    institution: "National Vocational and Technical Training Commission NAVTTC",
+    description:
+      "Comprehensive certification in Web Development (Level 4), technologies including HTML5, CSS3, Javascript, Php.",
+    fields: ["Web Development", "Ecommerce"],
+    icon: TbCertificate ,
+    date: "2024",
+    type: "certificate",
+  },
+  {
+    title: "Intermaidate",
+    institution: "Aisha bawany Govt College",
+    fields: ["Pre-Engineering"],
+    icon: FaSchool,
+    date: "2018 - 2022",
+    type: "college",
+  },
+  {
+    title: "Matriculation",
+    institution: "Al-Basit Motivate Secondary School",
+    fields: ["Science"],
+    icon: IoSchoolOutline,
+    date: "2019 - 2021",
+    type: "school",
+  },
+ 
+] as const
