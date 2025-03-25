@@ -85,14 +85,7 @@ export default function Education() {
     }
   }
 
-  // Function to get color based on education type
-  const getColorClass = (type: string, element: "bg" | "border" | "text") => {
-    return element === "bg"
-      ? "bg-[#1e40af]/10 dark:bg-[#1e40af]/20"
-      : element === "border"
-        ? "border-[#1e40af]/30 dark:border-[#1e40af]/50"
-        : "text-[#1e40af] dark:text-[#1e40af]/80"
-  }
+ 
 
   return (
     <section id="education" className="scroll-mt-28 mb-28 sm:mb-40">
@@ -122,13 +115,13 @@ export default function Education() {
               {/* Timeline dot with icon - centered on desktop, left-aligned on mobile */}
               <div
                 className={`absolute md:left-1/2 left-5 md:-translate-x-1/2 flex items-center justify-center w-12 h-12 rounded-full 
-                  ${getColorClass(item.type, "bg")} 
-                  border-4 
-                  ${getColorClass(item.type, "border")} 
+                  bg-[#1e40af]/60 
+                  border-2
+                 border-[#1e40af]
                   z-10 transition-all duration-300 ease-in-out
                   ${activeItem === index ? "scale-110" : ""}`}
               >
-                <IconComponent className={`text-xl ${getColorClass(item.type, "text")}`} />
+                <IconComponent className={`text-xl text-zinc-400`} />
               </div>
 
               {/* Content box - alternating on desktop, always right on mobile */}
