@@ -50,6 +50,7 @@ export default function Experience() {
           x: 0,
           duration: 0.8,
           ease: "power3.out",
+          stagger: 0.2,
           scrollTrigger: {
             trigger: item,
             start: "top 80%",
@@ -104,7 +105,7 @@ export default function Experience() {
               onBlur={() => handleItemBlur(index)}
               tabIndex={0}
               ref={(el) => { timelineItemsRef.current[index] = el }}
-              className="relative mb-12 flex items-center px-3"
+              className="relative mb-6 flex items-center px-3"
             >
               {/* Date - on left for even, right for odd (desktop only) */}
               <div className={`absolute w-[calc(50%-2rem)] ${isEven ? "left-0 text-right pr-2" : "right-0 text-left pl-2"} hidden md:block`}>

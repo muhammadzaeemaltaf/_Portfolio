@@ -30,7 +30,7 @@ export default function Skills() {
         {
           opacity: 1,
           y: 0,
-          stagger: 0.06,
+          stagger: 0.05,
           ease: "power2.out",
         },
       )

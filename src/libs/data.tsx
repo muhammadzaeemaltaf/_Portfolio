@@ -2212,7 +2212,7 @@ name: [
 
 export const experiencesData = [
   {
-    title: "Fronted Developer",
+    title: "Full Stack Developer",
     location: "Innovative Widget",
     href: "https://innovativewidget.com/",
     description:
@@ -2220,7 +2220,7 @@ export const experiencesData = [
     icon: InnovativeWidget,
     date: "Oct-2024 - present",
   },
- 
+
 ] as const;
 
 
@@ -2282,18 +2282,15 @@ export const educationData: EducationDataType = [
   {
     title: "Certified Cloud Applied Generative Ai Engineer",
     institution: "Governor Sindh Initiative for GenAI, Web3, and Metaverse",
-    description:
-      "Pursuing certification in Generative Ai Engineering.",
+
     fields: ["Typescript", "Next.js", "Python", "Ai"],
     icon: TbCertificate ,
-    date: "2024",
+    date: "2024 - Ongoing",
     type: "certificate",
   },
   {
     title: "Web Engineering (E-Commerce)",
     institution: "National Vocational and Technical Training Commission NAVTTC",
-    description:
-      "Comprehensive certification in Web Development (Level 4), technologies including HTML5, CSS3, Javascript, Php.",
     fields: ["Web Development", "Ecommerce"],
     icon: TbCertificate ,
     date: "2024",

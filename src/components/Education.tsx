@@ -49,7 +49,7 @@ export default function Education() {
           opacity: 1,
           x: 0,
           duration: 0.8,
-          delay: index * 0.2, // Staggered animation
+          stagger: 0.2,
           ease: "power3.out",
           scrollTrigger: {
             trigger: item,
@@ -85,7 +85,7 @@ export default function Education() {
     }
   }
 
- 
+
 
   return (
     <section id="education" className="scroll-mt-28 mb-28 sm:mb-40">
@@ -105,13 +105,16 @@ export default function Education() {
               ref={(el) => {
                 timelineItemsRef.current[index] = el
               }}
-              className="relative mb-12 flex items-center"
+              className="relative mb-8 flex items-center"
               onMouseEnter={() => handleItemFocus(index)}
               onMouseLeave={() => handleItemBlur(index)}
               onFocus={() => handleItemFocus(index)}
               onBlur={() => handleItemBlur(index)}
               tabIndex={0}
             >
+              <div className={`absolute w-[calc(50%-2rem)] ${isEven ? "left-0 text-right pr-2" : "right-0 text-left pl-2"} hidden md:block`}>
+                <span className="text-lg font-medium text-gray-500 dark:text-gray-400">{item.type.charAt(0).toUpperCase() + item.type.slice(1).toLowerCase()}</span>
+              </div>
               {/* Timeline dot with icon - centered on desktop, left-aligned on mobile */}
               <div
                 className={`absolute md:left-1/2 left-5 md:-translate-x-1/2 flex items-center justify-center w-12 h-12 rounded-full 
