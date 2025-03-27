@@ -112,7 +112,7 @@ export default function Education() {
               onBlur={() => handleItemBlur(index)}
               tabIndex={0}
             >
-              <div className={`absolute w-[calc(50%-2rem)] ${isEven ? "left-0 text-right pr-2" : "right-0 text-left pl-2"} hidden md:block`}>
+              <div className={`absolute w-[calc(50%-2rem)] ${item.type != 'certificate' ? "left-0 text-right pr-2" : "right-0 text-left pl-2"} hidden md:block`}>
                 <span className="text-lg font-medium text-gray-500 dark:text-gray-400">{item.type.charAt(0).toUpperCase() + item.type.slice(1).toLowerCase()}</span>
               </div>
               {/* Timeline dot with icon - centered on desktop, left-aligned on mobile */}
@@ -130,7 +130,7 @@ export default function Education() {
               {/* Content box - alternating on desktop, always right on mobile */}
               <div
                 className={`md:w-[calc(50%-2rem)] w-[calc(100%-4rem)] 
-                  ${isEven ? "md:ml-auto md:mr-6" : "md:mr-auto md:ml-6"} 
+                  ${item.type != 'certificate' ? "md:ml-auto md:mr-6" : "md:mr-auto md:ml-6"} 
                   ml-12 p-6 rounded-lg shadow-md
                   bg-[#1e40af]/10 dark:bg-[#1e40af]/10 border-[#1e40af]/30 dark:border-[#1e40af]/50 
                   border transition-all duration-300 ease-in-out

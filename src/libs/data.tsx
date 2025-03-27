@@ -2290,18 +2290,18 @@ export const educationData: EducationDataType = [
   },
   {
     title: "Web Engineering (E-Commerce)",
-    institution: "National Vocational and Technical Training Commission NAVTTC",
+    institution: "National Vocational and Technical Training Commission (NAVTTC)",
     fields: ["Web Development", "Ecommerce"],
     icon: TbCertificate ,
     date: "2024",
     type: "certificate",
   },
   {
-    title: "Intermaidate",
+    title: "Intermediate",
     institution: "Aisha bawany Govt College",
     fields: ["Pre-Engineering"],
     icon: FaSchool,
-    date: "2018 - 2022",
+    date: "2021 - 2023",
     type: "college",
   },
   {

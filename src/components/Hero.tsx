@@ -95,8 +95,8 @@ const HeroSection = () => {
           </div>
 
           {/* Subtitle */}
-          <p className="relative mx-auto mt-4 max-w-[800px] text-center text-muted xs:mt-6 sm:mt-7 sm:text-lg md:mt-8 md:text-xl">
-            Hi I am Muhammad Zaeem Altaf.{" "}
+          <code className="relative mx-auto mt-4 max-w-[800px] text-center text-muted xs:mt-6 sm:mt-7 sm:text-lg md:mt-8 md:text-xl block">
+            Hi! I am Muhammad Zaeem Altaf.{" "}
             <Typewriter
               words={data}
               loop={0}
@@ -105,10 +105,10 @@ const HeroSection = () => {
               delaySpeed={1000}
             />{" "}
             <span className="inline-block w-0.5 h-6 ml-1 -mb-1 bg-blue-500 animate-pulse"></span>
-          </p>
-          <p className="relative mx-auto mt-2 max-w-[800px] text-center text-muted sm:mt-5 sm:text-lg md:text-xl">
+          </code>
+          <code className="relative mx-auto mt-2 max-w-[800px] text-center text-muted sm:mt-5 sm:text-lg md:text-xl block">
             I am passionate for creating beautiful and functional websites.
-          </p>
+          </code>
         </div>
       </div>
     </section>

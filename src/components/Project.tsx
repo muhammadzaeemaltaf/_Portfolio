@@ -34,6 +34,7 @@ const Project = () => {
   }>({ element: null, placeholder: null, initialRect: null })
 
   const isMobile = useMediaQuery("(max-width: 767px)")
+  const isLarge = useMediaQuery("(max-width: 1700px)")
 
   // Added state to track the visibility of the section for mobile
   const [sectionInView, setSectionInView] = useState(false)
@@ -134,12 +135,13 @@ const Project = () => {
     if (!isMobile) {
       const pinTrigger = ScrollTrigger.create({
         trigger: rightColumnRef.current,
-        start: "top 100px",
+        start: "top 150px",
         endTrigger: sectionRef.current,
-        end: "bottom bottom-=200px",
+        end: isLarge ? "bottom bottom-=50%" :  "bottom bottom-=150px ",
         pin: true,
         pinSpacing: false,
         markers: false,
+        
       })
 
       return () => {
@@ -302,13 +304,13 @@ const Project = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-[65%_auto] gap-4 mt-8">
         {/* Left Column: Projects */}
-        <div className="project-container relative lg:pr-10 grid  gap-4 md:grid-cols-1 ">
+        <div className="project-container relative lg:pr-10 flex flex-col gap-4">
           {stacks.map((stack) => (
             <div
               key={stack}
               ref={stackRefsMap.current[stack]}
               data-stack={stack}
-              className="mb-12 md:px-4 space-y-3"
+              className="md:px-4 space-y-3"
               id={`stack-${stack}`}
             >
               {projectsData[stack]?.map((project, i) => (
@@ -380,7 +382,17 @@ const Project = () => {
                   </div>
                 </div>
               ))}
+
+            <Image 
+              src={'/endline.jpg'}
+              alt="End Line"
+              width={1000}
+              height={1000}
+              className="opacity-20 scale-50"
+            />
+
             </div>
+
           ))}
         </div>
 
@@ -388,15 +400,14 @@ const Project = () => {
         <div className="relative lg:h-full">
           <div
             ref={rightColumnRef}
-            className="hidden lg:block sticky top-[100px] w-full"
-            style={{ height: "calc(100vh - 200px)" }}
+            className="hidden lg:block w-full !h-fit"
           >
             <div className="flex flex-col justify-start items-center h-full">
               <div className="w-[180px] h-[180px] mb-4 relative">
                 {/* Only render the active stack logo to ensure animation triggers */}
                 <StackLogo stack={activeStack} />
               </div>
-              <h3 className="text-xl font-bold text-center mt-4 capitalize">{activeStack}</h3>
+              {/* <h3 className="text-xl font-bold text-center mt-4 capitalize">{activeStack}</h3> */}
             </div>
           </div>
         </div>
