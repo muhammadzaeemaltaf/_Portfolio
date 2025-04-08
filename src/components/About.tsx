@@ -96,7 +96,7 @@ export default function About() {
   }, []);
 
   return (
-    <section className="relative w-full max-w-7xl mx-auto py-16 md:py-24 px-4 bg-black">
+    <section className="relative w-full max-w-[1700px] mx-auto py-16 md:py-24 px-4 bg-black">
       <Heading heading="About Me" />
 
       <div

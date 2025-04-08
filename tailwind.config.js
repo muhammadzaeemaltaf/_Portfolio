@@ -16,6 +16,10 @@ module.exports = {
           "2xl": "1400px",
         },
       },
+      screens: {
+        xs: "480px",
+        xxl: "1400px",
+      },
       extend: {
         colors: {
           border: "hsl(var(--border))",
@@ -67,16 +71,7 @@ module.exports = {
             to: { height: 0 },
           },
         },
-        // animation: {
-        //   "accordion-down": "accordion-down 0.2s ease-out",
-        //   "accordion-up": "accordion-up 0.2s ease-out",
-        // },
-        screens: {
-          xs: "480px",
-        },
       },
     },
-    // plugins: [require("tailwindcss-animate")],
   }
-  
-  
+

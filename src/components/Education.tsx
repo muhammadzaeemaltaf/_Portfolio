@@ -88,7 +88,7 @@ export default function Education() {
 
 
   return (
-    <section id="education" className="scroll-mt-28 mb-28 sm:mb-40">
+    <section id="education" className="scroll-mt-28 mb-28 sm:mb-40 max-w-[1700px] w-full">
       <Heading heading="Education & Certifications" />
       <div ref={timelineRef} className="relative max-w-5xl mx-auto mt-16">
         {/* Timeline center line - centered on desktop, left-aligned on mobile */}

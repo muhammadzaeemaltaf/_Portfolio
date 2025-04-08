@@ -137,11 +137,10 @@ const Project = () => {
         trigger: rightColumnRef.current,
         start: "top 150px",
         endTrigger: sectionRef.current,
-        end: isLarge ? "bottom bottom-=50%" :  "bottom bottom-=150px ",
+        end: "bottom bottom-=150px",
         pin: true,
         pinSpacing: false,
         markers: false,
-        
       })
 
       return () => {
@@ -257,7 +256,7 @@ const Project = () => {
       top: "auto",
       left: "auto",
       borderRadius: "4px",
-      width: isMobile ? "" : "200px",
+      width: isMobile ? "" : "250px",
     })
     gsap.to(element.querySelector(".text"), {
       position: isMobile ? "" : "absolute",
@@ -288,7 +287,7 @@ const Project = () => {
   }
 
   return (
-    <section ref={sectionRef} className="min-h-screen mb-20 relative px-4 md:px-10 max-w-[1400px] mx-auto">
+    <section ref={sectionRef} className="min-h-screen mb-20 relative px-4 md:px-10 max-w-[1700px] w-full mx-auto">
       <Heading heading="Personal Projects" />
 
       <p className="mt-4 text-center max-w-2xl mx-auto">
@@ -321,7 +320,7 @@ const Project = () => {
                       handleCardClick(project, e) // Expand if not expanded
                     }
                   }}
-                  className={`relative md:h-[160px] border border-white/20 text-white p-4  rounded-lg shadow project-card cursor-pointer ${
+                  className={`relative md:h-[170px] 2xl:h-[200px] border border-white/20 text-white p-4  rounded-lg shadow project-card cursor-pointer ${
                     expandedProject?.title === project.title ? "overflow-y-auto" : ""
                   }`}
                 >
@@ -334,18 +333,18 @@ const Project = () => {
                       onClick={handleOverlayClick}
                     />
                   )}
-                  <div className="flex items-center justify-end">
+                  <div className="flex items-center justify-end ">
                     <Image
                       src={project.imageUrl || "/placeholder.svg?height=200&width=200" || "/placeholder.svg"}
                       alt={project.title}
                       width={1000}
                       height={1000}
-                      className="rounded object-center aspect-video  md:w-[200px] object-cover relative"
+                      className="rounded object-center aspect-video  md:w-[250px] 2xl:w-[300px] object-cover relative"
                     />
                   </div>
                   <div className="text relative md:absolute top-4 md:w-[60%] md:pr-10 mb-4">
-                    <h3 className="font-bold">{project.title}</h3>
-                    <p className="line-clamp-2 mb-4">{project.description}</p>
+                    <h3 className="font-bold 2xl:text-2xl mb-3">{project.title}</h3>
+                    <p className="line-clamp-2 mb-4 2xl:text-[18px]">{project.description}</p>
                     <div
                       className="tags flex justify-start items-center gap-2"
                       style={{
@@ -364,6 +363,7 @@ const Project = () => {
                       arrow={expandedProject?.title === project.title}
                       href={expandedProject?.title === project.title ? project.link : ""}
                       expanded={expandedProject?.title === project.title}
+                      bg="2xl:h-12 2xl:px-7 2xl:text-xl"
                       onClick={
                         expandedProject?.title !== project.title
                           ? (e) => {
@@ -383,27 +383,16 @@ const Project = () => {
                 </div>
               ))}
 
-            <Image 
-              src={'/endline.jpg'}
-              alt="End Line"
-              width={1000}
-              height={1000}
-              className="opacity-20 scale-50"
-            />
-
+              <Image src={"/endline.jpg"} alt="End Line" width={1000} height={1000} className="opacity-20 scale-50" />
             </div>
-
           ))}
         </div>
 
         {/* Right Column: Active Stack Logo */}
         <div className="relative lg:h-full">
-          <div
-            ref={rightColumnRef}
-            className="hidden lg:block w-full !h-fit"
-          >
+          <div ref={rightColumnRef} className="hidden lg:block w-full sticky top-[16px]">
             <div className="flex flex-col justify-start items-center h-full">
-              <div className="w-[180px] h-[180px] mb-4 relative">
+              <div className="w-[180px] h-[180px] min-[1400px]:h-[270px] min-[1400px]:w-[270px] mb-4 relative">
                 {/* Only render the active stack logo to ensure animation triggers */}
                 <StackLogo stack={activeStack} />
               </div>
@@ -416,7 +405,4 @@ const Project = () => {
   )
 }
 
-
-
 export default Project
-
