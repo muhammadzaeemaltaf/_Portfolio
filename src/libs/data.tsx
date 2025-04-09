@@ -39,6 +39,7 @@ import { ImHtmlFive } from "react-icons/im";
 import { LuGraduationCap } from "react-icons/lu";
 import { BiSolidInstitution } from "react-icons/bi";
 import { EducationDataType } from "../../types";
+import { IconType } from "react-icons";
 
 
 const zustand = (height?: string, width?: string) => {
@@ -2268,6 +2269,44 @@ export const projectsData: { [key: string]: {
   ],
   
 };
+
+
+export const topProjects:{ [key: string]: {
+  title: string;
+  description: string;
+  tags: React.ElementType[];
+  image: StaticImageData;
+  link?: string;
+  organization: string
+  organizationLogo: IconType;
+  organizationURL: string;
+}[] } ={
+    bookmyspot: [
+      {
+        title: "BookMySpot",
+        description:
+          "BookMySpot is a web application that allows users to find and book parking spots in their area. Users can search for available spots, view details, and make reservations.",
+        tags: [RiNextjsFill , RiTailwindCssFill, SiTypescript],
+        image: VaultSneak,
+        link: "https://bookmyspot.vercel.app/",
+        organization: "Innovative Widget",
+        organizationLogo: InnovativeWidget,
+        organizationURL: "https://innovativewidget.com/",
+      }
+    ],
+    sq1: [
+      {
+        title: "Square One Community",
+        description:
+          "Square One Community is a platform that connects individuals with similar interests. Users can join groups, participate in discussions, and share resources.",
+        tags: [RiNextjsFill , RiTailwindCssFill, SiTypescript],
+        image: VaultSneak,
+        organization: "Innovative Widget",
+        organizationLogo: InnovativeWidget,
+        organizationURL: "https://innovativewidget.com/",
+      }
+    ]
+}
 
 
 export const educationData: EducationDataType = [

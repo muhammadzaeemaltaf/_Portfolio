@@ -58,6 +58,10 @@ export default function Education() {
         },
       )
     })
+
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill()) // Clean up all ScrollTrigger instances
+    }
   }, [])
 
   // Micro-animation for hover/focus
@@ -84,8 +88,6 @@ export default function Education() {
       })
     }
   }
-
-
 
   return (
     <section id="education" className="scroll-mt-28 mb-28 sm:mb-40 max-w-[1700px] w-full">

@@ -8,6 +8,7 @@ import Skills from "@/components/Skills";
 import { useEffect, useState } from "react";
 import Experience from "../components/Experience";
 import Education from "@/components/Education";
+import TopProject from "@/components/TopProjects";
 
 
 export default function Home() {
@@ -27,6 +28,7 @@ export default function Home() {
       <HeroSection />
       <About />
       <Skills/>
+      {/* <TopProject /> */}
       <Project/>
       <Experience />
       <Education />

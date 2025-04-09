@@ -58,6 +58,10 @@ export default function Experience() {
         },
       )
     })
+
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill()) // Clean up all ScrollTrigger instances
+    }
   }, [])
 
   const handleItemFocus = (index: number) => {

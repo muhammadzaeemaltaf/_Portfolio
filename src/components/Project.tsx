@@ -34,7 +34,7 @@ const Project = () => {
   }>({ element: null, placeholder: null, initialRect: null })
 
   const isMobile = useMediaQuery("(max-width: 767px)")
-  const isLarge = useMediaQuery("(max-width: 1700px)")
+  const isLarge = useMediaQuery("(max-width: 1536px)")
 
   // Added state to track the visibility of the section for mobile
   const [sectionInView, setSectionInView] = useState(false)
@@ -144,10 +144,16 @@ const Project = () => {
       })
 
       return () => {
-        pinTrigger.kill()
+        pinTrigger.kill() // Ensure ScrollTrigger instance is killed
       }
     }
   }, [isMobile])
+
+  useEffect(() => {
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill()) // Clean up all ScrollTrigger instances
+    }
+  }, [])
 
   const handleCardClick = (project: any, e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const cardEl = e.currentTarget
@@ -256,7 +262,7 @@ const Project = () => {
       top: "auto",
       left: "auto",
       borderRadius: "4px",
-      width: isMobile ? "" : "250px",
+      width: window.innerWidth >= 1536 ? "300px" : isMobile ? "" : "250px",
     })
     gsap.to(element.querySelector(".text"), {
       position: isMobile ? "" : "absolute",
@@ -268,7 +274,7 @@ const Project = () => {
     })
 
     gsap.to(element.querySelector(".text h3"), {
-      fontSize: "1rem",
+      fontSize: window.innerWidth >= 1536 ? "24px" : "1rem",
       marginBottom: "0",
     })
 
