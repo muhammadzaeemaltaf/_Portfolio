@@ -23,10 +23,8 @@ const Project = () => {
     }, {}),
   )
 
-  const [activeStack, setActiveStack] = useState(stacks[0] || "")
   const [expandedProject, setExpandedProject] = useState<any>(null)
   const sectionRef = useRef<HTMLDivElement>(null)
-  const rightColumnRef = useRef<HTMLDivElement>(null)
   const expandedCardData = useRef<{
     element: HTMLElement | null
     placeholder: HTMLElement | null
@@ -36,81 +34,6 @@ const Project = () => {
   const isMobile = useMediaQuery("(max-width: 767px)")
   const isLarge = useMediaQuery("(max-width: 1536px)")
 
-  // Added state to track the visibility of the section for mobile
-  const [sectionInView, setSectionInView] = useState(false)
-
-  useEffect(() => {
-    // This empty dependency array ensures the effect runs when activeStack changes
-    // The animation is handled inside the StackLogo component
-  }, [activeStack])
-
-  // Observe section visibility on mobile
-  useEffect(() => {
-    if (!sectionRef.current || !isMobile) return
-    const observer = new IntersectionObserver(
-      (entries) => {
-        setSectionInView(entries[0].isIntersecting)
-      },
-      { threshold: 0.1 },
-    )
-    observer.observe(sectionRef.current)
-    return () => observer.disconnect()
-  }, [isMobile])
-
-  useEffect(() => {
-    if (!sectionRef.current) return
-
-    let observer: IntersectionObserver
-    const currentStackRefs = stackRefsMap.current
-
-    const visibilityMap = new Map<string, number>()
-
-    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        const stack = entry.target.getAttribute("data-stack") || ""
-        visibilityMap.set(stack, entry.intersectionRatio)
-        console.log(visibilityMap)
-      })
-
-      let maxVisibility = -1
-      let mostVisibleStack = activeStack
-
-      visibilityMap.forEach((ratio, stack) => {
-        if (ratio > maxVisibility) {
-          maxVisibility = ratio
-          mostVisibleStack = stack
-        }
-      })
-
-      if (mostVisibleStack && mostVisibleStack !== activeStack) {
-        setActiveStack(mostVisibleStack)
-      }
-    }
-
-    observer = new IntersectionObserver(handleIntersection, {
-      root: null,
-      threshold: Array.from({ length: 20 }, (_, i) => i * 0.05),
-      rootMargin: "-10% 0px -10% 0px",
-    })
-
-    stacks.forEach((stack) => {
-      const element = currentStackRefs[stack]?.current
-      if (element) observer.observe(element)
-    })
-
-    return () => {
-      observer.disconnect()
-      visibilityMap.clear()
-    }
-  }, [stacks, activeStack])
-
-  useEffect(() => {
-    stacks.forEach((stack) => {
-      if (!stackRefsMap.current[stack]) {
-        stackRefsMap.current[stack] = React.createRef()
-      }
-    })
-  }, [stacks])
 
   useEffect(() => {
     if (sectionRef.current) {
@@ -128,32 +51,7 @@ const Project = () => {
     }
   }, [])
 
-  useEffect(() => {
-    if (!rightColumnRef.current || !sectionRef.current) return
 
-    // Only apply pin on desktop
-    if (!isMobile) {
-      const pinTrigger = ScrollTrigger.create({
-        trigger: rightColumnRef.current,
-        start: "top 150px",
-        endTrigger: sectionRef.current,
-        end: "bottom bottom-=150px",
-        pin: true,
-        pinSpacing: false,
-        markers: false,
-      })
-
-      return () => {
-        pinTrigger.kill() // Ensure ScrollTrigger instance is killed
-      }
-    }
-  }, [isMobile])
-
-  useEffect(() => {
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill()) // Clean up all ScrollTrigger instances
-    }
-  }, [])
 
   const handleCardClick = (project: any, e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const cardEl = e.currentTarget
@@ -239,8 +137,8 @@ const Project = () => {
     if (!element || !placeholder || !initialRect) return
 
     gsap.to(element, {
-      top: window.innerWidth < 767 ? initialRect.top + 170 : initialRect.top + 78,
-      left: window.innerWidth < 767 ? "50%" : "32% ",
+      top: window.innerWidth < 767 ? initialRect.top + 260 : initialRect.top + 80,
+      left: "50%",
       width: initialRect.width,
       height: initialRect.height,
       padding: "1rem",
@@ -307,9 +205,9 @@ const Project = () => {
         onClick={handleOverlayClick}
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-[65%_auto] gap-4 mt-8">
+      <div className="grid grid-cols-1 lg:w-[70%] justify-items-center gap-4 mt-8 mx-auto">
         {/* Left Column: Projects */}
-        <div className="project-container relative lg:pr-10 flex flex-col gap-4">
+        <div className="project-container relative w-full flex flex-col gap-4">
           {stacks.map((stack) => (
             <div
               key={stack}
@@ -389,23 +287,11 @@ const Project = () => {
                 </div>
               ))}
 
-              <Image src={"/endline.jpg"} alt="End Line" width={1000} height={1000} className="opacity-20 scale-50" />
             </div>
           ))}
         </div>
 
-        {/* Right Column: Active Stack Logo */}
-        <div className="relative lg:h-full">
-          <div ref={rightColumnRef} className="hidden lg:block w-full sticky top-[16px]">
-            <div className="flex flex-col justify-start items-center h-full">
-              <div className="w-[180px] h-[180px] min-[1400px]:h-[270px] min-[1400px]:w-[270px] mb-4 relative">
-                {/* Only render the active stack logo to ensure animation triggers */}
-                <StackLogo stack={activeStack} />
-              </div>
-              {/* <h3 className="text-xl font-bold text-center mt-4 capitalize">{activeStack}</h3> */}
-            </div>
-          </div>
-        </div>
+
       </div>
     </section>
   )
