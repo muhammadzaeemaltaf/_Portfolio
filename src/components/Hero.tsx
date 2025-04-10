@@ -97,6 +97,7 @@ const HeroSection = () => {
           {/* Subtitle */}
           <code className="relative mx-auto mt-4 max-w-[800px] text-center text-muted xs:mt-6 sm:mt-7 sm:text-lg md:mt-8 md:text-xl block">
             Hi! I am Muhammad Zaeem Altaf.{" "}
+            <br className="md:hidden"/>
             <Typewriter
               words={data}
               loop={0}

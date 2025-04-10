@@ -4,25 +4,17 @@ import React, { useState, useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import Heading from "@/components/Heading"
-import { projectsData } from "@/libs/data"
+import { topProjects } from "@/libs/data"
 import Image from "next/image"
-import StackLogo from "@/components/StackLogo"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { AnimatedButton } from "./AnimateButton"
 import { X } from "lucide-react"
+import { IconType } from "react-icons"
+import Link from "next/link"
 
 gsap.registerPlugin(ScrollTrigger)
 
 const Project = () => {
-  const stacks = Object.keys(projectsData).filter((stack) => projectsData[stack]?.length > 0)
-
-  const stackRefsMap = useRef(
-    stacks.reduce((acc: any, stack) => {
-      acc[stack] = React.createRef()
-      return acc
-    }, {}),
-  )
-
   const [expandedProject, setExpandedProject] = useState<any>(null)
   const sectionRef = useRef<HTMLDivElement>(null)
   const expandedCardData = useRef<{
@@ -32,8 +24,6 @@ const Project = () => {
   }>({ element: null, placeholder: null, initialRect: null })
 
   const isMobile = useMediaQuery("(max-width: 767px)")
-  const isLarge = useMediaQuery("(max-width: 1536px)")
-
 
   useEffect(() => {
     if (sectionRef.current) {
@@ -88,6 +78,7 @@ const Project = () => {
       height: "100%",
       borderRadius: 0,
       duration: 0.5,
+      marginTop: 0
     })
 
     gsap.to(cardEl.querySelector(".text"), {
@@ -161,6 +152,7 @@ const Project = () => {
       left: "auto",
       borderRadius: "4px",
       width: window.innerWidth >= 1536 ? "300px" : isMobile ? "" : "250px",
+      marginTop: element.querySelector("img")?.classList.contains('mt-6') ? "24px" : "",
     })
     gsap.to(element.querySelector(".text"), {
       position: isMobile ? "" : "absolute",
@@ -192,12 +184,8 @@ const Project = () => {
 
   return (
     <section ref={sectionRef} className="min-h-screen mb-20 relative px-4 md:px-10 max-w-[1700px] w-full mx-auto">
-      <Heading heading="Personal Projects" />
+      <Heading heading="Top Projects" />
 
-      <p className="mt-4 text-center max-w-2xl mx-auto">
-        Engaged in self-initiated projects to explore new technologies and methodologies, resulting in a diverse
-        portfolio that demonstrates my commitment to continuous learning and professional growth.
-      </p>
 
       {/* Render overlay when a project is expanded */}
       <div
@@ -208,87 +196,89 @@ const Project = () => {
       <div className="grid grid-cols-1 lg:w-[70%] justify-items-center gap-4 mt-8 mx-auto">
         {/* Left Column: Projects */}
         <div className="project-container relative w-full flex flex-col gap-4">
-          {stacks.map((stack) => (
-            <div
-              key={stack}
-              ref={stackRefsMap.current[stack]}
-              data-stack={stack}
-              className="md:px-4 space-y-3"
-              id={`stack-${stack}`}
-            >
-              {projectsData[stack]?.map((project, i) => (
-                <div
-                  key={`${stack}-${i}`}
-                  onClick={(e) => {
-                    if (expandedProject?.title !== project.title) {
-                      handleCardClick(project, e) // Expand if not expanded
-                    }
-                  }}
-                  className={`relative md:h-[170px] 2xl:h-[200px] border border-white/20 text-white p-4  rounded-lg shadow project-card cursor-pointer ${
-                    expandedProject?.title === project.title ? "overflow-y-auto" : ""
-                  }`}
-                >
-                  {expandedProject === project && (
-                    <AnimatedButton
-                      text={<X className="h-3 w-3" />}
-                      bg={`!absolute right-2 top-2 !p-2 !h-7 z-[100] bg-black md:!hidden ${
-                        expandedProject?.title === project.title ? "!opacity-100" : "!opacity-0"
-                      }`}
-                      onClick={handleOverlayClick}
-                    />
-                  )}
-                  <div className="flex items-center justify-end ">
-                    <Image
-                      src={project.imageUrl || "/placeholder.svg?height=200&width=200" || "/placeholder.svg"}
-                      alt={project.title}
-                      width={1000}
-                      height={1000}
-                      className="rounded object-center aspect-video  md:w-[250px] 2xl:w-[300px] object-cover relative"
-                    />
-                  </div>
-                  <div className="text relative md:absolute top-4 md:w-[60%] md:pr-10 mb-4">
-                    <h3 className="font-bold 2xl:text-2xl mb-3">{project.title}</h3>
-                    <p className="line-clamp-2 mb-4 2xl:text-[18px]">{project.description}</p>
-                    <div
-                      className="tags flex justify-start items-center gap-2"
-                      style={{
-                        opacity: 0,
-                        position: "absolute",
-                      }}
-                    >
-                      {project.tags.map((Tag, i) => (
-                        <span key={i} className="text-xs p-1 rounded mr-1">
-                          <Tag className="h-8 w-8" />
-                        </span>
-                      ))}
-                    </div>
-                    <AnimatedButton
-                      text={expandedProject?.title === project.title ? "View Project" : "Overview"}
-                      arrow={expandedProject?.title === project.title}
-                      href={expandedProject?.title === project.title ? project.link : ""}
-                      expanded={expandedProject?.title === project.title}
-                      bg="2xl:h-12 2xl:px-7 2xl:text-xl"
-                      onClick={
-                        expandedProject?.title !== project.title
-                          ? (e) => {
-                              e.stopPropagation()
-                              const card = (e.currentTarget as HTMLElement).closest(".project-card")
-                              if (card) {
-                                handleCardClick(project, { ...e, currentTarget: card } as React.MouseEvent<
-                                  HTMLDivElement,
-                                  MouseEvent
-                                >)
-                              }
-                            }
-                          : undefined
-                      }
-                    />
-                  </div>
-                </div>
-              ))}
 
-            </div>
-          ))}
+          {topProjects?.map((project, i) => {
+            const IconComponent = project.organizationLogo as IconType
+            return (
+              <div
+                key={i}
+                onClick={(e) => {
+                  if (expandedProject?.title !== project.title) {
+                    handleCardClick(project, e) // Expand if not expanded
+                  }
+                }}
+                className={`relative ${project.organization ? 'md:h-[220px] 2xl:h-[250px]' : 'md:h-[170px] 2xl:h-[200px]'} border border-white/20 text-white p-4 rounded-lg shadow project-card cursor-pointer ${expandedProject?.title === project.title ? "overflow-y-auto" : ""}`}
+              >
+                {expandedProject === project && (
+                  <AnimatedButton
+                    text={<X className="h-3 w-3" />}
+                    bg={`!absolute right-2 top-2 !p-2 !h-7 z-[100] bg-black md:!hidden ${expandedProject?.title === project.title ? "!opacity-100" : "!opacity-0"
+                      }`}
+                    onClick={handleOverlayClick}
+                  />
+                )}
+                <div className={`flex items-center justify-end`}>
+                  <Image
+                    src={project.image || "/placeholder.svg?height=200&width=200" || "/placeholder.svg"}
+                    alt={project.title}
+                    width={1000}
+                    height={1000}
+                    className={`rounded object-center aspect-video md:w-[250px] 2xl:w-[300px] object-cover relative ${project.organization ? 'mt-6' : ''}`}
+                  />
+                </div>
+                <div className="text relative md:absolute top-4 md:w-[60%] md:pr-10 mb-4">
+                  <h3 className="font-bold 2xl:text-2xl mb-3">{project.title}</h3>
+                  <p className="line-clamp-2 mb-4 2xl:text-[18px]">{project.description}</p>
+                  {project.organization && (
+                    <div className="flex items-center gap-2">
+                      <div className="h-8 w-8 flex items-center justify-center rounded-lg overflow-hidden bg-white/10 mb-4 border border-white/20">
+                        <IconComponent className="text-primary-500 text-xl" />
+                      </div>
+                      {project.organizationURL && (
+                        <Link href={project.organizationURL} target="_blank" className="font-semibold mb-4">{project.organization}</Link>
+                      )}  
+                    </div>
+                  )
+                  }
+                  <div
+                    className="tags flex justify-start items-center gap-2"
+                    style={{
+                      opacity: 0,
+                      position: "absolute",
+                    }}
+                  >
+                    {project.tags.map((Tag, i) => (
+                      <span key={i} className="text-xs p-1 rounded mr-1">
+                        <Tag className="h-8 w-8" />
+                      </span>
+                    ))}
+                  </div>
+                  <AnimatedButton
+                    text={expandedProject?.title === project.title ? "View Project" : "Overview"}
+                    arrow={expandedProject?.title === project.title}
+                    href={expandedProject?.title === project.title ? project.link : ""}
+                    expanded={expandedProject?.title === project.title}
+                    bg={`2xl:h-12 2xl:px-7 2xl:text-xl ${(expandedProject?.title === project.title && !project.link) ? "hidden" : "block"}`}
+                    onClick={
+                      expandedProject?.title !== project.title
+                        ? (e) => {
+                          e.stopPropagation()
+                          const card = (e.currentTarget as HTMLElement).closest(".project-card")
+                          if (card) {
+                            handleCardClick(project, { ...e, currentTarget: card } as React.MouseEvent<
+                              HTMLDivElement,
+                              MouseEvent
+                            >)
+                          }
+                        }
+                        : undefined
+                    }
+                  />
+                </div>
+              </div>
+            )
+          })}
+
         </div>
 
 
