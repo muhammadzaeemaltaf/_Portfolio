@@ -29,7 +29,7 @@ import { TbBrandFramerMotion, TbBrandMysql, TbBrandTypescript, TbCertificate } f
 
 import VaultSneak from "../../public/vaultsneaks.png";
 import Bookmyspot from "../../public/BMS.webp";
-import Sq1Community from "../../public/sq1.webp";
+import Sq1Community from "../../public/sqaur.png";
 import { StaticImageData } from "next/image";
 import { BiSolidInstitution } from "react-icons/bi";
 import { EducationDataType } from "../../types";
@@ -2155,6 +2155,16 @@ l-24 53 0 700 0 700 157 207 c87 114 166 212 175 217 25 14 1177 15 1204 1z"/>
     </svg>
   )
 }
+
+
+export const navlinks = [
+  "About",
+  "Skills",
+  "Projects",
+  "Experience",
+  "Education",
+];
+
 
 export const skills = [
   {

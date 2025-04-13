@@ -8,6 +8,7 @@ import Skills from "@/components/Skills";
 import { useEffect, useState } from "react";
 import Experience from "../components/Experience";
 import Education from "@/components/Education";
+import ContactForm from "@/components/Contact";
 
 
 export default function Home() {
@@ -16,9 +17,9 @@ export default function Home() {
   
 
   useEffect(() => {
-    setTimeout(() => {
+    // setTimeout(() => {
       setLoading(false)
-    }, 2000)
+    // }, 2000)
   }, []);
 
   return (
@@ -30,6 +31,7 @@ export default function Home() {
       <Project/>
       <Experience />
       <Education />
+      <ContactForm />
     </div>
   );
 }
