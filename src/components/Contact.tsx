@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-// import { sendEmail } from "@/actions/sendEmail";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -60,19 +59,21 @@ export default function Contact() {
             <form
                 className="mt-10 flex flex-col dark:text-black"
                 action={async (formData) => {
-                    //   const { data, error } = await sendEmail(formData);
-
-                    //   if (error) {
-                    //     toast.error(error);
-                    //     return;
-                    //   }
-
-                    //   toast.success("Email sent successfully!");
+                    const res = await fetch("/api/contact", {
+                        method: "POST",
+                        body: formData,
+                    });
+                    if (res.status === 200) {
+                        console.log("Message sent successfully!");
+                    } else {
+                        console.log("Error sending message. Please try again later.");
+                    }
                 }}
             >
+
                 <input
                     className="h-14 px-4 rounded-lg borderBlack dark:bg-gray-800/50 dark:text-gray-50 dark:bg-opacity-80 dark:focus:bg-opacity-100 transition-all dark:outline-none"
-                    name="senderEmail"
+                    name="email"
                     type="email"
                     required
                     maxLength={500}
