@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const mail = await transporter.sendMail({
-        from: email,
+        from: email?.toString(),
         to: myEmail,
         subject: `Email from Portfolio: ${subject}`,
         html: `
