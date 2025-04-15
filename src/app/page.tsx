@@ -17,14 +17,14 @@ export default function Home() {
   
 
   useEffect(() => {
-    // setTimeout(() => {
-      setLoading(false)
-    // }, 2000)
+    setTimeout(() => {
+      // setLoading(false)
+    }, 2000)
   }, []);
 
   return (
     <div className="overflow-hidden" >
-      {loading && <LogoLoader />}
+      {/* {loading && <LogoLoader />} */}
       <HeroSection />
       <About />
       <Skills/>

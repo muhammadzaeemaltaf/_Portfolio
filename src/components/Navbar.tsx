@@ -11,11 +11,52 @@ import Image from "next/image";
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  const navRef = useRef<HTMLDivElement>(null);
+  const navRef = useRef(null);
+  const linksRef = useRef(null);
+  const buttonRef = useRef(null);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+    // Initial animation on component mount
+    if (navRef.current && linksRef.current && buttonRef.current) {
+      // Set initial states
+      gsap.set(navRef.current, { 
+        width: "300px", // Start narrow enough for logo and button
+        borderRadius: "62px", 
+        padding: "0 20px",
+        overflow: "hidden"
+      });
+      gsap.set(linksRef.current, { opacity: 0, display: "none" });
+      gsap.set(buttonRef.current, { opacity: 1, display: "flex" });
+
+      // Create animation timeline
+      const tl = gsap.timeline();
+      
+      // Animate navbar expansion
+      tl.to(navRef.current, {
+        width: "calc(100% - 40px)",
+        maxWidth: 1200,
+        borderRadius: "62px",
+        paddingLeft: 20,
+        paddingRight: 20,
+        duration: 0.2,
+        ease: "power3.out",
+        overflow: "visible",
+        delay: 1
+      })
+      // Animate links appearance
+      .to(linksRef.current, {
+        display: "flex",
+        opacity: 1,
+        duration: 0.4,
+        delay: 0.2,
+        ease: "power2.in"
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: any) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
         setIsMenuOpen(false);
       }
     };
@@ -27,71 +68,78 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
+    let lastScrollY = window.scrollY;
+  
     const slideNavbar = () => {
+      const currentScrollY = window.scrollY;
+      const goingDown = currentScrollY > lastScrollY;
+  
       if (navRef.current) {
-        if (window.scrollY > 400) {
-          gsap.to(navRef.current, { duration: 0.1, y: -100 });
+        if (currentScrollY > 200 && goingDown) {
+          gsap.to(navRef.current, { duration: 0.3, y: -100, ease: "power2.out" });
           if (isMenuOpen) setIsMenuOpen(false);
         } else {
-          gsap.to(navRef.current, { duration: 0.1, y: 0 });
+          gsap.to(navRef.current, { duration: 0.1, y: 0, ease: "back.out" });
         }
       }
+  
+      lastScrollY = currentScrollY;
     };
-
-    document.addEventListener("scroll", slideNavbar);
+  
+    window.addEventListener("scroll", slideNavbar);
     return () => {
-      document.removeEventListener("scroll", slideNavbar);
-    }
+      window.removeEventListener("scroll", slideNavbar);
+    };
   }, [isMenuOpen]);
 
-  // Revised menu animation useEffect for smooth open and close:
   useEffect(() => {
+    // Handle mobile menu animation
     if (menuRef.current) {
-      if (isMenuOpen) {
-        gsap.fromTo(
-          menuRef.current,
-          { y: -50, opacity: 0 },
-          { duration: 0.5, y: 160, opacity: 1, ease: "power2.out" }
-        );
-      } else {
-        gsap.to(menuRef.current, { duration: 0.1, y: '-100%', opacity: 0, ease: "power2.out" });
-      }
+      gsap.to(menuRef.current, {
+        y: isMenuOpen ? -64 : -100,
+        opacity: isMenuOpen ? 1 : 0,
+        display: isMenuOpen ? 'block' : 'none',
+        duration: 0.3,
+        ease: "power2.out"
+      });
     }
   }, [isMenuOpen]);
 
   return (
     <header
       className="z-50 fixed transition-all duration-600 ease-in-out max-w-[1200px] mx-auto
-      lg:h-[80px] md:h-[76px] h-[58px] px-[20px]  rounded-[62px] 
+      lg:h-[70px] md:h-[70px] h-[58px] rounded-[62px] 
       top-[10px] left-[10px] right-[10px] md:top-[20px] md:left-[20px] md:right-[20px] 
       flex flex-row justify-between items-center backdrop-blur-xs bg-black/20 border border-white/10"
       ref={navRef}
     >
       <div className="flex flex-row items-center gap-[68px]">
-      <Link href="/" className="text-2xl font-bold text-transparent bg-gradient-to-r from-white to-gray-300 bg-clip-text">
+        <Link href="#" className="text-2xl font-bold text-transparent bg-gradient-to-r from-white to-gray-300 bg-clip-text">
           <Image
-          src={'/logo.svg'}
-          alt="Logo"
-          height={60}
-          width={60} 
-          className="w-[36px] h-[36px] lg:w-[60px] lg:h-[60px]"
+            src={'/logo.svg'}
+            alt="Logo"
+            height={60}
+            width={60} 
+            className="w-[44px] h-[44px] md:w-[50px] md:h-[50px] lg:w-[56px] lg:h-[56px]"
           />
         </Link>
       </div>
-        <div className="gap-[32px] hidden lg:flex flex-row ">
-          {navlinks.map((link, index) => (
-            <Link
-              key={index}
-              className="lg:text-[16px] h-[26px] font-medium text-gray-200 hover:text-blue-400 transition-all ease-in duration-150"
-              href={`/#${link.toLowerCase()}`}
-            >
-              {link}
-            </Link>
-          ))}
-        </div>
+      <div className="hidden lg:block">
+      <div ref={linksRef} className="gap-[32px] absolute  lg:relative  hidden lg:flex flex-row">
+        {navlinks.map((link, index) => (
+          <Link
+            key={index}
+            className="lg:text-[16px] h-[26px] font-medium text-gray-200 hover:text-blue-400 transition-all ease-in duration-150"
+            href={`/#${link.toLowerCase()}`}
+          >
+            {link}
+          </Link>
+        ))}
+      </div>
+      </div>
 
-      <div className="flex gap-[10px] md:gap-[32px] items-center">
-        <div className="flex flex-row md:gap-[8px] items-center">
+      <div ref={buttonRef} className="flex gap-[10px] md:gap-[32px] items-center">
+        <div className="flex-row md:gap-[8px] items-center hidden md:flex">
           <AnimatedButton text="Contact us" arrow bg="!px-4 !text-xs !h-9 md:!h-11 md:!px-6 md:!text-sm bg-black/70" href="#contact" />
         </div>
 
@@ -108,10 +156,9 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Menu container with added close button */}
       <div
         ref={menuRef}
-        className="absolute left-0 right-0 -top-42 backdrop-blur-md bg-black text-white p-6 shadow-lg rounded-[20px] lg:hidden mt-2 border border-white/10"
+        className="absolute left-0 right-0 top-full opacity-0 backdrop-blur-md bg-black text-white p-6 shadow-lg rounded-[20px] lg:hidden mt-2 border border-white/10"
       >
         <div className="flex justify-end">
           <button onClick={() => setIsMenuOpen(false)} aria-label="Close menu">
@@ -119,17 +166,23 @@ export default function Navbar() {
           </button>
         </div>
         <div className="flex flex-col space-y-4">
-        {navlinks.map((link, index) => (
+          {navlinks.map((link, index) => (
             <Link
               key={index}
               className="lg:text-[16px] h-[26px] font-medium text-gray-200 hover:text-blue-400 transition-all ease-in duration-150"
-              href={`/#${link.toLowerCase()}`}
+              href={`#${link.toLowerCase()}`}
               onClick={() => setIsMenuOpen(false)}
             >
               {link}
             </Link>
           ))}
-         
+          <Link
+            className="lg:text-[16px] h-[26px] font-medium text-gray-200 hover:text-blue-400 transition-all ease-in duration-150 md:hidden"
+            href="#contact"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Contact
+          </Link>
         </div>
       </div>
     </header>

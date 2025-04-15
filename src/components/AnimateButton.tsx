@@ -7,12 +7,14 @@ export const AnimatedButton = ({
   href = "#",
   bg = "",
   expanded = false,
+  target= "",
   onClick,
 }: {
   text?: string | React.ReactNode;
   arrow?: boolean;
   href?: string;
   bg?: string;
+  target?: string;
   expanded?: boolean;
   onClick?: (e: React.MouseEvent) => void;
 }) => {
@@ -107,7 +109,7 @@ export const AnimatedButton = ({
         className={commonClasses}
         style={{ "--is-animation-running": "running" } as React.CSSProperties}
         href={href}
-        target="_blank"
+        target={target}
         onClick={(e) => {
           e.stopPropagation(); // Prevent event bubbling to parent
           if (onClick) onClick(e);
