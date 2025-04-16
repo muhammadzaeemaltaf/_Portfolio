@@ -4,9 +4,11 @@ import {
   FaGithub,
   FaJs,
   FaLaravel,
+  FaLinkedin,
   FaPython,
   FaReact,
   FaSchool,
+  FaSquareWhatsapp,
   FaWordpress,
 } from "react-icons/fa6";
 import { IoLogoNodejs } from "react-icons/io";
@@ -34,6 +36,8 @@ import { StaticImageData } from "next/image";
 import { BiSolidInstitution } from "react-icons/bi";
 import { EducationDataType } from "../../types";
 import { IconType } from "react-icons";
+import { MdEmail } from "react-icons/md";
+import { LuPhoneCall } from "react-icons/lu";
 
 
 const zustand = (height?: string, width?: string) => {
@@ -2300,3 +2304,37 @@ export const educationData: EducationDataType = [
     type: "certificate",
   },
 ] as const
+
+
+export const contactLinks = [
+  {
+    label: "GitHub",
+    href: "https://github.com/muhammadzaeemaltaf/",
+    icon: <FaGithub />,
+    tooltip: "Visit my GitHub",
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/muhammadzaeemaltaf/",
+    icon: <FaLinkedin />,
+    tooltip: "Connect on LinkedIn",
+  },
+  {
+    label: "Email",
+    href: "mailto:official.zaeemaltaf@gmail.com",
+    icon: <MdEmail />,
+    tooltip: "Send me an Email",
+  },
+  {
+    label: "Call",
+    href: "tel:+923452793244",
+    icon: <LuPhoneCall />,
+    tooltip: "Call Me",
+  },
+  {
+    label: "WhatsApp",
+    href: `https://wa.me/923452793244?text=Hi%20Zaeem%2C%20I%20found%20your%20portfolio%20and%20wanted%20to%20connect%20with%20you.`,
+    icon: <FaSquareWhatsapp />,
+    tooltip: "Chat on WhatsApp",
+  },
+];

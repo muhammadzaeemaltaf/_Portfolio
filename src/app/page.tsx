@@ -11,6 +11,7 @@ import Education from "@/components/Education";
 import ContactForm from "@/components/Contact";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import BackToTop from "@/components/BackToTop";
 
 export default function Home() {
   const [loading, setLoading] = useState(true)
@@ -35,6 +36,7 @@ export default function Home() {
           <Education />
           <ContactForm />
           <Footer />
+          <BackToTop />
         </>
       )}
     </div>

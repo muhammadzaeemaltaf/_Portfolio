@@ -41,7 +41,7 @@ export default function Navbar() {
         duration: 0.2,
         ease: "power3.out",
         overflow: "visible",
-        delay: 1
+        delay: 0.5
       })
       // Animate links appearance
       .to(linksRef.current, {
