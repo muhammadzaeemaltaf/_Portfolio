@@ -6,7 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Heading from "./Heading";
 import { AnimatedButton } from "./AnimateButton";
-import SubmitBtn from "./SubmitBtn";
+import { FaPaperPlane } from "react-icons/fa6";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -96,10 +96,12 @@ export default function Contact() {
                 />
                 <AnimatedButton
                     text="Submit"
-                    bg="text-white"
+                    bg="text-white !py-6 group"
                     type="submit"
+                    icon= {
+                        <FaPaperPlane className="text-xs opacity-70 transition-all group-hover:translate-x-1 group-hover:-translate-y-1" />
+                    }
                 />
-                {/* <SubmitBtn /> */}
             </form>
         </section>
     );

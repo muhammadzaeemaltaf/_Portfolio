@@ -36,10 +36,10 @@ export default function Footer() {
       className="py-10 text-center text-sm text-gray-600 dark:text-gray-400"
     >
       <div className="flex justify-center gap-6 text-xl mb-4">
-        <Link href="https://github.com/yourusername" target="_blank" className="hover:text-black dark:hover:text-white transition-colors">
+        <Link href="https://github.com/muhammadzaeemaltaf/" target="_blank" className="hover:text-black dark:hover:text-white transition-colors">
           <FaGithub />
         </Link>
-        <Link href="https://linkedin.com/in/yourusername" target="_blank" className="hover:text-[#0077b5] transition-colors">
+        <Link href="https://www.linkedin.com/in/muhammadzaeemaltaf/" target="_blank" className="hover:text-[#0077b5] transition-colors">
           <FaLinkedin />
         </Link>
       </div>

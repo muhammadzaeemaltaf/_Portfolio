@@ -223,7 +223,7 @@ const Project = () => {
                     alt={project.title}
                     width={1000}
                     height={1000}
-                    className={`rounded object-center aspect-video md:w-[250px] 2xl:w-[300px] object-cover relative ${project.organization ? 'mt-6' : ''}`}
+                    className={`rounded object-center aspect-video md:w-[250px] 2xl:w-[300px] object-cover relative ${project.organization ? 'md:mt-6' : ''}`}
                   />
                 </div>
                 <div className="text relative md:absolute top-4 md:w-[60%] md:pr-10 mb-4">

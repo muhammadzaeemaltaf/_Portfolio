@@ -9,6 +9,7 @@ export const AnimatedButton = ({
   expanded = false,
   target= "",
   type = "button",
+  icon = null,
   onClick,
 }: {
   text?: string | React.ReactNode;
@@ -18,6 +19,7 @@ export const AnimatedButton = ({
   target?: string;
   expanded?: boolean;
   type?: "button" | "submit" | "reset";
+  icon?: React.ReactNode;
   onClick?: (e: React.MouseEvent) => void;
 }) => {
   const [prevText, setPrevText] = useState(text);
@@ -100,6 +102,9 @@ export const AnimatedButton = ({
             />
           </svg>
         </span>
+      )}
+      {icon && (
+        icon // Render icon if provided
       )}
     </>
   );

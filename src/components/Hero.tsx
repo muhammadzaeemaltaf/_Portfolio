@@ -4,6 +4,8 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import GridBackground from "./bg";
 import { Typewriter } from "react-simple-typewriter";
+import { AnimatedButton } from "./AnimateButton";
+import { HiDownload } from "react-icons/hi";
 
 const data = [
   "Full-Stack Developer",
@@ -85,11 +87,11 @@ const HeroSection = () => {
             <h1 className="__h1 mt-5 text-balance text-center tracking-wide md:mt-8 lg:mt-10 [&_*]:inline-block [&_*]:bg-clip-text [&_*]:text-transparent [&_span]:[background-image:-webkit-linear-gradient(90deg,#ececec_0%,#aaaaaa_33%,#e0e0e0_67%)] [&_strong]:font-medium [&_strong]:[background-image:-webkit-linear-gradient(45deg,#2563eb_6%,#1e40af_19%,#2563eb_100%)]">
               <span>Full-Stack</span> <span>Development</span> {" "}
               <br className="sm:!hidden" />
-               <span>Services</span>{" "}
+              <span>Services</span>{" "}
               <strong>For Seamless</strong>
               {" "}
               <br className="sm:!hidden" />
-               <strong>Web</strong>{" "}
+              <strong>Web</strong>{" "}
               <strong>Experience</strong>
             </h1>
           </div>
@@ -97,7 +99,7 @@ const HeroSection = () => {
           {/* Subtitle */}
           <code className="relative mx-auto mt-4 max-w-[800px] text-center text-muted xs:mt-6 sm:mt-7 sm:text-lg md:mt-8 md:text-xl block">
             Hi! I am Muhammad Zaeem Altaf.{" "}
-            <br className="md:hidden"/>
+            <br className="md:hidden" />
             <Typewriter
               words={data}
               loop={0}
@@ -107,9 +109,13 @@ const HeroSection = () => {
             />{" "}
             <span className="inline-block w-0.5 h-6 ml-1 -mb-1 bg-blue-500 animate-pulse"></span>
           </code>
-          <code className="relative mx-auto mt-2 max-w-[800px] text-center text-muted sm:mt-5 sm:text-lg md:text-xl block">
-            I am passionate for creating beautiful and functional websites.
-          </code>
+          <div className="flex flex-col md:flex-row gap-4 justify-center items-center mt-10">
+            <AnimatedButton text="Contact me here" arrow bg="!px-6 !text-sm !h-11 md:!px-8 md:!py-6 md:!text-lg bg-black/70" href="#contact" />
+            <AnimatedButton text="Downlaod CV" icon={
+              <HiDownload className="text-xl md:text-2xl opacity-70 transition-all  group-hover:translate-y-1" />
+            } bg="group !px-6 !text-sm !h-11 md:!px-8 md:!py-6 md:!text-lg bg-black/70" href={'/MUHAMMAD ZAEEM ALTAF.pdf'} />
+
+          </div>
         </div>
       </div>
     </section>
