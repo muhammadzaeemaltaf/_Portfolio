@@ -33,8 +33,8 @@ const Project = () => {
           start: "top 80%",
           toggleActions: "play none none reverse",
         },
-        opacity: 0,
-        y: 50,
+        opacity: 1,
+        y: 0,
         duration: 0.5,
         stagger: 0.2,
       })
@@ -208,7 +208,7 @@ const Project = () => {
                   }
                 }}
                 className={`relative ${project.organization ? 'md:h-[220px] 2xl:h-[250px]' : 'md:h-[170px] 2xl:h-[200px]'} border border-white/20 text-white p-4 rounded-lg shadow project-card cursor-pointer ${expandedProject?.title === project.title ? "overflow-y-auto" : ""}`}
-              >
+            >
                 {expandedProject === project && (
                   <AnimatedButton
                     text={<X className="h-3 w-3" />}

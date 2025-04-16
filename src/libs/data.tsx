@@ -2299,21 +2299,4 @@ export const educationData: EducationDataType = [
     date: "2024",
     type: "certificate",
   },
-  {
-    title: "Intermediate",
-    institution: "Aisha bawany Govt College",
-    fields: ["Pre-Engineering"],
-    icon: FaSchool,
-    date: "2021 - 2023",
-    type: "college",
-  },
-  {
-    title: "Matriculation",
-    institution: "Al-Basit Motivate Secondary School",
-    fields: ["Science"],
-    icon: IoSchoolOutline,
-    date: "2019 - 2021",
-    type: "school",
-  },
-
 ] as const

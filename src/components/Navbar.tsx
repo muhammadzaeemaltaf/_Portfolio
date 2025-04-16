@@ -20,7 +20,7 @@ export default function Navbar() {
     if (navRef.current && linksRef.current && buttonRef.current) {
       // Set initial states
       gsap.set(navRef.current, { 
-        width: "300px", // Start narrow enough for logo and button
+        width: window.innerWidth <= 768 ? "150px" : "300px", // Start narrow enough for logo and button
         borderRadius: "62px", 
         padding: "0 20px",
         overflow: "hidden"
@@ -47,6 +47,8 @@ export default function Navbar() {
       .to(linksRef.current, {
         display: "flex",
         opacity: 1,
+        width: "auto",
+        overflow: "visible",
         duration: 0.4,
         delay: 0.2,
         ease: "power2.in"
@@ -107,9 +109,9 @@ export default function Navbar() {
 
   return (
     <header
-      className="z-50 fixed transition-all duration-600 ease-in-out max-w-[1200px] mx-auto
+      className="z-50 fixed transition-all duration-600 ease-in-out w-[150px] md:w-[300px]  max-w-[1200px] mx-auto
       lg:h-[70px] md:h-[70px] h-[58px] rounded-[62px] 
-      top-[10px] left-[10px] right-[10px] md:top-[20px] md:left-[20px] md:right-[20px] 
+      top-[10px] left-[10px] right-[10px] md:top-[20px] md:left-[20px] md:right-[20px] px-[20px]
       flex flex-row justify-between items-center backdrop-blur-xs bg-black/20 border border-white/10"
       ref={navRef}
     >
@@ -125,7 +127,7 @@ export default function Navbar() {
         </Link>
       </div>
       <div className="hidden lg:block">
-      <div ref={linksRef} className="gap-[32px] absolute  lg:relative  hidden lg:flex flex-row">
+      <div ref={linksRef} className="gap-[32px] absolute  lg:relative opacity-0 w-0 overflow-hidden  hidden lg:flex flex-row">
         {navlinks.map((link, index) => (
           <Link
             key={index}
@@ -140,11 +142,11 @@ export default function Navbar() {
 
       <div ref={buttonRef} className="flex gap-[10px] md:gap-[32px] items-center">
         <div className="flex-row md:gap-[8px] items-center hidden md:flex">
-          <AnimatedButton text="Contact us" arrow bg="!px-4 !text-xs !h-9 md:!h-11 md:!px-6 md:!text-sm bg-black/70" href="#contact" />
+          <AnimatedButton text="Contact me" arrow bg="!px-4 !text-xs !h-9 md:!h-11 md:!px-6 md:!text-sm bg-black/70" href="#contact" />
         </div>
 
         <button
-          className="flex lg:hidden"
+          className="flex lg:hidden cursor-pointer"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
         >
@@ -162,7 +164,7 @@ export default function Navbar() {
       >
         <div className="flex justify-end">
           <button onClick={() => setIsMenuOpen(false)} aria-label="Close menu">
-            <X className="w-6 h-6 text-white" />
+            <X className="w-6 h-6 text-white cursor-pointer" />
           </button>
         </div>
         <div className="flex flex-col space-y-4">

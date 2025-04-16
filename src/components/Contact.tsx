@@ -57,7 +57,7 @@ export default function Contact() {
             </p>
 
             <form
-                className="mt-10 flex flex-col dark:text-black"
+                className="mt-8 flex flex-col dark:text-black"
                 action={async (formData) => {
                     const res = await fetch("/api/contact", {
                         method: "POST",
@@ -88,13 +88,18 @@ export default function Contact() {
                     placeholder="Your subject"
                 />
                 <textarea
-                    className="h-52 my-3 rounded-lg borderBlack p-4 dark:bg-gray-800/50 dark:text-gray-50 dark:bg-opacity-80 dark:focus:bg-opacity-100 transition-all dark:outline-none"
+                    className="h-52 mb-3 rounded-lg borderBlack p-4 dark:bg-gray-800/50 dark:text-gray-50 dark:bg-opacity-80 dark:focus:bg-opacity-100 transition-all dark:outline-none"
                     name="message"
                     placeholder="Your message"
                     required
                     maxLength={5000}
                 />
-                <SubmitBtn />
+                <AnimatedButton
+                    text="Submit"
+                    bg="text-white"
+                    type="submit"
+                />
+                {/* <SubmitBtn /> */}
             </form>
         </section>
     );

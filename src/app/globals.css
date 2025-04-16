@@ -25,7 +25,6 @@ body {
   @apply text-3xl leading-[1.2] tracking-tight whitespace-nowrap sm:whitespace-normal
 }
 
-
 /* Add these styles to your global CSS */
 .__liquid-button-wrapper {
   position: relative;
