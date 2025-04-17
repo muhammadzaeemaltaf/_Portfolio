@@ -27,6 +27,7 @@ import {
   SiTypescript,
 } from "react-icons/si";
 import { TbBrandFramerMotion, TbBrandMysql, TbBrandTypescript, TbCertificate } from "react-icons/tb";
+import gsap from "gsap";
 
 
 import VaultSneak from "../../public/vaultsneaks.png";
@@ -2333,8 +2334,25 @@ export const contactLinks = [
   },
   {
     label: "WhatsApp",
-    href: `https://wa.me/923452793244?text=Hi%20Zaeem%2C%20I%20found%20your%20portfolio%20and%20wanted%20to%20connect%20with%20you.`,
+    href: `https://wa.me/923452793244`,
     icon: <FaSquareWhatsapp />,
     tooltip: "Chat on WhatsApp",
   },
 ];
+
+export const scrollToView = (link?: string) => {
+  const scrollIntoView = document.querySelector(`#${link}`);
+  if (scrollIntoView && typeof(link) === "string") { 
+    gsap.to(window, {
+      scrollTo: { y: scrollIntoView, offsetY: 0 },
+      duration: 1.5,
+      ease: "power1.inOut",
+    });
+  }else{
+    gsap.to(window, {
+      scrollTo: { y: 0 },
+      duration: 1.5,
+      ease: "power1.inOut",
+    });
+  }
+};

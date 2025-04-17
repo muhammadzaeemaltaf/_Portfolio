@@ -18,6 +18,7 @@ export default function Education() {
   useEffect(() => {
     if (!timelineRef.current) return
 
+    // Main timeline for the vertical line animation
     const timeline = gsap.timeline({
       scrollTrigger: {
         trigger: timelineRef.current,
@@ -29,68 +30,103 @@ export default function Education() {
     timeline.fromTo(
       ".education-timeline-line",
       { scaleY: 0, transformOrigin: "top" },
-      { scaleY: 1, duration: 1.5, ease: "power3.out" },
+      { scaleY: 1, duration: 1.5, ease: "power3.out" }
     )
 
     // Animate each timeline item
     timelineItemsRef.current.forEach((item, index) => {
       if (!item) return
 
-      // For mobile (one direction) and desktop (alternating directions)
+      // Select the content box and dot elements
+      const contentBox = item.querySelector(".content-box")
+      const dot = item.querySelector(".timeline-dot")
+
+      if (!contentBox || !dot) return
+
+      // Determine slide direction: right on mobile, alternating on desktop
       const direction = window.innerWidth < 768 ? 1 : index % 2 === 0 ? 1 : -1
 
-      gsap.fromTo(
-        item,
+      // Create a timeline for each item triggered on scroll
+      const itemTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: item,
+          start: "top 80%",
+        },
+      })
+
+      // Slide in the content box
+      itemTimeline.fromTo(
+        contentBox,
         {
           opacity: 0,
-          x: direction * 50,
+          x: direction * 50, // Slide from left or right
         },
         {
           opacity: 1,
           x: 0,
           duration: 0.8,
-          stagger: 0.2,
           ease: "power3.out",
-          scrollTrigger: {
-            trigger: item,
-            start: "top 80%",
-          },
-        },
+        }
       )
+
+      // Pulse the dot when the content box arrives
+      itemTimeline
+        .to(
+          dot,
+          {
+            scale: 1.2,
+            duration: 0.2,
+            ease: "power2.out",
+          },
+          "-=0.2" 
+        )
+        .to(dot, {
+          scale: 1,
+          duration: 0.2,
+          ease: "power2.in",
+        })
     })
 
+    // Cleanup ScrollTriggers on unmount
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill()) // Clean up all ScrollTrigger instances
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
     }
   }, [])
 
   // Micro-animation for hover/focus
   const handleItemFocus = (index: number) => {
     setActiveItem(index)
-
     if (timelineItemsRef.current[index]) {
-      gsap.to(timelineItemsRef.current[index], {
-        scale: 1.03,
-        duration: 0.3,
-        ease: "power2.out",
-      })
+      const dot = timelineItemsRef.current[index].querySelector(".timeline-dot")
+      if (dot) {
+        gsap.to(dot, {
+          scale: 1.1,
+          duration: 0.3,
+          ease: "power2.out",
+        })
+      }
     }
   }
 
   const handleItemBlur = (index: number) => {
     setActiveItem(null)
-
     if (timelineItemsRef.current[index]) {
-      gsap.to(timelineItemsRef.current[index], {
-        scale: 1,
-        duration: 0.3,
-        ease: "power2.out",
-      })
+      const dot = timelineItemsRef.current[index].querySelector(".timeline-dot")
+      if (dot) {
+        gsap.to(dot, {
+          scale: 1,
+          duration: 0.3,
+          ease: "power2.out",
+        })
+      }
     }
   }
 
   return (
-    <section id="education" className="scroll-mt-28 mb-28 sm:mb-40 max-w-[1700px] w-full mx-auto">
+    <section
+      id="education"
+      className="scroll-mt-28 mb-28 sm:mb-40 max-w-[1700px] w-full mx-auto"
+    >
       <Heading heading="Education & Certifications" />
       <div ref={timelineRef} className="relative max-w-5xl mx-auto mt-16">
         {/* Timeline center line - centered on desktop, left-aligned on mobile */}
@@ -114,33 +150,40 @@ export default function Education() {
               onBlur={() => handleItemBlur(index)}
               tabIndex={0}
             >
-              <div className={`absolute w-[calc(50%-2rem)] ${item.type != 'certificate' ? "left-0 text-right pr-2" : "right-0 text-left pl-2"} hidden md:block`}>
-                <span className="text-lg font-medium text-gray-500 dark:text-gray-400">{item.type.charAt(0).toUpperCase() + item.type.slice(1).toLowerCase()}</span>
-              </div>
-              {/* Timeline dot with icon - centered on desktop, left-aligned on mobile */}
+              {/* Date - on left for even, right for odd (desktop only) */}
               <div
-                className={`absolute md:left-1/2 left-5 md:-translate-x-1/2 flex items-center justify-center w-12 h-12 rounded-full 
-                  bg-[#1e40af]/60 
-                  border-2
-                 border-[#1e40af]
-                  z-10 transition-all duration-300 ease-in-out
-                  ${activeItem === index ? "scale-110" : ""}`}
+                className={`absolute w-[calc(50%-2rem)] ${
+                  item.type !== "certificate"
+                    ? "left-0 text-right pr-2"
+                    : "right-0 text-left pl-2"
+                } hidden md:block`}
               >
-                <IconComponent className={`text-xl text-zinc-400`} />
+                <span className="text-lg font-medium text-gray-500 dark:text-gray-400">
+                  {item.type.charAt(0).toUpperCase() +
+                    item.type.slice(1).toLowerCase()}
+                </span>
               </div>
 
-              {/* Content box - alternating on desktop, always right on mobile */}
+              {/* Timeline dot with icon - stays still */}
               <div
-                className={`md:w-[calc(50%-2rem)] w-[calc(100%-4rem)] 
-                  ${item.type != 'certificate' ? "md:ml-auto md:mr-6" : "md:mr-auto md:ml-6"} 
-                  ml-12 p-6 rounded-lg shadow-md
-                  bg-[#1e40af]/10 dark:bg-[#1e40af]/10 border-[#1e40af]/30 dark:border-[#1e40af]/50 
-                  border transition-all duration-300 ease-in-out
-                  ${activeItem === index ? "shadow-lg" : "shadow-md"}`}
+                className="timeline-dot absolute md:left-1/2 left-5 md:-translate-x-1/2 flex items-center justify-center w-12 h-12 rounded-full bg-[#1e40af]/60 border-2 border-[#1e40af] z-10"
+              >
+                <IconComponent className="text-xl text-zinc-400" />
+              </div>
+
+              {/* Content box - slides in */}
+              <div
+                className={`content-box md:w-[calc(50%-2rem)] w-[calc(100%-4rem)] ${
+                  item.type !== "certificate"
+                    ? "md:ml-auto md:mr-6"
+                    : "md:mr-auto md:ml-6"
+                } ml-12 p-6 rounded-lg shadow-md bg-[#1e40af]/10 dark:bg-[#1e40af]/10 border-[#1e40af]/30 dark:border-[#1e40af]/50 border`}
               >
                 <div className="flex flex-col">
                   <h3 className="text-lg font-semibold">{item.title}</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">{item.institution}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    {item.institution}
+                  </p>
 
                   <div className="flex flex-wrap gap-2 mt-2">
                     {item.fields.map((field, fieldIndex) => (
@@ -155,11 +198,15 @@ export default function Education() {
 
                   <div className="flex justify-start items-center gap-2 mt-3 ml-1">
                     <SlCalender className="text-[#1e40af]/70 dark:text-[#1e40af]/60" />
-                    <span className="text-sm font-medium text-gray-500 dark:text-gray-400">{item.date}</span>
+                    <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                      {item.date}
+                    </span>
                   </div>
 
                   {item.description && (
-                    <p className="mt-2 text-gray-700 dark:text-gray-300">{item.description}</p>
+                    <p className="mt-2 text-gray-700 dark:text-gray-300">
+                      {item.description}
+                    </p>
                   )}
                 </div>
               </div>
@@ -170,4 +217,3 @@ export default function Education() {
     </section>
   )
 }
-

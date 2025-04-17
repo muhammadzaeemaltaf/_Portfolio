@@ -1,5 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { FiArrowUp } from "react-icons/fi";
+import { gsap } from "gsap";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin"; // new import
+import { scrollToView } from "@/libs/data";
+gsap.registerPlugin(ScrollToPlugin); // new registration
 
 const BackToTop = () => {
   const [scrollPercentage, setScrollPercentage] = useState(0);
@@ -39,26 +43,12 @@ const BackToTop = () => {
   }, [debouncedHandleScroll]);
 
   // Scroll to top and reset progress after reaching top
-  const handleClick = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-
-    const checkScrollTop = () => {
-      if (document.documentElement.scrollTop === 0) {
-        setScrollPercentage(0);
-        window.removeEventListener("scroll", checkScrollTop);
-      }
-    };
-    window.addEventListener("scroll", checkScrollTop);
-  };
-
+ 
   return (
     isVisible && (
       <div
-        onClick={handleClick}
-        className="fixed bottom-8 right-8 group bg-black text-white rounded-full p-4 cursor-pointer flex justify-center items-center scale-150"
+        onClick={() => scrollToView()}
+        className="fixed bottom-8 right-8 group text-white rounded-full p-4 cursor-pointer flex justify-center items-center scale-150"
         style={{ width: "60px", height: "60px" }}
       >
         {/* Circular progress SVG */}

@@ -96,12 +96,12 @@ export default function About() {
   }, []);
 
   return (
-    <section className="relative w-full max-w-[1700px] mx-auto py-16 md:py-24 px-4 bg-black">
+    <section className="relative w-full max-w-[1700px] mx-auto  px-4 bg-black" id="about">
       <Heading heading="About Me" />
 
       <div
         ref={containerRef}
-        className="flex flex-col md:flex-row items-center gap-8 md:gap-16 pt-20"
+        className="flex flex-col md:flex-row items-center gap-8 md:gap-16"
       >
         <div className="w-full md:w-1/2 relative">
           <svg

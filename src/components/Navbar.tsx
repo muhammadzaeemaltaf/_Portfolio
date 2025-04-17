@@ -3,13 +3,14 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Menu, X } from 'lucide-react';
-import { navlinks } from "@/libs/data";
+import { scrollToView, navlinks } from "@/libs/data";
 import gsap from "gsap";
 import { AnimatedButton } from "./AnimateButton";
 import Image from "next/image";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeLink, setActiveLink] = useState("");
   const menuRef = useRef<HTMLDivElement>(null);
   const navRef = useRef(null);
   const linksRef = useRef(null);
@@ -19,9 +20,9 @@ export default function Navbar() {
     // Initial animation on component mount
     if (navRef.current && linksRef.current && buttonRef.current) {
       // Set initial states
-      gsap.set(navRef.current, { 
+      gsap.set(navRef.current, {
         width: window.innerWidth <= 768 ? "150px" : "300px", // Start narrow enough for logo and button
-        borderRadius: "62px", 
+        borderRadius: "62px",
         padding: "0 20px",
         overflow: "hidden"
       });
@@ -30,7 +31,7 @@ export default function Navbar() {
 
       // Create animation timeline
       const tl = gsap.timeline();
-      
+
       // Animate navbar expansion
       tl.to(navRef.current, {
         width: "calc(100% - 40px)",
@@ -43,16 +44,16 @@ export default function Navbar() {
         overflow: "visible",
         delay: 0.5
       })
-      // Animate links appearance
-      .to(linksRef.current, {
-        display: "flex",
-        opacity: 1,
-        width: "auto",
-        overflow: "visible",
-        duration: 0.4,
-        delay: 0.2,
-        ease: "power2.in"
-      });
+        // Animate links appearance
+        .to(linksRef.current, {
+          display: "flex",
+          opacity: 1,
+          width: "auto",
+          overflow: "visible",
+          duration: 0.4,
+          delay: 0.2,
+          ease: "power2.in"
+        });
     }
   }, []);
 
@@ -71,11 +72,11 @@ export default function Navbar() {
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
-  
+
     const slideNavbar = () => {
       const currentScrollY = window.scrollY;
       const goingDown = currentScrollY > lastScrollY;
-  
+
       if (navRef.current) {
         if (currentScrollY > 200 && goingDown) {
           gsap.to(navRef.current, { duration: 0.3, y: -100, ease: "power2.out" });
@@ -84,10 +85,10 @@ export default function Navbar() {
           gsap.to(navRef.current, { duration: 0.1, y: 0, ease: "back.out" });
         }
       }
-  
+
       lastScrollY = currentScrollY;
     };
-  
+
     window.addEventListener("scroll", slideNavbar);
     return () => {
       window.removeEventListener("scroll", slideNavbar);
@@ -107,6 +108,30 @@ export default function Navbar() {
     }
   }, [isMenuOpen]);
 
+  useEffect(() => {
+    const sections = [...navlinks, "contact"].map(link => document.getElementById(link.toLowerCase()));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter(entry => entry.isIntersecting);
+        if (visible.length > 0) {
+          const active = visible.reduce((prev, curr) =>
+            prev.intersectionRatio > curr.intersectionRatio ? prev : curr
+          );
+          if (active.target.id === "contact" && window.innerWidth >= 1024) {
+            setActiveLink("");
+          } else {
+            setActiveLink(active.target.id);
+          }
+        } else {
+          setActiveLink("");
+        }
+      },
+      { threshold: 0.6 }
+    );
+    sections.forEach(section => section && observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <header
       className="z-50 fixed transition-all duration-600 ease-in-out w-[150px] md:w-[300px]  max-w-[1200px] mx-auto
@@ -116,33 +141,37 @@ export default function Navbar() {
       ref={navRef}
     >
       <div className="flex flex-row items-center gap-[68px]">
-        <Link href="#" className="text-2xl font-bold text-transparent bg-gradient-to-r from-white to-gray-300 bg-clip-text">
+        <span className="text-2xl cursor-pointer font-bold text-transparent bg-gradient-to-r from-white to-gray-300 bg-clip-text"
+          onClick={() => scrollToView()}
+         >
           <Image
             src={'/logo.svg'}
             alt="Logo"
             height={60}
-            width={60} 
+            width={60}
             className="w-[44px] h-[44px] md:w-[50px] md:h-[50px] lg:w-[56px] lg:h-[56px]"
           />
-        </Link>
+        </span>
       </div>
       <div className="hidden lg:block">
-      <div ref={linksRef} className="gap-[32px] absolute  lg:relative opacity-0 w-0 overflow-hidden  hidden lg:flex flex-row">
-        {navlinks.map((link, index) => (
-          <Link
-            key={index}
-            className="lg:text-[16px] h-[26px] font-medium text-gray-200 hover:text-blue-400 transition-all ease-in duration-150"
-            href={`/#${link.toLowerCase()}`}
-          >
-            {link}
-          </Link>
-        ))}
-      </div>
+        <div ref={linksRef} className="gap-[32px] absolute  lg:relative opacity-0 w-0 overflow-hidden  hidden lg:flex flex-row">
+          {navlinks.map((link, index) => (
+            <span
+              key={index}
+              className={`lg:text-[16px] cursor-pointer h-[26px] font-medium transition-all ease-in duration-150 ${activeLink === link.toLowerCase() ? "text-blue-400" : "text-gray-200"} hover:text-blue-400`}
+              onClick={() => { scrollToView(link.toLowerCase()); setIsMenuOpen(false); }}
+            >
+              {link}
+            </span>
+          ))}
+        </div>
       </div>
 
       <div ref={buttonRef} className="flex gap-[10px] md:gap-[32px] items-center">
         <div className="flex-row md:gap-[8px] items-center hidden md:flex">
-          <AnimatedButton text="Contact me" arrow bg="!px-4 !text-xs !h-9 md:!h-11 md:!px-6 md:!text-sm bg-black/70" href="#contact" />
+          <AnimatedButton text="Contact me" arrow bg="!px-4 !text-xs !h-9 md:!h-11 md:!px-6 md:!text-sm bg-black/70" 
+          onClick={() => { scrollToView("contact"); setIsMenuOpen(false); }}
+          />
         </div>
 
         <button
@@ -169,22 +198,20 @@ export default function Navbar() {
         </div>
         <div className="flex flex-col space-y-4">
           {navlinks.map((link, index) => (
-            <Link
+            <span
               key={index}
-              className="lg:text-[16px] h-[26px] font-medium text-gray-200 hover:text-blue-400 transition-all ease-in duration-150"
-              href={`#${link.toLowerCase()}`}
-              onClick={() => setIsMenuOpen(false)}
+              className={`lg:text-[16px] cursor-pointer h-[26px] font-medium transition-all ease-in duration-150 ${activeLink === link.toLowerCase() ? "text-blue-400" : "text-gray-200"} hover:text-blue-400`}
+              onClick={() => { scrollToView(link.toLowerCase()); setIsMenuOpen(false); }}
             >
               {link}
-            </Link>
+            </span>
           ))}
-          <Link
-            className="lg:text-[16px] h-[26px] font-medium text-gray-200 hover:text-blue-400 transition-all ease-in duration-150 md:hidden"
-            href="#contact"
-            onClick={() => setIsMenuOpen(false)}
+          <span
+            className={`lg:text-[16px] cursor-pointer h-[26px] font-medium transition-all ease-in duration-150 ${activeLink === "contact" ? "text-blue-400" : "text-gray-200"} hover:text-blue-400`}
+            onClick={() => { scrollToView("contact"); setIsMenuOpen(false); }}
           >
             Contact
-          </Link>
+          </span>
         </div>
       </div>
     </header>

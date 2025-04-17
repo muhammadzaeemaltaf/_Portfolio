@@ -183,7 +183,7 @@ const Project = () => {
   }
 
   return (
-    <section ref={sectionRef} className="min-h-screen mb-20 relative px-4 md:px-10 max-w-[1700px] w-full mx-auto">
+    <section ref={sectionRef} className="min-h-screen mb-20 relative px-4 md:px-10 max-w-[1700px] w-full mx-auto" id="projects">
       <Heading heading="Top Projects" />
 
 

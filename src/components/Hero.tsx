@@ -6,6 +6,7 @@ import GridBackground from "./bg";
 import { Typewriter } from "react-simple-typewriter";
 import { AnimatedButton } from "./AnimateButton";
 import { HiDownload } from "react-icons/hi";
+import { scrollToView } from "@/libs/data";
 
 const data = [
   "Full-Stack Developer",
@@ -110,7 +111,12 @@ const HeroSection = () => {
             <span className="inline-block w-0.5 h-6 ml-1 -mb-1 bg-blue-500 animate-pulse"></span>
           </code>
           <div className="flex flex-col md:flex-row gap-4 justify-center items-center mt-10">
-            <AnimatedButton text="Contact me here" arrow bg="!px-6 !text-sm !h-11 md:!px-8 md:!py-6 md:!text-lg bg-black/70" href="#contact" />
+            <AnimatedButton text="Contact me here" arrow bg="!px-6 !text-sm !h-11 md:!px-8 md:!py-6 md:!text-lg bg-black/70" 
+              onClick={() => {
+                scrollToView("contact");
+              }
+              }
+            />
             <AnimatedButton text="Downlaod CV" icon={
               <HiDownload className="text-xl md:text-2xl opacity-70 transition-all  group-hover:translate-y-1" />
             } bg="group !px-6 !text-sm !h-11 md:!px-8 md:!py-6 md:!text-lg bg-black/70" href={'/MUHAMMAD ZAEEM ALTAF.pdf'} />

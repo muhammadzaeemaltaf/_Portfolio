@@ -28,9 +28,7 @@ export default function Footer() {
       }
     );
   }, []);
-
-  const message = encodeURIComponent("Hey Zaeem! I came through your portfolio and wanted to connect 😊");
-  const whatsappURL = `https://wa.me/923452793244?text=${message}`;
+  
 
   return (
     <footer
