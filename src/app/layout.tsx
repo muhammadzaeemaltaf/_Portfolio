@@ -12,10 +12,26 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Muhammad Zaeem Altaf | Full-Stack Web Developer | Next.js Developer",
-  description: "Full stack web developer with expertise in Next is, tailwind CSS. Specializing in creating responsive, user-friendly websites with a focus on individual user experience and performance optimization",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Muhammad Zaeem Altaf | Full-Stack Web Developer | Next.js Developer",
+    description:
+      "Full stack developer skilled in Next.js & Tailwind CSS, crafting responsive, user-focused websites with top performance.",
+    icons: {
+      icon: "/favicon.ico",
+    },
+    verification: {
+      google: "9Jm-lCyk2ZAGml9QWXLCkgwkzrb78gbR7Pbw4g5BTEw",
+    },
+    openGraph: {
+      title: "Muhammad Zaeem Altaf | Full-Stack Web Developer",
+      url: "https://zaeemaltaf.tech",
+    },
+    other: {
+      canonical: "https://zaeemaltaf.tech",
+    },
+  };
+}
 
 export default function RootLayout({
   children,
@@ -24,9 +40,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <meta name="google-site-verification" content="9Jm-lCyk2ZAGml9QWXLCkgwkzrb78gbR7Pbw4g5BTEw" />
-      </head>
+
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
