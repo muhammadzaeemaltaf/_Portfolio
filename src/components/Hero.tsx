@@ -7,6 +7,9 @@ import { Typewriter } from "react-simple-typewriter";
 import { AnimatedButton } from "./AnimateButton";
 import { HiDownload } from "react-icons/hi";
 import { scrollToView } from "@/libs/data";
+import { BsGithub } from "react-icons/bs";
+import { FiGithub } from "react-icons/fi";
+import { FaLinkedin } from "react-icons/fa6";
 
 const data = [
   "Full-Stack Developer",
@@ -111,7 +114,7 @@ const HeroSection = () => {
             <span className="inline-block w-0.5 h-6 ml-1 -mb-1 bg-blue-500 animate-pulse"></span>
           </code>
           <div className="flex flex-col md:flex-row gap-4 justify-center items-center mt-10">
-            <AnimatedButton text="Contact me here" arrow bg="!px-6 !text-sm !h-11 md:!px-8 md:!py-6 md:!text-lg bg-black/70" 
+            <AnimatedButton text="Contact me here" arrow bg="!px-6 !text-sm !h-11 md:!px-8 md:!py-6 md:!text-lg bg-black/70"
               onClick={() => {
                 scrollToView("contact");
               }
@@ -120,7 +123,20 @@ const HeroSection = () => {
             <AnimatedButton text="Downlaod CV" icon={
               <HiDownload className="text-xl md:text-2xl opacity-70 transition-all  group-hover:translate-y-1" />
             } bg="group !px-6 !text-sm !h-11 md:!px-8 md:!py-6 md:!text-lg bg-black/70" href={'/MUHAMMAD ZAEEM ALTAF.pdf'} />
-
+            <div className="flex gap-4">
+              <AnimatedButton
+                text={<FiGithub className="h-4 w-4" />}
+                bg={`group !p-0 !w-11 !h-11 z-[100] bg-black !rounded-xl`}
+                href="https://github.com/muhammadzaeemaltaf/"
+                target="_blank"
+              />
+              <AnimatedButton
+                text={<FaLinkedin className="h-4 w-4" />}
+                bg={`group !p-0 !w-11 !h-11 z-[100] bg-black !rounded-xl`}
+                href="https://www.linkedin.com/in/muhammadzaeemaltaf/"
+                target="_blank"
+              />
+            </div>
           </div>
         </div>
       </div>

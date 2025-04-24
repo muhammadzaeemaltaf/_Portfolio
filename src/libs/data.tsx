@@ -2237,7 +2237,10 @@ export const experiencesData = [
 
 export const topProjects: {
   title: string;
+  role: string;
   description: string;
+  feature?: string[];
+  impact?: string;
   tags: React.ElementType[];
   image: StaticImageData;
   link?: string;
@@ -2249,9 +2252,19 @@ export const topProjects: {
   [
     {
       title: "BookMySpot",
-      description:
-        "BookMySpot is a web application that allows users to find and book parking spots in their area. Users can search for available spots, view details, and make reservations.",
+      role:
+        "Led full-stack development: Laravel back-end, MySQL database, Bootstrap front-end; ensured scalability and managed deployments.",
+      description: "BookMySpot, a pioneering salon booking platform in Pakistan using Laravel, PHP, MySQL, and Bootstrap. Connects users with 100+ salons, offering 24/7 booking, smart pricing, and secure payments. Recognized by Startup.pk for simplifying beauty service appointments.",
       tags: [FaLaravel, SiComposer, RiPhpLine, FaBootstrap, SiMysql],
+      feature: [
+        "24/7 Booking",
+        "Smart Pricing",
+        "Instant Confirmations",
+        "Secure Payments",
+        "Salon Memberships",
+        "User Reviews"
+      ],
+      impact: "Transformed Pakistan’s beauty industry with convenient booking and salon management tools.",
       image: Bookmyspot,
       link: "https://bookmyspot.vercel.app/",
       organization: "Innovative Widget",
@@ -2259,21 +2272,38 @@ export const topProjects: {
       organizationURL: "https://innovativewidget.com/",
     },
     {
-      title: "Square One Community",
-      description:
-        "Square One Community is a platform that connects individuals with similar interests. Users can join groups, participate in discussions, and share resources.",
+      title: "SquareOne Community App - Admin Panel",
+      description: "A Next.js-based admin panel for the SquareOne Community app, enabling management of deals, brands, ads, notifications, and user profiles for Square One Mall, Karachi.",
+      role:
+        "As a Frontend developer, I designed responsive Next.js interface, integrated backend APIs, ensured cross-device usability.",
       tags: [RiNextjsFill, RiTailwindCssFill, SiTypescript, zustand],
+      feature: [
+        "Intuitive content management dashboard",
+        "Tools for promotional deals and discounts",
+        "Management of brands and ads",
+        "Real-time notification system",
+        "User profile data management"
+      ],
       image: Sq1Community,
+      impact: "Enabled dynamic content updates, boosting engagement; showcased responsive web development skill.",
       organization: "Innovative Widget",
       organizationLogo: InnovativeWidget,
       organizationURL: "https://innovativewidget.com/",
     },
     {
       title: "VaultSneaks",
-      description:
-        "Create a website named VaultSneaks, a sneaker e-commerce platform using Next.js and Tailwind CSS with dynamic features.",
+      role:
+        " Sole developer handling full-stack: front-end (Tailwind CSS, Shadcn UI), back-end (Next.js), content (Sanity), payments (Stripe).",
+      description: "A modern sneaker e-commerce platform using Next.js, Tailwind CSS, Shadcn UI, Sanity, and Stripe. VaultSneaks offers curated sneaker showcases and promotes a mobile app for a complete shopping experience, showcasing full-stack development skills.",
       tags: [RiNextjsFill, RiTailwindCssFill, SiTypescript, SiSanity],
+      feature:[
+        "Curated sneaker showcases with detailed descriptions",
+        "Responsive design for seamless experience across devices",
+        "Content management via Sanity CMS for easy updates",
+        "Secure payment processing with Stripe"
+      ],
       image: VaultSneak,
+      impact: "Showcases full-stack skills with a responsive, secure e-commerce site using Next.js, Sanity, and Stripe.",
       link: "https://vaultsneaks.vercel.app/",
     }]
 
@@ -2342,13 +2372,13 @@ export const contactLinks = [
 
 export const scrollToView = (link?: string) => {
   const scrollIntoView = document.querySelector(`#${link}`);
-  if (scrollIntoView && typeof(link) === "string") { 
+  if (scrollIntoView && typeof (link) === "string") {
     gsap.to(window, {
       scrollTo: { y: scrollIntoView, offsetY: 0 },
       duration: 1.5,
       ease: "power1.inOut",
     });
-  }else{
+  } else {
     gsap.to(window, {
       scrollTo: { y: 0 },
       duration: 1.5,
