@@ -60,6 +60,8 @@ const Project = () => {
       initialRect: rect,
     }
 
+    gsap.set(document.body, { overflow: "hidden" })
+
     // Animate card
     gsap.set(cardEl, {
       position: "fixed",
@@ -67,6 +69,7 @@ const Project = () => {
       left: rect.left,
       width: rect.width,
       height: rect.height,
+      overflow: "hidden",
       backgroundColor: "black",
       zIndex: 100,
     })
@@ -105,6 +108,7 @@ const Project = () => {
       height: isMobile ? "100dvh" : "80vh",
       width: isMobile ? "100vw" : undefined,
       padding: 0,
+      overflow: "auto",
       duration: 0.3,
       ease: "power2.out",
       onComplete: () => setExpandedProject(project),
@@ -129,22 +133,47 @@ const Project = () => {
     })
 
     // Animate the button to shift right
-    gsap.to(cardEl.querySelector(".animated-button"), {
-      position: "absolute",
-      right: 20,
-      top: 20,
-      duration: 0.3,
-      ease: "power2.out",
-      delay: 0.3, // Sync with card expansion
-    })
+    const button = cardEl.querySelector(".animated-button")
+    if (button) {
+      gsap.to(button, {
+        position: "absolute",
+        right: 25,
+        top: 28,
+        zIndex: 101,
+        duration: 0.5, // Slightly longer for smooth slide
+        ease: "power3.out", // Smoother easing
+        delay: 0.2, // Slightly earlier to feel natural
+      })
+    }
+
+    // Set initial state to ensure it’s hidden before animating
+gsap.set(cardEl.querySelector(".overview-wrapper"), {
+  opacity: 0,
+  height: 0,
+  overflow: "hidden",
+});
+
+// Animate to visible state
+gsap.to(cardEl.querySelector(".overview-wrapper"), {
+  opacity: 1,
+  height: "auto", // Use a large value to accommodate content; adjust as needed
+  duration: 0.3,
+  ease: "power2.out",
+  onComplete: () => {
+    // Set overflow to auto after animation to allow scrolling if needed
+    gsap.set(cardEl.querySelector(".overview-wrapper"), { overflow: "auto" });
+  },
+});
   }
 
   const handleOverlayClick = () => {
     const { element, placeholder, initialRect } = expandedCardData.current
     if (!element || !placeholder || !initialRect) return
 
+    gsap.set(document.body, { overflow: "auto" })
+
     gsap.to(element, {
-      top: window.innerWidth < 767 ? initialRect.top + 260 : initialRect.top + 80,
+      top: window.innerWidth < 767 ? initialRect.top + 260 : initialRect.top + 110,
       left: "50%",
       width: initialRect.width,
       height: initialRect.height,
@@ -208,13 +237,28 @@ const Project = () => {
     })
 
     // Reset button position
-    gsap.to(element.querySelector(".animated-button"), {
-      position: "static",
-      right: "auto",
-      top: "auto",
-      duration: 0.3,
+    const button = element.querySelector(".animated-button")
+    if (button) {
+      gsap.to(button, {
+        position: "static",
+        right: "auto",
+        top: "auto",
+        zIndex: "auto",
+        duration: 0.5,
+        ease: "power3.out",
+      })
+    }
+
+    gsap.to(element.querySelector(".overview-wrapper"), {
+      opacity: 0,
+      height: 0,
+      duration: 0.1,
       ease: "power2.out",
-    })
+      onComplete: () => {
+        // Ensure overflow is hidden after collapsing
+        gsap.set(element.querySelector(".overview-wrapper"), { overflow: "hidden" });
+      },
+    });
   }
 
   return (
@@ -286,41 +330,46 @@ const Project = () => {
                       </span>
                     ))}
                   </div>
-                  <AnimatedButton
-                    text={expandedProject?.title === project.title ? "View Project" : "Overview"}
-                    arrow={expandedProject?.title === project.title}
-                    href={expandedProject?.title === project.title ? project.link : ""}
-                    expanded={expandedProject?.title === project.title}
-                    bg={`2xl:h-12 2xl:px-7 2xl:text-xl ${(expandedProject?.title === project.title && !project.link) ? "hidden" : "block"}`}
-                    onClick={
-                      expandedProject?.title !== project.title
-                        ? (e) => {
+                  <div className="animated-button">
+                    <AnimatedButton
+                      text={expandedProject?.title === project.title ? "View Project" : "Overview"}
+                      arrow={expandedProject?.title === project.title}
+                      href={expandedProject?.title === project.title ? project.link : ""}
+                      expanded={expandedProject?.title === project.title}
+                      bg={`2xl:h-12 2xl:px-7 2xl:text-xl ${(expandedProject?.title === project.title && !project.link) ? "hidden" : "block"}`}
+                      target={expandedProject?.title === project.title ? "_blank" : undefined}
+                      onClick={
+                        expandedProject?.title !== project.title
+                          ? (e) => {
                             e.stopPropagation()
                             const card = (e.currentTarget as HTMLElement).closest(".project-card")
                             if (card) {
                               handleCardClick(project, { ...e, currentTarget: card } as React.MouseEvent<HTMLDivElement, MouseEvent>)
                             }
                           }
-                        : undefined
-                    }
-                  />
+                          : undefined
+                      }
+                    />
+                  </div>
 
-                  {expandedProject === project && (
-                    <div className="mt-6">
-                      <h2 className="font-semibold text-3xl">Project Overview</h2>
-                      <p className="my-5">{expandedProject.description}</p>
-                      <h2 className="font-semibold text-3xl">Features</h2>
-                      {expandedProject.feature && (
-                        <ul className="list-disc list-inside my-5">
-                          {expandedProject.feature.map((item: string, i: number) => (
-                            <li key={i}>{item}</li>
-                          ))}
-                        </ul>
-                      )}
-                      <h2 className="font-semibold text-3xl my-5">Impact</h2>
-                      <p>{expandedProject.impact}</p>
-                    </div>
-                  )}
+                  <div className="mt-6 overview-wrapper opacity-0 h-0 overflow-hidden">
+                    {expandedProject === project && (
+                      <>
+                        <h2 className="font-semibold text-3xl">Project Overview</h2>
+                        <p className="my-5">{expandedProject.description}</p>
+                        <h2 className="font-semibold text-3xl">Features</h2>
+                        {expandedProject.feature && (
+                          <ul className="list-disc list-inside my-5">
+                            {expandedProject.feature.map((item: string, i: number) => (
+                              <li key={i}>{item}</li>
+                            ))}
+                          </ul>
+                        )}
+                        <h2 className="font-semibold text-3xl my-5">Impact</h2>
+                        <p>{expandedProject.impact}</p>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
             )

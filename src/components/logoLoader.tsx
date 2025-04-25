@@ -14,7 +14,7 @@ const LogoLoader: React.FC<LogoLoaderProps> = ({
   width = 200,
   height = 200,
   className = "",
-  duration = 2,
+  duration = 1.5,
 }) => {
   const pathRef = useRef<SVGPathElement>(null);
 

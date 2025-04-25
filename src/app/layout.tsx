@@ -23,13 +23,9 @@ export async function generateMetadata(): Promise<Metadata> {
     verification: {
       google: "9Jm-lCyk2ZAGml9QWXLCkgwkzrb78gbR7Pbw4g5BTEw",
     },
-    openGraph: {
-      title: "Muhammad Zaeem Altaf | Full-Stack Web Developer",
-      url: "https://zaeemaltaf.tech",
-    },
-    other: {
+    alternates: {
       canonical: "https://zaeemaltaf.tech",
-    },
+    }
   };
 }
 

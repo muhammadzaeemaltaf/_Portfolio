@@ -2266,7 +2266,7 @@ export const topProjects: {
       ],
       impact: "Transformed Pakistan’s beauty industry with convenient booking and salon management tools.",
       image: Bookmyspot,
-      link: "https://bookmyspot.vercel.app/",
+      link: "https://bms.innovativewidget.com/",
       organization: "Innovative Widget",
       organizationLogo: InnovativeWidget,
       organizationURL: "https://innovativewidget.com/",
