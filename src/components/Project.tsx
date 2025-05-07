@@ -94,7 +94,7 @@ const Project = () => {
     })
 
     gsap.to(cardEl.querySelector(".text h3"), {
-      fontSize: "2.5rem",
+      fontSize: isMobile ? "1.5rem" : "2.5rem",
       marginBottom: "1rem",
       duration: 0.3,
       ease: "power2.out",
@@ -137,8 +137,9 @@ const Project = () => {
     if (button) {
       gsap.to(button, {
         position: "absolute",
-        right: 25,
-        top: 28,
+        right: 8,
+        top: 12,
+        scale: 0.85,
         zIndex: 101,
         duration: 0.5, // Slightly longer for smooth slide
         ease: "power3.out", // Smoother easing
@@ -243,6 +244,7 @@ gsap.to(cardEl.querySelector(".overview-wrapper"), {
         position: "static",
         right: "auto",
         top: "auto",
+        scale: 1,
         zIndex: "auto",
         duration: 0.5,
         ease: "power3.out",
