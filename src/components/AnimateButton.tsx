@@ -10,6 +10,7 @@ export const AnimatedButton = ({
   target= "",
   type = "button",
   icon = null,
+  is_disabled = false,
   onClick,
 }: {
   text?: string | React.ReactNode;
@@ -20,6 +21,7 @@ export const AnimatedButton = ({
   expanded?: boolean;
   type?: "button" | "submit" | "reset";
   icon?: React.ReactNode;
+  is_disabled?: boolean;
   onClick?: (e: React.MouseEvent) => void;
 }) => {
   const [prevText, setPrevText] = useState(text);
@@ -131,6 +133,7 @@ export const AnimatedButton = ({
         className={commonClasses}
         type={type}
         style={{ "--is-animation-running": "running" } as React.CSSProperties}
+        disabled={is_disabled}
         onClick={(e) => {
           e.stopPropagation(); // Prevent event bubbling to parent
           if (onClick) onClick(e);

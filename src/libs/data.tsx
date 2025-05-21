@@ -2253,7 +2253,7 @@ export const topProjects: {
     {
       title: "BookMySpot",
       role:
-        "Led full-stack development: Laravel back-end, MySQL database, Bootstrap front-end; ensured scalability and managed deployments.",
+        "Currently working as a led full-stack developer: Laravel back-end, MySQL database, Bootstrap front-end; ensured scalability and managed deployments.",
       description: "BookMySpot, a pioneering salon booking platform in Pakistan using Laravel, PHP, MySQL, and Bootstrap. Connects users with 100+ salons, offering 24/7 booking, smart pricing, and secure payments. Recognized by Startup.pk for simplifying beauty service appointments.",
       tags: [FaLaravel, SiComposer, RiPhpLine, FaBootstrap, SiMysql],
       feature: [

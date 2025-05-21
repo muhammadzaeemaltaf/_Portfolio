@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -11,7 +11,11 @@ import { FaPaperPlane } from "react-icons/fa6";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Contact() {
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+    const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState<string | null>(null);
     const sectionRef = useRef(null);
+    const formRef = useRef<HTMLFormElement | null>(null);
 
     useEffect(() => {
         if (!sectionRef.current) return;
@@ -33,6 +37,38 @@ export default function Contact() {
         );
     }, []);
 
+    // Handle form submission
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        setError(null);
+        setSuccess(null);
+
+        const formData = new FormData(e.currentTarget);
+        try {
+            const res = await fetch("/api/contact", {
+                method: "POST",
+                body: formData,
+            });
+            if (res) {
+                setError(null);
+                setSuccess("Message sent successfully!");
+                if (formRef.current) {
+                    formRef.current.reset();
+                }
+            } else {
+                setError("Error sending message. Please try again later.");
+                setSuccess(null);
+            }
+        } catch (err) {
+            setError("Error sending message. Please try again later.");
+            setSuccess(null);
+        } finally {
+            setIsSubmitting(false);
+            setSuccess(null);
+            setError(null);
+        }
+    };
 
     return (
         <section
@@ -58,17 +94,8 @@ export default function Contact() {
 
             <form
                 className="mt-8 flex flex-col dark:text-black"
-                action={async (formData) => {
-                    const res = await fetch("/api/contact", {
-                        method: "POST",
-                        body: formData,
-                    });
-                    if (res.status === 200) {
-                        console.log("Message sent successfully!");
-                    } else {
-                        console.log("Error sending message. Please try again later.");
-                    }
-                }}
+                onSubmit={handleSubmit}
+                ref={formRef}
             >
 
                 <input
@@ -94,14 +121,27 @@ export default function Contact() {
                     required
                     maxLength={5000}
                 />
-                <AnimatedButton
-                    text="Submit"
-                    bg="text-white !py-6 group"
-                    type="submit"
-                    icon= {
-                        <FaPaperPlane className="text-xs opacity-70 transition-all group-hover:translate-x-1 group-hover:-translate-y-1" />
-                    }
-                />
+                {error && (
+                    <div className="text-red-500 mb-3">{error}</div>
+                )}
+                {success && (
+                    <div className="text-green-500 mb-3">{success}</div>
+                )}
+                <div className={`block relative w-fit ${isSubmitting ? "cursor-not-allowed" : ""}`}>
+                    {isSubmitting && (
+                        <div className="absolute z-10 inset-0 flex items-center justify-center cursor-not-allowed"/>
+                       
+                    )}
+                    <AnimatedButton
+                        text={isSubmitting ? "Sending..." : "Send"}
+                        is_disabled={isSubmitting}
+                        bg="text-white !py-6 group"
+                        type="submit"
+                        icon={
+                            <FaPaperPlane className="text-xs opacity-70 transition-all group-hover:translate-x-1 group-hover:-translate-y-1" />
+                        }
+                    />
+                </div>
             </form>
         </section>
     );
