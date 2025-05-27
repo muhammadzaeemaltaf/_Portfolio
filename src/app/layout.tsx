@@ -14,9 +14,9 @@ const geistMono = Geist_Mono({
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Muhammad Zaeem Altaf | Full-Stack Web Developer | Next.js Developer",
+    title: "Muhammad Zaeem Altaf – Full-Stack Web Developer | Next.js, React, Tailwind",
     description:
-      "Full stack developer skilled in Next.js & Tailwind CSS, crafting responsive, user-focused websites with top performance.",
+      "Hi, I’m Zaeem – a full-stack developer specializing in Next.js, React, and Tailwind CSS. I build fast, scalable, user-friendly web apps.",
     icons: {
       icon: "/favicon.ico",
     },
@@ -25,7 +25,20 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     alternates: {
       canonical: "https://zaeemaltaf.tech",
-    }
+    },
+    openGraph: {
+      title: "Muhammad Zaeem Altaf – Full-Stack Web Developer",
+      description:
+        "Crafting blazing-fast, scalable apps with Next.js, React, and Tailwind CSS.",
+      url: "https://zaeemaltaf.tech",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Muhammad Zaeem Altaf – Full-Stack Web Developer",
+      description: "Building modern web apps with Next.js, React, and Tailwind CSS.",
+    },
+    
   };
 }
 
@@ -36,7 +49,26 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-
+      <head>
+        {/* Schema.org Structured Data for Google */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: "Muhammad Zaeem Altaf",
+              url: "https://zaeemaltaf.tech",
+              jobTitle: "Full-Stack Web Developer",
+              sameAs: [
+                "https://github.com/muhammadzaeemaltaf",
+                "https://pk.linkedin.com/in/muhammadzaeemaltaf",
+              ],
+              knowsAbout: ["Next.js", "React", "Tailwind CSS", "JavaScript", "TypeScript", "Laravel"]
+            }),
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

@@ -7,7 +7,6 @@ import { Typewriter } from "react-simple-typewriter";
 import { AnimatedButton } from "./AnimateButton";
 import { HiDownload } from "react-icons/hi";
 import { scrollToView } from "@/libs/data";
-import { BsGithub } from "react-icons/bs";
 import { FiGithub } from "react-icons/fi";
 import { FaLinkedin } from "react-icons/fa6";
 
@@ -85,6 +84,10 @@ const HeroSection = () => {
       ></div>
 
       <div className="container relative isolate mx-auto">
+        <p className="sr-only">
+          Portfolio of Muhammad Zaeem Altaf – Full-Stack Developer skilled in Next.js, Laravel, and React.
+        </p>
+
         <div className="relative pb-8 pt-12 sm:py-14 md:py-16">
           {/* Main heading */}
           <div className="relative isolate">
