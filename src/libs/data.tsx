@@ -2184,6 +2184,7 @@ export const skills = [
   {
     type: "Framework & Libraries",
     name: [
+      { label: "React.js", icon: FaReact },
       { label: "Next.js", icon: RiNextjsFill },
       { label: "Tailwind CSS", icon: SiTailwindcss },
       { label: "Zustand", icon: zustand },
