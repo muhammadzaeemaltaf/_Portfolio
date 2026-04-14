@@ -85,7 +85,8 @@ const HeroSection = () => {
 
       <div className="container relative isolate mx-auto">
         <p className="sr-only">
-          Portfolio of Muhammad Zaeem Altaf – Full-Stack Developer skilled in Next.js, Laravel, and React.
+          Portfolio of Muhammad Zaeem Altaf – Full-Stack Developer skilled in Next.js, React, TypeScript, Laravel, and PHP. 
+          Specializing in building modern, scalable web applications and e-commerce solutions.
         </p>
 
         <div className="relative pb-8 pt-12 sm:py-14 md:py-16">

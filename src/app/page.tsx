@@ -28,13 +28,29 @@ export default function Home() {
       {!loading && (
         <>
           <Navbar />
-          <HeroSection />
-          <About />
-          <Skills />
-          <Project />
-          <Experience />
-          <Education />
-          <ContactForm />
+          <main>
+            <section aria-label="Hero section" id="hero">
+              <HeroSection />
+            </section>
+            <section aria-label="About Muhammad Zaeem Altaf" id="about">
+              <About />
+            </section>
+            <section aria-label="Technical skills and technologies" id="skills">
+              <Skills />
+            </section>
+            <section aria-label="Portfolio projects" id="projects">
+              <Project />
+            </section>
+            <section aria-label="Professional work experience" id="experience">
+              <Experience />
+            </section>
+            <section aria-label="Education and certifications" id="education">
+              <Education />
+            </section>
+            <section aria-label="Contact form" id="contact">
+              <ContactForm />
+            </section>
+          </main>
           <Footer />
           <BackToTop />
         </>
