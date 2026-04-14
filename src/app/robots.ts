@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/private/',
     },
-    sitemap: 'https://zaeemaltaf.tech/sitemap.xml',
+    sitemap: 'https://muhammadzaeemaltaf.vercel.app/sitemap.xml',
   }
 }
