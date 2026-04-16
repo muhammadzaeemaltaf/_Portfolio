@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
       template: "%s | Muhammad Zaeem Altaf – Full-Stack Developer",
     },
     description:
-      "Hi, I'm Zaeem – a passionate Full-Stack Developer specializing in Next.js, React, TypeScript, Tailwind CSS, Laravel, and PHP. I build fast, scalable, and user-friendly web applications. Explore my portfolio featuring modern web apps, e-commerce solutions, and booking platforms.",
+      "Full-Stack Developer specializing in Next.js, React, TypeScript, Laravel, and PHP. I build fast, scalable web applications.",
     keywords: [
       "Muhammad Zaeem Altaf",
       "Zaeem Altaf",

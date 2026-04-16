@@ -126,7 +126,7 @@ const HeroSection = () => {
             />
             <AnimatedButton text="Downlaod CV" icon={
               <HiDownload className="text-xl md:text-2xl opacity-70 transition-all  group-hover:translate-y-1" />
-            } bg="group !px-6 !text-sm !h-11 md:!px-8 md:!py-6 md:!text-lg bg-black/70" href={'/MUHAMMAD ZAEEM ALTAF.pdf'} />
+            } bg="group !px-6 !text-sm !h-11 md:!px-8 md:!py-6 md:!text-lg bg-black/70" href={'/MUHAMMAD ZAEEM ALTAF.pdf'} target="_blank"/>
             <div className="flex gap-4">
               <AnimatedButton
                 text={<FiGithub className="h-4 w-4" />}
