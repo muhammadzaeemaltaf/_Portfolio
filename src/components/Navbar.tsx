@@ -35,7 +35,7 @@ export default function Navbar() {
       // Animate navbar expansion
       tl.to(navRef.current, {
         width: "calc(100% - 40px)",
-        maxWidth: 1200,
+        maxWidth: 1400,
         borderRadius: "62px",
         paddingLeft: 20,
         paddingRight: 20,
@@ -134,7 +134,7 @@ export default function Navbar() {
 
   return (
     <header
-      className="z-50 fixed transition-all duration-600 ease-in-out w-[150px] md:w-[300px]  max-w-[1200px] mx-auto
+      className="z-50 fixed transition-all duration-600 ease-in-out w-[150px] md:w-[300px]  max-w-[1400px] mx-auto
       lg:h-[70px] md:h-[70px] h-[58px] rounded-[62px] 
       top-[10px] left-[10px] right-[10px] md:top-[20px] md:left-[20px] md:right-[20px] px-[20px]
       flex flex-row justify-between items-center backdrop-blur-xs bg-black/20 border border-white/10"

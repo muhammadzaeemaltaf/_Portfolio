@@ -17,6 +17,7 @@ import { PiFramerLogoFill } from "react-icons/pi";
 import { RiNextjsFill, RiPhpLine, RiTailwindCssFill } from "react-icons/ri";
 import {
   SiComposer,
+  SiFirebase,
   SiGreensock,
   SiJquery,
   SiMysql,
@@ -2256,6 +2257,14 @@ export const experiencesData = [
 
 
 
+const placeholderImage = (label: string, color = "#1f2937") =>
+  `data:image/svg+xml;utf8,${encodeURIComponent(
+    `<svg xmlns='http://www.w3.org/2000/svg' width='800' height='450' viewBox='0 0 800 450'><rect width='800' height='450' fill='${color}'/><text x='50%' y='50%' font-family='sans-serif' font-size='32' fill='#94a3b8' text-anchor='middle' dominant-baseline='middle'>${label}</text></svg>`
+  )}`;
+
+const placeholderGallery = (labels: string[]) =>
+  labels.map((label, i) => placeholderImage(label, ["#1f2937", "#27303f", "#1a2230"][i % 3]));
+
 export const topProjects: {
   title: string;
   role: string;
@@ -2263,7 +2272,7 @@ export const topProjects: {
   feature?: string[];
   impact?: string;
   tags: React.ElementType[];
-  image: StaticImageData;
+  image: (StaticImageData | string)[];
   link?: string;
   organization?: string;
   organizationLogo?: IconType;
@@ -2278,15 +2287,17 @@ export const topProjects: {
       description: "BookMySpot, a pioneering salon booking platform in Pakistan using Laravel, PHP, MySQL, and Bootstrap. Connects users with 100+ salons, offering 24/7 booking, smart pricing, and secure payments. Recognized by Startup.pk for simplifying beauty service appointments.",
       tags: [FaLaravel, SiComposer, RiPhpLine, FaBootstrap, SiMysql],
       feature: [
-        "24/7 Booking",
-        "Smart Pricing",
-        "Instant Confirmations",
-        "Secure Payments",
-        "Salon Memberships",
-        "User Reviews"
+        "9-state booking lifecycle (booked, confirmed, arrived, started, completed/paid) with cancellation and no-show branches",
+        "PayFast payment gateway integration with SHA256 hash-verified callbacks and IPN",
+        "Pusher-powered real-time notifications and in-app chat over private channels",
+        "Firebase Cloud Messaging push notifications for the mobile app",
+        "Automated loyalty points engine (spend ratio, first-booking bonus, birthday bonus, referrals)",
+        "Tiered API rate limiting (10-1200 req/min) protecting payment and booking routes",
+        "Smart search with keyword normalization across salons, services, and deals",
+        "Unified minute-cron scheduler for no-show detection and deal/coupon expiry"
       ],
       impact: "Transformed Pakistan’s beauty industry with convenient booking and salon management tools.",
-      image: Bookmyspot,
+      image: [Bookmyspot],
       link: "https://bms.innovativewidget.com/",
       organization: "Innovative Widget",
       organizationLogo: InnovativeWidget,
@@ -2299,14 +2310,105 @@ export const topProjects: {
         "As a Frontend developer, I designed responsive Next.js interface, integrated backend APIs, ensured cross-device usability.",
       tags: [RiNextjsFill, RiTailwindCssFill, SiTypescript, zustand],
       feature: [
-        "Intuitive content management dashboard",
-        "Tools for promotional deals and discounts",
-        "Management of brands and ads",
-        "Real-time notification system",
-        "User profile data management"
+        "Dual-token auth model: cookie-based route guard plus Bearer JWT API access",
+        "Separate isolated login system for Campaign Managers with its own session flow",
+        "5 persisted Zustand stores (auth, brand, ad, event, Spend & Win) with derived selectors",
+        "Deals engine supporting flat taglines and 1-100% discounts with aspect-ratio-validated Cloudinary uploads",
+        "Ads module enforcing 16:9 banners, linked only to currently valid deals",
+        "Spend & Win invoice verification workflow (pending/approved/rejected/flagged) with duplicate detection and bulk actions",
+        "Prize draw lifecycle with server-executed winner selection and delete-guard on completed draws",
+        "Custom fetch client with request timeout and blob-response support for CSV exports"
       ],
-      image: Sq1Community,
+      image: [Sq1Community],
       impact: "Enabled dynamic content updates, boosting engagement; showcased responsive web development skill.",
+      organization: "Innovative Widget",
+      organizationLogo: InnovativeWidget,
+      organizationURL: "https://innovativewidget.com/",
+    },
+    {
+      title: "Atrium Community App - Admin Panel",
+      description: "A Next.js-based admin panel for the Atrium Community app, enabling management of events, brands, ads, notifications, and user profiles for the Atrium community platform.",
+      role:
+        "As a Frontend developer, I designed responsive Next.js interface, integrated backend APIs, ensured cross-device usability.",
+      tags: [RiNextjsFill, RiTailwindCssFill, SiTypescript, zustand],
+      feature: [
+        "4 persisted Zustand stores (auth, brand, ad, event) with nested deal management and derived selectors",
+        "Deal engine with type-based validation: percentage discounts vs free-text taglines",
+        "Client-side aspect-ratio validation before Cloudinary upload (1:1, 9:16, 16:9 per asset type)",
+        "Dashboard analytics computed from live data: monthly redemption trends, top brands and deals ranking",
+        "Resilient dashboard loading via parallel requests so one failed endpoint doesn't block the page",
+        "Support ticket workflow with resolve/reopen status toggle",
+        "Event creation and detail management with image carousel for featured content",
+        "Direct API integration with the Atrium community backend"
+      ],
+      image: placeholderGallery(["Dashboard", "Events", "Brands"]),
+      impact: "Enabled dynamic content updates, boosting engagement; showcased responsive web development skill.",
+      organization: "Innovative Widget",
+      organizationLogo: InnovativeWidget,
+      organizationURL: "https://innovativewidget.com/",
+    },
+    {
+      title: "Squareone Orbit - Admin Panel",
+      description: "A Next.js-based super admin portal for the Squareone Orbit task management system, enabling ticket tracking, department-wise analytics, audit logging, and employee reporting.",
+      role:
+        "As a Frontend developer, I designed responsive Next.js interface, integrated backend APIs, ensured cross-device usability.",
+      tags: [RiNextjsFill, RiTailwindCssFill, SiTypescript, zustand],
+      feature: [
+        "Ticket lifecycle (pending, in-progress, completed/resolved/cancelled) with priority levels and sub-tickets",
+        "Automatic duplicate-ticket detection scoped by department, category, and floor",
+        "Client-side JWT expiry detection for instant session handling without an extra round-trip",
+        "Resilient API layer with exponential-backoff retry on rate-limit and server errors",
+        "Role-based feedback gating restricted to department heads and super admins",
+        "Dual export pipeline: CSV and branded PDF reports with sensitive-field stripping",
+        "18 notification event types and 20 audit action types for full activity tracking",
+        "Department and employee-wise analytics dashboards with CSV/PDF export"
+      ],
+      image: placeholderGallery(["Dashboard", "Tickets", "Analytics"]),
+      impact: "Streamlined mall task management with real-time tracking and reporting for Squareone Mall staff.",
+      organization: "Innovative Widget",
+      organizationLogo: InnovativeWidget,
+      organizationURL: "https://innovativewidget.com/",
+    },
+    {
+      title: "Lexnis SOS - Admin Panel",
+      description: "A standalone Next.js admin dashboard for the Lexnis SOS platform, managing users, service areas, shifts, services, queries, analytics, SOS operations, and profile settings.",
+      role:
+        "As a Frontend developer, I designed responsive Next.js interface, integrated backend APIs, ensured cross-device usability.",
+      tags: [RiNextjsFill, RiTailwindCssFill, SiTypescript, zustand],
+      feature: [
+        "Real-time SOS lifecycle tracking (SENT, RESPONDED, PENDING_APPROVAL, RESOLVED) over native WebSockets",
+        "Live notification channel for SOS alerts, area updates, and admin queries",
+        "Shift scheduling that auto-adds/removes officers from area group chats on shift start/completion",
+        "Service request lifecycle management (PENDING, IN_PROGRESS, COMPLETED/CANCELLED)",
+        "SOS analytics dashboard: trend charts, area-wise breakdown, response-time distribution, KPI cards",
+        "S3-backed CSV exports via presigned URLs with database fallback storage",
+        "Refresh-token rotation with HTTP-only cookie session handling",
+        "Backed by 490 automated integration tests across the platform"
+      ],
+      image: placeholderGallery(["Dashboard", "SOS", "Analytics"]),
+      impact: "Gave Lexnis SOS staff real-time visibility and control over active safety operations.",
+      organization: "Innovative Widget",
+      organizationLogo: InnovativeWidget,
+      organizationURL: "https://innovativewidget.com/",
+    },
+    {
+      title: "Recrot",
+      description: "Recrot is an online tutoring platform connecting qualified tutors with parents and companies, facilitating job postings, applications, and hiring with tiered subscription plans.",
+      role:
+        "As a Full-stack developer, I built the Next.js frontend and backend: Firebase data layer, authentication, rate limiting, and notification systems.",
+      tags: [RiNextjsFill, RiTailwindCssFill, SiTypescript, SiFirebase],
+      feature: [
+        "Job application lifecycle across tutor, parent, and company dashboards",
+        "Tiered subscription plans (Free/Basic/Pro) with monthly application caps and usage warnings",
+        "Automated subscription expiry via daily cron plus real-time client-side checks",
+        "Redis-backed sliding-window rate limiting on auth and notification endpoints",
+        "Email 2FA with one-time codes and backup codes, session-cookie based auth",
+        "Firebase Cloud Messaging push notifications with delivery-failure handling",
+        "Input sanitization and Sentry error monitoring across the platform",
+        "Branded PDF analytics reports and debounced in-app tutor/job search"
+      ],
+      image: placeholderGallery(["Dashboard", "Jobs", "Admin"]),
+      impact: "Streamlined tutor hiring with role-based workflows across tutors, parents, and companies.",
       organization: "Innovative Widget",
       organizationLogo: InnovativeWidget,
       organizationURL: "https://innovativewidget.com/",
@@ -2318,12 +2420,16 @@ export const topProjects: {
       description: "A modern sneaker e-commerce platform using Next.js, Tailwind CSS, Shadcn UI, Sanity, and Stripe. VaultSneaks offers curated sneaker showcases and promotes a mobile app for a complete shopping experience, showcasing full-stack development skills.",
       tags: [RiNextjsFill, RiTailwindCssFill, SiTypescript, SiSanity],
       feature:[
-        "Curated sneaker showcases with detailed descriptions",
-        "Responsive design for seamless experience across devices",
-        "Content management via Sanity CMS for easy updates",
-        "Secure payment processing with Stripe"
+        "Sanity-driven catalog: products, categories, and star-rated reviews with admin-controlled user access",
+        "Dynamic Stripe Checkout sessions with live currency conversion (PKR to USD/CAD/GBP/AUD/INR)",
+        "Stripe webhook reconciliation: signature verification and duplicate-order prevention",
+        "Dual checkout paths: instant order write for Cash on Delivery vs webhook-confirmed online payments",
+        "4 independent persisted Zustand stores (basket, wishlist, compare, user) keyed by product and color variant",
+        "GROQ-powered product search across name, description, and category",
+        "JWT-based session auth with httpOnly cookies protecting checkout and wishlist routes",
+        "Automated email flow for account activation and order confirmation"
       ],
-      image: VaultSneak,
+      image: [VaultSneak],
       impact: "Showcases full-stack skills with a responsive, secure e-commerce site using Next.js, Sanity, and Stripe.",
       link: "https://vaultsneaks.vercel.app/",
     }]

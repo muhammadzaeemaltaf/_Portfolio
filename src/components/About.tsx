@@ -84,7 +84,7 @@ export default function About() {
         start: "top 30%",
         end: "center center",
         scrub: 0.1,
-        
+
         // markers: true,
       },
       opacity: 0,
@@ -152,20 +152,19 @@ export default function About() {
         <div className="left-right__step-inner w-full md:w-1/2 md:pl-8">
           <div className="text-base text-center md:text-[18px] md:text-start leading-relaxed text-gray-400">
             <p ref={firstParaRef} className="mb-5">
-            I as a full-stack developer, have experience working with HTML, CSS, JavaScript, TypeScript, PHP, 
-            WordPress, Next.js, and React.js as well as Tailwind CSS. I possess the ability to create 
-            responsive and friendly web applications. Currently, I am employed at Innovative Widget where 
-            I work with awesome groups of people bringing forth high-end web solutions and maintaining them. 
-            I started with pre engineering studies and specialized training at Memon Industrial & Technical 
-            Institute. At the moment, I am pursuing Bachelor of Computer Science from Virtual University and 
-            have a Cloud Applied Generative AI Engineering certification from GIAIC to ensure that I don’t get left behind in this swiftly evolving technology. I'm an AI enthusiast and an open-source contributor. I love learning and constantly growing. I’m ready and open to full-time opportunities, feel free to connect with me on LinkedIn or email!
+              I&apos;m a Full-Stack Developer specializing in building fast, responsive, and
+              scalable web applications with Next.js, React, TypeScript, Laravel, and Tailwind CSS.
+              At Innovative Widget, I design and ship production-grade platforms end to end — from
+              backend APIs and data models to polished, interactive interfaces — collaborating with
+              a talented team to deliver and maintain high-quality solutions.
             </p>
 
             <p ref={secondParaRef}>
-              {/* I'm passionate, about exploring new technologies, especially in AI. I am currently working towards a
-              certification in Cloud Applied Generative AI Engineering. Currently, I am pursuing a Bachelor's degree in
-              Computer Science from Virtual University (VU). I also have a keen interest in open-source projects and
-              enjoy contributing to the tech community. */}
+              Alongside my work, I&apos;m pursuing a Bachelor&apos;s in Computer Science at Virtual
+              University and training in Cloud Applied Generative AI Engineering at GIAIC. I&apos;m
+              deeply interested in AI agents, LLM tooling, and the systems that power modern
+              products, and I actively contribute to open source. Always learning and open to new
+              opportunities — feel free to reach out on LinkedIn or via email.
             </p>
           </div>
         </div>
