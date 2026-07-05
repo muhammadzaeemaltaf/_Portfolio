@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Menu, X } from 'lucide-react';
 import { scrollToView, navlinks } from "@/libs/data";
+
+const slugify = (link: string) => link.toLowerCase().replace(/\s+/g, "-");
 import gsap from "gsap";
 import { AnimatedButton } from "./AnimateButton";
 import Image from "next/image";
@@ -109,7 +111,7 @@ export default function Navbar() {
   }, [isMenuOpen]);
 
   useEffect(() => {
-    const sections = [...navlinks, "contact"].map(link => document.getElementById(link.toLowerCase()));
+    const sections = [...navlinks, "contact"].map(link => document.getElementById(slugify(link)));
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries.filter(entry => entry.isIntersecting);
@@ -158,8 +160,8 @@ export default function Navbar() {
           {navlinks.map((link, index) => (
             <span
               key={index}
-              className={`lg:text-[16px] cursor-pointer h-[26px] font-medium transition-all ease-in duration-150 ${activeLink === link.toLowerCase() ? "text-blue-400" : "text-gray-200"} hover:text-blue-400`}
-              onClick={() => { scrollToView(link.toLowerCase()); setIsMenuOpen(false); }}
+              className={`lg:text-[16px] cursor-pointer h-[26px] font-medium transition-all ease-in duration-150 ${activeLink === slugify(link) ? "text-blue-400" : "text-gray-200"} hover:text-blue-400`}
+              onClick={() => { scrollToView(slugify(link)); setIsMenuOpen(false); }}
             >
               {link}
             </span>
@@ -200,8 +202,8 @@ export default function Navbar() {
           {navlinks.map((link, index) => (
             <span
               key={index}
-              className={`lg:text-[16px] cursor-pointer h-[26px] font-medium transition-all ease-in duration-150 ${activeLink === link.toLowerCase() ? "text-blue-400" : "text-gray-200"} hover:text-blue-400`}
-              onClick={() => { scrollToView(link.toLowerCase()); setIsMenuOpen(false); }}
+              className={`lg:text-[16px] cursor-pointer h-[26px] font-medium transition-all ease-in duration-150 ${activeLink === slugify(link) ? "text-blue-400" : "text-gray-200"} hover:text-blue-400`}
+              onClick={() => { scrollToView(slugify(link)); setIsMenuOpen(false); }}
             >
               {link}
             </span>

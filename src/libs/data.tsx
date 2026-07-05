@@ -2186,6 +2186,7 @@ l-24 53 0 700 0 700 157 207 c87 114 166 212 175 217 25 14 1177 15 1204 1z"/>
 export const navlinks = [
   "About",
   "Skills",
+  "How I Work",
   "Projects",
   "Experience",
   "Education",
