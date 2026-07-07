@@ -143,7 +143,7 @@ const Project = () => {
 
     gsap.set(element, {
       position: "fixed",
-      top: initialRect.top,
+      top: initialRect.top + 290,
       left: initialRect.left,
       xPercent: 0,
       yPercent: 0,
@@ -152,7 +152,7 @@ const Project = () => {
     })
 
     Flip.from(state, {
-      duration: 0.5,
+      duration: 0.7,
       ease: "power2.inOut",
       onComplete: () => {
         gsap.set(element, { clearProps: "all" })
@@ -168,8 +168,8 @@ const Project = () => {
     gsap.to(".overlay", {
       opacity: 0,
       pointerEvents: "none",
-      duration: 0.3,
-      ease: "power2.out",
+      duration: 0.5,
+      ease: "power2.inOut",
     })
   }
 
