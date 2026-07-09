@@ -7,6 +7,7 @@ import type { IconType } from "react-icons"
 import Heading from "./Heading"
 import { experiencesData } from "@/libs/data"
 import Link from "next/link"
+import { ExternalLink } from "lucide-react"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -125,7 +126,7 @@ export default function Experience() {
   return (
     <section id="experience" className="scroll-mt-28 mb-28 sm:mb-40">
       <Heading heading="Experience" />
-      <div ref={timelineRef} className="relative max-w-5xl mx-auto mt-16">
+      <div ref={timelineRef} className="relative max-w-[1400px] w-full mx-auto px-4 md:px-10 mt-16">
         {/* Timeline center line - centered on desktop, left-aligned on mobile */}
         <div className="timeline-line absolute md:left-1/2 left-10 top-0 w-1 h-full md:-translate-x-1/2 bg-gray-200 dark:bg-gray-700"></div>
 
@@ -167,23 +168,24 @@ export default function Experience() {
 
               {/* Content box - slides in */}
               <div
-                className={`content-box md:w-[calc(50%-2rem)] w-[calc(100%-3rem)] ${
-                  isEven ? "md:ml-auto md:mr-6" : "md:mr-auto md:ml-6"
-                } ml-10 p-6 rounded-lg shadow-md bg-gray-800/50 border border-gray-700`}
+                className={`content-box md:w-[calc(50%-3rem)] w-[calc(100%-3rem)] ${
+                  isEven ? "md:ml-auto md:mr-10" : "md:mr-auto md:ml-10"
+                } ml-10 p-7 rounded-lg shadow-md bg-gray-800/50 border border-gray-700`}
               >
                 <div className="flex flex-col">
-                  <h3 className="text-lg font-semibold">{item.title}</h3>
+                  <h3 className="text-xl font-semibold">{item.title}</h3>
                   <Link
                     href={item.href}
                     target="_blank"
-                    className="text-sm text-gray-600 dark:text-gray-300"
+                    className="inline-flex items-center gap-1 text-base text-gray-600 dark:text-gray-300 hover:text-primary-500 transition-colors w-fit"
                   >
                     {item.location}
+                    <ExternalLink className="h-3.5 w-3.5" />
                   </Link>
-                  <span className="mt-1 text-sm font-medium text-gray-500 dark:text-gray-400 md:hidden">
+                  <span className="mt-1 text-base font-medium text-gray-500 dark:text-gray-400 md:hidden">
                     {item.date}
                   </span>
-                  <p className="mt-2 text-gray-700 dark:text-gray-300">
+                  <p className="mt-2 text-base text-gray-700 dark:text-gray-300">
                     {item.description}
                   </p>
                 </div>

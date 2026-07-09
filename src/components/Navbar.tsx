@@ -74,6 +74,7 @@ export default function Navbar() {
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
+    let ticking = false;
 
     const slideNavbar = () => {
       const currentScrollY = window.scrollY;
@@ -81,19 +82,27 @@ export default function Navbar() {
 
       if (navRef.current) {
         if (currentScrollY > 200 && goingDown) {
-          gsap.to(navRef.current, { duration: 0.3, y: -100, ease: "power2.out" });
+          gsap.to(navRef.current, { duration: 0.3, y: -100, ease: "power2.out", overwrite: "auto" });
           if (isMenuOpen) setIsMenuOpen(false);
         } else {
-          gsap.to(navRef.current, { duration: 0.1, y: 0, ease: "back.out" });
+          gsap.to(navRef.current, { duration: 0.1, y: 0, ease: "back.out", overwrite: "auto" });
         }
       }
 
       lastScrollY = currentScrollY;
+      ticking = false;
     };
 
-    window.addEventListener("scroll", slideNavbar);
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(slideNavbar);
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
-      window.removeEventListener("scroll", slideNavbar);
+      window.removeEventListener("scroll", onScroll);
     };
   }, [isMenuOpen]);
 

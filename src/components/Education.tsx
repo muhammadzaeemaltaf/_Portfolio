@@ -128,7 +128,7 @@ export default function Education() {
       className="scroll-mt-28 mb-28 sm:mb-40 max-w-[1700px] w-full mx-auto"
     >
       <Heading heading="Education & Certifications" />
-      <div ref={timelineRef} className="relative max-w-5xl mx-auto mt-16">
+      <div ref={timelineRef} className="relative max-w-[1400px] w-full mx-auto px-4 md:px-10 mt-16">
         {/* Timeline center line - centered on desktop, left-aligned on mobile */}
         <div className="education-timeline-line absolute md:left-1/2 left-10 top-0 w-1 h-full md:-translate-x-1/2 bg-gradient-to-b from-[#1e40af]/70 to-[#1e40af] dark:from-[#1e40af]/80 dark:to-[#1e40af]"></div>
 
@@ -173,38 +173,38 @@ export default function Education() {
 
               {/* Content box - slides in */}
               <div
-                className={`content-box md:w-[calc(50%-2rem)] w-[calc(100%-4rem)] ${
+                className={`content-box md:w-[calc(50%-3rem)] w-[calc(100%-4rem)] ${
                   item.type !== "certificate"
-                    ? "md:ml-auto md:mr-6"
-                    : "md:mr-auto md:ml-6"
-                } ml-12 p-6 rounded-lg shadow-md bg-[#1e40af]/10 dark:bg-[#1e40af]/10 border-[#1e40af]/30 dark:border-[#1e40af]/50 border`}
+                    ? "md:ml-auto md:mr-10"
+                    : "md:mr-auto md:ml-10"
+                } ml-12 p-7 rounded-lg shadow-md bg-[#1e40af]/10 dark:bg-[#1e40af]/10 border-[#1e40af]/30 dark:border-[#1e40af]/50 border`}
               >
                 <div className="flex flex-col">
-                  <h3 className="text-lg font-semibold">{item.title}</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                  <h3 className="text-xl font-semibold">{item.title}</h3>
+                  <p className="text-base text-gray-600 dark:text-gray-300">
                     {item.institution}
                   </p>
 
-                  <div className="flex flex-wrap gap-2 mt-2">
+                  <div className="flex flex-wrap gap-2 mt-3">
                     {item.fields.map((field, fieldIndex) => (
                       <span
                         key={fieldIndex}
-                        className="text-xs px-2 py-1 rounded-full bg-[#1e40af]/10 dark:bg-[#1e40af]/20 text-zinc-400"
+                        className="text-sm px-2.5 py-1 rounded-full bg-[#1e40af]/10 dark:bg-[#1e40af]/20 text-zinc-400"
                       >
                         {field}
                       </span>
                     ))}
                   </div>
 
-                  <div className="flex justify-start items-center gap-2 mt-3 ml-1">
+                  <div className="flex justify-start items-center gap-2 mt-4 ml-1">
                     <SlCalender className="text-[#1e40af]/70 dark:text-[#1e40af]/60" />
-                    <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                    <span className="text-base font-medium text-gray-500 dark:text-gray-400">
                       {item.date}
                     </span>
                   </div>
 
                   {item.description && (
-                    <p className="mt-2 text-gray-700 dark:text-gray-300">
+                    <p className="mt-3 text-base text-gray-700 dark:text-gray-300">
                       {item.description}
                     </p>
                   )}

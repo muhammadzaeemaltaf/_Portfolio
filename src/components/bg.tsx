@@ -1,5 +1,4 @@
 import { useRef, useEffect } from 'react';
-import gsap from 'gsap';
 
 const GridBackground = () => {
   const gridRef = useRef<SVGSVGElement | null>(null);
@@ -24,6 +23,8 @@ const GridBackground = () => {
         line.setAttribute('stroke', '#ffffff');
         line.setAttribute('stroke-opacity', '0.1');
         line.setAttribute('stroke-width', '0.5');
+        line.classList.add('grid-flicker-line');
+        randomizeLine(line);
         gridContainer.appendChild(line);
       }
       // Create horizontal lines
@@ -36,40 +37,32 @@ const GridBackground = () => {
         line.setAttribute('stroke', '#ffffff');
         line.setAttribute('stroke-opacity', '0.1');
         line.setAttribute('stroke-width', '0.5');
+        line.classList.add('grid-flicker-line');
+        randomizeLine(line);
         gridContainer.appendChild(line);
       }
     };
 
-    // Function to animate the grid lines
-    const animateGridLines = () => {
-      if (!gridContainer) return;
-      const gridLines = gridContainer.querySelectorAll('line');
-      gridLines.forEach((line) => {
-        const duration = 0.5 + Math.random() * 1.5; // 0.5-2 seconds
-        const delay = Math.random() * 3; // 0-3 seconds initial delay
-        const targetOpacity = 0.3 + Math.random() * 0.1; // 0.3-0.4
-        gsap.to(line, {
-          strokeOpacity: targetOpacity,
-          duration: duration,
-          yoyo: true,
-          repeat: -1,
-          repeatDelay: Math.random() * 2,
-          delay: delay,
-          ease: 'sine.inOut',
-        });
-      });
+    // CSS-driven flicker (compositor-only, no per-line JS tweens) — hundreds of
+    // GSAP tweens running forever on a fixed, always-visible layer was the main
+    // scroll-jank source; the browser handles this far cheaper as CSS animation.
+    const randomizeLine = (line: SVGLineElement) => {
+      const duration = 1 + Math.random() * 3; // 1-4s full cycle
+      const delay = -Math.random() * duration; // negative delay desyncs start phase
+      const targetOpacity = 0.3 + Math.random() * 0.1; // 0.3-0.4
+      line.style.setProperty('--flicker-duration', `${duration}s`);
+      line.style.setProperty('--flicker-delay', `${delay}s`);
+      line.style.setProperty('--flicker-opacity', targetOpacity.toString());
     };
 
     // Initial setup
     createGrid();
-    animateGridLines();
 
     // Handle window resize
     const handleResize = () => {
       width = window.innerWidth;
       height = window.innerHeight;
       createGrid();
-      animateGridLines();
     };
     window.addEventListener('resize', handleResize);
 

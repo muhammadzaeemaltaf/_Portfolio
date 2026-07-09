@@ -198,6 +198,7 @@ const Project = () => {
                   handleCardClick(project, e)
                 }
               }}
+              data-lenis-prevent={isExpanded ? true : undefined}
               className="project-card relative flex flex-col h-full border border-white/20 text-white rounded-lg shadow cursor-pointer overflow-hidden"
             >
               {isExpanded && (
