@@ -94,7 +94,7 @@ const Project = () => {
 
     gsap.set(document.body, { overflow: "hidden" })
 
-    const modalWidth = isMobile ? window.innerWidth : Math.min(1100, window.innerWidth * 0.9)
+    const modalWidth = isMobile ? window.innerWidth : Math.min(1100, window.innerWidth * 0.68)
     const modalHeight = isMobile ? window.innerHeight : window.innerHeight * 0.85
 
     gsap.set(cardEl, {
@@ -209,18 +209,20 @@ const Project = () => {
                 />
               )}
 
-              <div className="relative w-full aspect-video overflow-hidden shrink-0">
+              <div className="relative w-full aspect-[2854/1432] overflow-hidden shrink-0 bg-black">
                 <Image
+                  key={isExpanded ? "expanded" : "collapsed"}
                   src={displayedImage || "/placeholder.svg?height=200&width=200"}
                   alt={project.title}
                   fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  quality={100}
+                  sizes={isExpanded ? "(max-width: 767px) 100vw, 1100px" : "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"}
                   className="object-cover"
                 />
               </div>
 
               {isExpanded && hasGallery && (
-                <div className="thumbnails reveal-item flex gap-2 px-4 pt-3">
+                <div className="thumbnails reveal-item  space-x-2 px-4 pt-3">
                   {project.image.map((img, imgIdx) => (
                     <button
                       key={imgIdx}
@@ -231,7 +233,7 @@ const Project = () => {
                       }}
                       className={`relative w-14 h-9 rounded overflow-hidden border shrink-0 ${activeImageIndex === imgIdx ? "border-primary-500" : "border-white/20"}`}
                     >
-                      <Image src={img} alt={`${project.title} screenshot ${imgIdx + 1}`} fill className="object-cover" />
+                      <Image src={img} alt={`${project.title} screenshot ${imgIdx + 1}`} fill quality={100} className="object-cover object-top" />
                     </button>
                   ))}
                 </div>
@@ -242,11 +244,21 @@ const Project = () => {
                 <div
                   className={
                     isExpanded
-                      ? `sticky top-0 z-20 -mx-4 -mt-4 mb-3 px-4 pt-4 pb-3 bg-black transition-colors duration-200 ${isTitleStuck ? "border-b border-white/15" : ""}`
+                      ? `sticky top-[-1px] z-20 -mx-4 -mt-4 mb-3 px-4 pt-4 pb-3 bg-black transition-colors duration-200 flex items-center justify-between gap-4 ${isTitleStuck ? "border-b border-white/15" : ""}`
                       : "mb-3"
                   }
                 >
                   <h3 className={`font-bold transition-[font-size] ${isExpanded ? "text-2xl md:text-3xl 2xl:text-4xl" : "2xl:text-2xl"}`}>{project.title}</h3>
+                  {isExpanded && project.link && (
+                    <AnimatedButton
+                      text="View Project"
+                      arrow
+                      href={project.link}
+                      expanded
+                      bg="2xl:h-12 2xl:px-7 2xl:text-xl shrink-0"
+                      target="_blank"
+                    />
+                  )}
                 </div>
                 <p className="line-clamp-2 mb-4 2xl:text-[18px]">{project.role}</p>
                 {project.organization && (
@@ -270,27 +282,21 @@ const Project = () => {
                     ))}
                   </div>
                 )}
-                <div className="animated-button mt-auto">
-                  <AnimatedButton
-                    text={isExpanded ? "View Project" : "Overview"}
-                    arrow={isExpanded}
-                    href={isExpanded ? project.link : ""}
-                    expanded={isExpanded}
-                    bg={`2xl:h-12 2xl:px-7 2xl:text-xl ${isExpanded && !project.link ? "hidden" : "block mt-4"}`}
-                    target={isExpanded ? "_blank" : undefined}
-                    onClick={
-                      !isExpanded
-                        ? (e) => {
-                          e.stopPropagation()
-                          const card = (e.currentTarget as HTMLElement).closest(".project-card")
-                          if (card) {
-                            handleCardClick(project, { ...e, currentTarget: card } as React.MouseEvent<HTMLDivElement, MouseEvent>)
-                          }
+                {!isExpanded && (
+                  <div className="animated-button mt-auto">
+                    <AnimatedButton
+                      text="Overview"
+                      bg="2xl:h-12 2xl:px-7 2xl:text-xl block mt-4"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        const card = (e.currentTarget as HTMLElement).closest(".project-card")
+                        if (card) {
+                          handleCardClick(project, { ...e, currentTarget: card } as React.MouseEvent<HTMLDivElement, MouseEvent>)
                         }
-                        : undefined
-                    }
-                  />
-                </div>
+                      }}
+                    />
+                  </div>
+                )}
 
                 {isExpanded && (
                   <div className="overview-wrapper reveal-item mt-6">

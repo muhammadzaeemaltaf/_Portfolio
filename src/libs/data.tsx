@@ -1,8 +1,6 @@
 import {
   FaBootstrap,
-  FaCss3Alt,
   FaGithub,
-  FaJs,
   FaLaravel,
   FaLinkedin,
   FaPython,
@@ -33,9 +31,26 @@ import { VscMcp } from "react-icons/vsc";
 import gsap from "gsap";
 
 
-import VaultSneak from "../../public/vaultsneaks.png";
-import Bookmyspot from "../../public/BMS.webp";
-import Sq1Community from "../../public/sqaur.png";
+import VaultSneak from "../../public/project/vaultsneaks.png";
+import Bookmyspot from "../../public/project/bms.png";
+import Sq1Community1 from "../../public/project/sq1com_1.png";
+import Sq1Community2 from "../../public/project/sq1com_2.png";
+import Sq1Community3 from "../../public/project/sq1com_3.png";
+import Sq1Community4 from "../../public/project/sq1com_4.png";
+import Sq1Orbit1 from "../../public/project/sq1orbit_1.png";
+import Sq1Orbit2 from "../../public/project/sq1orbit_2.png";
+import Sq1Orbit3 from "../../public/project/sq1orbit_3.png";
+import Sq1Orbit4 from "../../public/project/sq1orbit_4.png";
+import Sq1Orbit5 from "../../public/project/sq1orbit_5.png";
+import Sq1Orbit6 from "../../public/project/sq1orbit_6.png";
+import Lexnis1 from "../../public/project/lexnis_1.png";
+import Lexnis2 from "../../public/project/lexnis_2.png";
+import Lexnis3 from "../../public/project/lexnis_3.png";
+import Lexnis4 from "../../public/project/lexnis_4.png";
+import Lexnis5 from "../../public/project/lexnis_5.png";
+import Lexnis6 from "../../public/project/lexnis_6.png";
+import Lexnis7 from "../../public/project/lexnis_7.png";
+import Recrot from "../../public/project/recrot.png";
 import { StaticImageData } from "next/image";
 import { BiSolidInstitution } from "react-icons/bi";
 import { EducationDataType } from "../../types";
@@ -2333,7 +2348,7 @@ export const topProjects: {
         "Prize draw lifecycle with server-executed winner selection and delete-guard on completed draws",
         "Custom fetch client with request timeout and blob-response support for CSV exports"
       ],
-      image: [Sq1Community],
+      image: [Sq1Community1, Sq1Community2, Sq1Community3, Sq1Community4],
       impact: "Enabled dynamic content updates, boosting engagement; showcased responsive web development skill.",
       organization: "Innovative Widget",
       organizationLogo: InnovativeWidget,
@@ -2377,7 +2392,7 @@ export const topProjects: {
         "18 notification event types and 20 audit action types for full activity tracking",
         "Department and employee-wise analytics dashboards with CSV/PDF export"
       ],
-      image: placeholderGallery(["Dashboard", "Tickets", "Analytics"]),
+      image: [Sq1Orbit1, Sq1Orbit2, Sq1Orbit3, Sq1Orbit4, Sq1Orbit5, Sq1Orbit6],
       impact: "Streamlined mall task management with real-time tracking and reporting for Squareone Mall staff.",
       organization: "Innovative Widget",
       organizationLogo: InnovativeWidget,
@@ -2399,7 +2414,7 @@ export const topProjects: {
         "Refresh-token rotation with HTTP-only cookie session handling",
         "Backed by 490 automated integration tests across the platform"
       ],
-      image: placeholderGallery(["Dashboard", "SOS", "Analytics"]),
+      image: [Lexnis1, Lexnis2, Lexnis3, Lexnis4, Lexnis5, Lexnis6, Lexnis7],
       impact: "Gave Lexnis SOS staff real-time visibility and control over active safety operations.",
       organization: "Innovative Widget",
       organizationLogo: InnovativeWidget,
@@ -2421,7 +2436,7 @@ export const topProjects: {
         "Input sanitization and Sentry error monitoring across the platform",
         "Branded PDF analytics reports and debounced in-app tutor/job search"
       ],
-      image: placeholderGallery(["Dashboard", "Jobs", "Admin"]),
+      image: [Recrot],
       impact: "Streamlined tutor hiring with role-based workflows across tutors, parents, and companies.",
       organization: "Innovative Widget",
       organizationLogo: InnovativeWidget,
