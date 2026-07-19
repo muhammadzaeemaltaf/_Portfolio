@@ -2354,28 +2354,28 @@ export const topProjects: {
       organizationLogo: InnovativeWidget,
       organizationURL: "https://innovativewidget.com/",
     },
-    {
-      title: "Atrium Community App - Admin Panel",
-      description: "A Next.js-based admin panel for the Atrium Community app, enabling management of events, brands, ads, notifications, and user profiles for the Atrium community platform.",
-      role:
-        "As a Frontend developer, I designed responsive Next.js interface, integrated backend APIs, ensured cross-device usability.",
-      tags: [RiNextjsFill, RiTailwindCssFill, SiTypescript, zustand],
-      feature: [
-        "4 persisted Zustand stores (auth, brand, ad, event) with nested deal management and derived selectors",
-        "Deal engine with type-based validation: percentage discounts vs free-text taglines",
-        "Client-side aspect-ratio validation before Cloudinary upload (1:1, 9:16, 16:9 per asset type)",
-        "Dashboard analytics computed from live data: monthly redemption trends, top brands and deals ranking",
-        "Resilient dashboard loading via parallel requests so one failed endpoint doesn't block the page",
-        "Support ticket workflow with resolve/reopen status toggle",
-        "Event creation and detail management with image carousel for featured content",
-        "Direct API integration with the Atrium community backend"
-      ],
-      image: placeholderGallery(["Dashboard", "Events", "Brands"]),
-      impact: "Enabled dynamic content updates, boosting engagement; showcased responsive web development skill.",
-      organization: "Innovative Widget",
-      organizationLogo: InnovativeWidget,
-      organizationURL: "https://innovativewidget.com/",
-    },
+    // {
+    //   title: "Atrium Community App - Admin Panel",
+    //   description: "A Next.js-based admin panel for the Atrium Community app, enabling management of events, brands, ads, notifications, and user profiles for the Atrium community platform.",
+    //   role:
+    //     "As a Frontend developer, I designed responsive Next.js interface, integrated backend APIs, ensured cross-device usability.",
+    //   tags: [RiNextjsFill, RiTailwindCssFill, SiTypescript, zustand],
+    //   feature: [
+    //     "4 persisted Zustand stores (auth, brand, ad, event) with nested deal management and derived selectors",
+    //     "Deal engine with type-based validation: percentage discounts vs free-text taglines",
+    //     "Client-side aspect-ratio validation before Cloudinary upload (1:1, 9:16, 16:9 per asset type)",
+    //     "Dashboard analytics computed from live data: monthly redemption trends, top brands and deals ranking",
+    //     "Resilient dashboard loading via parallel requests so one failed endpoint doesn't block the page",
+    //     "Support ticket workflow with resolve/reopen status toggle",
+    //     "Event creation and detail management with image carousel for featured content",
+    //     "Direct API integration with the Atrium community backend"
+    //   ],
+    //   image: placeholderGallery(["Dashboard", "Events", "Brands"]),
+    //   impact: "Enabled dynamic content updates, boosting engagement; showcased responsive web development skill.",
+    //   organization: "Innovative Widget",
+    //   organizationLogo: InnovativeWidget,
+    //   organizationURL: "https://innovativewidget.com/",
+    // },
     {
       title: "Squareone Orbit - Admin Panel",
       description: "A Next.js-based super admin portal for the Squareone Orbit task management system, enabling ticket tracking, department-wise analytics, audit logging, and employee reporting.",
