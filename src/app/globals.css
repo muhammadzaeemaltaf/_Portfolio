@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "lenis/dist/lenis.css";
 
 @theme {
   --font-sans: var(--font-geist-sans, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
@@ -86,6 +87,19 @@ body {
   .__h1 {
     font-size: 4rem;
   }
+}
+
+@keyframes grid-flicker {
+  0%, 100% {
+    stroke-opacity: 0.1;
+  }
+  50% {
+    stroke-opacity: var(--flicker-opacity, 0.35);
+  }
+}
+
+.grid-flicker-line {
+  animation: grid-flicker var(--flicker-duration, 2s) var(--flicker-delay, 0s) ease-in-out infinite;
 }
 
 @layer utilities {

@@ -12,6 +12,7 @@ import { FaLinkedin } from "react-icons/fa6";
 
 const data = [
   "Full-Stack Developer",
+  "Agentic AI Developer",
   "Jam-Stack Developer",
   "Frontend Developer",
   "Next.js Developer",

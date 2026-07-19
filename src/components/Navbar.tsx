@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Menu, X } from 'lucide-react';
 import { scrollToView, navlinks } from "@/libs/data";
+
+const slugify = (link: string) => link.toLowerCase().replace(/\s+/g, "-");
 import gsap from "gsap";
 import { AnimatedButton } from "./AnimateButton";
 import Image from "next/image";
@@ -35,7 +37,7 @@ export default function Navbar() {
       // Animate navbar expansion
       tl.to(navRef.current, {
         width: "calc(100% - 40px)",
-        maxWidth: 1200,
+        maxWidth: 1400,
         borderRadius: "62px",
         paddingLeft: 20,
         paddingRight: 20,
@@ -72,6 +74,7 @@ export default function Navbar() {
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
+    let ticking = false;
 
     const slideNavbar = () => {
       const currentScrollY = window.scrollY;
@@ -79,19 +82,27 @@ export default function Navbar() {
 
       if (navRef.current) {
         if (currentScrollY > 200 && goingDown) {
-          gsap.to(navRef.current, { duration: 0.3, y: -100, ease: "power2.out" });
+          gsap.to(navRef.current, { duration: 0.3, y: -100, ease: "power2.out", overwrite: "auto" });
           if (isMenuOpen) setIsMenuOpen(false);
         } else {
-          gsap.to(navRef.current, { duration: 0.1, y: 0, ease: "back.out" });
+          gsap.to(navRef.current, { duration: 0.1, y: 0, ease: "back.out", overwrite: "auto" });
         }
       }
 
       lastScrollY = currentScrollY;
+      ticking = false;
     };
 
-    window.addEventListener("scroll", slideNavbar);
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(slideNavbar);
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
-      window.removeEventListener("scroll", slideNavbar);
+      window.removeEventListener("scroll", onScroll);
     };
   }, [isMenuOpen]);
 
@@ -109,7 +120,7 @@ export default function Navbar() {
   }, [isMenuOpen]);
 
   useEffect(() => {
-    const sections = [...navlinks, "contact"].map(link => document.getElementById(link.toLowerCase()));
+    const sections = [...navlinks, "contact"].map(link => document.getElementById(slugify(link)));
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries.filter(entry => entry.isIntersecting);
@@ -134,7 +145,7 @@ export default function Navbar() {
 
   return (
     <header
-      className="z-50 fixed transition-all duration-600 ease-in-out w-[150px] md:w-[300px]  max-w-[1200px] mx-auto
+      className="z-50 fixed transition-all duration-600 ease-in-out w-[150px] md:w-[300px]  max-w-[1400px] mx-auto
       lg:h-[70px] md:h-[70px] h-[58px] rounded-[62px] 
       top-[10px] left-[10px] right-[10px] md:top-[20px] md:left-[20px] md:right-[20px] px-[20px]
       flex flex-row justify-between items-center backdrop-blur-xs bg-black/20 border border-white/10"
@@ -158,8 +169,8 @@ export default function Navbar() {
           {navlinks.map((link, index) => (
             <span
               key={index}
-              className={`lg:text-[16px] cursor-pointer h-[26px] font-medium transition-all ease-in duration-150 ${activeLink === link.toLowerCase() ? "text-blue-400" : "text-gray-200"} hover:text-blue-400`}
-              onClick={() => { scrollToView(link.toLowerCase()); setIsMenuOpen(false); }}
+              className={`lg:text-[16px] cursor-pointer h-[26px] font-medium transition-all ease-in duration-150 ${activeLink === slugify(link) ? "text-blue-400" : "text-gray-200"} hover:text-blue-400`}
+              onClick={() => { scrollToView(slugify(link)); setIsMenuOpen(false); }}
             >
               {link}
             </span>
@@ -200,8 +211,8 @@ export default function Navbar() {
           {navlinks.map((link, index) => (
             <span
               key={index}
-              className={`lg:text-[16px] cursor-pointer h-[26px] font-medium transition-all ease-in duration-150 ${activeLink === link.toLowerCase() ? "text-blue-400" : "text-gray-200"} hover:text-blue-400`}
-              onClick={() => { scrollToView(link.toLowerCase()); setIsMenuOpen(false); }}
+              className={`lg:text-[16px] cursor-pointer h-[26px] font-medium transition-all ease-in duration-150 ${activeLink === slugify(link) ? "text-blue-400" : "text-gray-200"} hover:text-blue-400`}
+              onClick={() => { scrollToView(slugify(link)); setIsMenuOpen(false); }}
             >
               {link}
             </span>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import SmoothScroll from "@/components/SmoothScroll";
 import "./globals.css";
 
 // Use CSS custom properties with system font fallbacks
@@ -210,6 +211,7 @@ export default function RootLayout({
       <body
         className="antialiased"
       >
+        <SmoothScroll />
         {children}
       </body>
     </html>

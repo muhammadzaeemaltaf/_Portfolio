@@ -5,6 +5,7 @@ import HeroSection from "@/components/Hero";
 import LogoLoader from "@/components/logoLoader";
 import Project from "@/components/Project";
 import Skills from "@/components/Skills";
+import HowIWork from "@/components/HowIWork";
 import { useEffect, useState } from "react";
 import Experience from "../components/Experience";
 import Education from "@/components/Education";
@@ -37,6 +38,9 @@ export default function Home() {
             </section>
             <section aria-label="Technical skills and technologies" id="skills">
               <Skills />
+            </section>
+            <section aria-label="How I work — my process" id="how-i-work">
+              <HowIWork />
             </section>
             <section aria-label="Portfolio projects" id="projects">
               <Project />

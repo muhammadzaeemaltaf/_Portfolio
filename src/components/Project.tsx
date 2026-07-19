@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { Flip } from "gsap/Flip"
 import Heading from "@/components/Heading"
 import { topProjects } from "@/libs/data"
 import Image from "next/image"
@@ -12,10 +13,12 @@ import { X } from "lucide-react"
 import { IconType } from "react-icons"
 import Link from "next/link"
 
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger, Flip)
 
 const Project = () => {
   const [expandedProject, setExpandedProject] = useState<any>(null)
+  const [activeImageIndex, setActiveImageIndex] = useState(0)
+  const [isTitleStuck, setIsTitleStuck] = useState(false)
   const sectionRef = useRef<HTMLDivElement>(null)
   const expandedCardData = useRef<{
     element: HTMLElement | null
@@ -41,19 +44,48 @@ const Project = () => {
     }
   }, [])
 
+  // Fade in the expanded-only content (tags, thumbnails, overview) once it mounts,
+  // and track whether the sticky title bar has scrolled to the top of the card.
+  useEffect(() => {
+    const element = expandedCardData.current.element
+    if (expandedProject && element) {
+      const items = element.querySelectorAll(".reveal-item")
+      gsap.fromTo(
+        items,
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.35, stagger: 0.08, ease: "power2.out" }
+      )
+
+      const sentinel = element.querySelector(".title-sentinel")
+      if (sentinel) {
+        const observer = new IntersectionObserver(
+          ([entry]) => setIsTitleStuck(!entry.isIntersecting),
+          { root: element, threshold: 0 }
+        )
+        observer.observe(sentinel)
+        return () => observer.disconnect()
+      }
+    }
+  }, [expandedProject])
+
   const handleCardClick = (project: any, e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const cardEl = e.currentTarget
+    const computedStyle = window.getComputedStyle(cardEl)
+
+    // Capture the card's current (grid) position/size so Flip can morph from it precisely.
+    const state = Flip.getState(cardEl)
     const rect = cardEl.getBoundingClientRect()
 
-    // Create placeholder
+    // Placeholder keeps this card's exact grid cell reserved so sibling
+    // cards don't reshuffle columns while this card floats above the grid.
     const placeholder = document.createElement("div")
     placeholder.style.width = `${rect.width}px`
     placeholder.style.height = `${rect.height}px`
-    placeholder.style.margin = window.getComputedStyle(cardEl).margin
+    placeholder.style.gridColumn = computedStyle.gridColumn
+    placeholder.style.gridRow = computedStyle.gridRow
     placeholder.classList.add("invisible")
     cardEl.parentNode?.insertBefore(placeholder, cardEl)
 
-    // Store references
     expandedCardData.current = {
       element: cardEl,
       placeholder,
@@ -62,67 +94,30 @@ const Project = () => {
 
     gsap.set(document.body, { overflow: "hidden" })
 
-    // Animate card
+    const modalWidth = isMobile ? window.innerWidth : Math.min(1100, window.innerWidth * 0.68)
+    const modalHeight = isMobile ? window.innerHeight : window.innerHeight * 0.85
+
     gsap.set(cardEl, {
       position: "fixed",
-      top: rect.top,
-      left: rect.left,
-      width: rect.width,
-      height: rect.height,
+      top: "50%",
+      left: "50%",
+      xPercent: -50,
+      yPercent: -50,
+      width: modalWidth,
+      height: modalHeight,
+      margin: 0,
       overflow: "hidden",
       backgroundColor: "black",
       zIndex: 100,
     })
 
-    gsap.to(cardEl.querySelector("img"), {
-      width: "100%",
-      height: "100%",
-      borderRadius: 0,
-      duration: 0.3,
-      ease: "power2.out",
-      marginTop: 0,
-    })
-
-    gsap.to(cardEl.querySelector(".text"), {
-      position: "relative",
-      top: "auto",
-      width: "auto",
-      marginTop: "26px",
-      padding: "1rem",
-      duration: 0.3,
-      ease: "power2.out",
-    })
-
-    gsap.to(cardEl.querySelector(".text h3"), {
-      fontSize: isMobile ? "1.5rem" : "2.5rem",
-      marginBottom: "1rem",
-      duration: 0.3,
-      ease: "power2.out",
-    })
-
-    gsap.to(cardEl, {
-      top: "50%",
-      left: "50%",
-      xPercent: -50,
-      yPercent: -50,
-      height: isMobile ? "100dvh" : "80vh",
-      width: isMobile ? "100vw" : undefined,
-      padding: 0,
-      overflow: "auto",
-      duration: 0.3,
-      ease: "power2.out",
-      onComplete: () => setExpandedProject(project),
-    })
-
-    gsap.to(cardEl.querySelector(".text .tags"), {
-      position: "relative",
-      opacity: 1,
-      duration: 0.3,
-      ease: "power2.out",
-      delay: 0.3,
-      stagger: 0.1,
-      marginBottom: "2.5rem",
-      y: 10,
+    Flip.from(state, {
+      duration: 0.7,
+      ease: "power2.inOut",
+      onComplete: () => {
+        setExpandedProject(project)
+        gsap.set(cardEl, { overflow: "auto" })
+      },
     })
 
     gsap.to(".overlay", {
@@ -131,60 +126,37 @@ const Project = () => {
       duration: 0.3,
       ease: "power2.out",
     })
-
-    // Animate the button to shift right
-    const button = cardEl.querySelector(".animated-button")
-    if (button) {
-      gsap.to(button, {
-        position: "absolute",
-        right: 8,
-        top: 12,
-        scale: 0.85,
-        zIndex: 101,
-        duration: 0.5, // Slightly longer for smooth slide
-        ease: "power3.out", // Smoother easing
-        delay: 0.2, // Slightly earlier to feel natural
-      })
-    }
-
-    // Set initial state to ensure it’s hidden before animating
-gsap.set(cardEl.querySelector(".overview-wrapper"), {
-  opacity: 0,
-  height: 0,
-  overflow: "hidden",
-});
-
-// Animate to visible state
-gsap.to(cardEl.querySelector(".overview-wrapper"), {
-  opacity: 1,
-  height: "auto", // Use a large value to accommodate content; adjust as needed
-  duration: 0.3,
-  ease: "power2.out",
-  onComplete: () => {
-    // Set overflow to auto after animation to allow scrolling if needed
-    gsap.set(cardEl.querySelector(".overview-wrapper"), { overflow: "auto" });
-  },
-});
   }
 
   const handleOverlayClick = () => {
     const { element, placeholder, initialRect } = expandedCardData.current
     if (!element || !placeholder || !initialRect) return
 
-    gsap.set(document.body, { overflow: "auto" })
+    const state = Flip.getState(element)
 
-    gsap.to(element, {
-      top: window.innerWidth < 767 ? initialRect.top + 260 : initialRect.top + 110,
-      left: "50%",
+    gsap.set(document.body, { overflow: "auto" })
+    gsap.set(element, { overflow: "hidden" })
+    // Unmount expanded-only content immediately so it doesn't linger while the card shrinks back.
+    setExpandedProject(null)
+    setActiveImageIndex(0)
+    setIsTitleStuck(false)
+
+    gsap.set(element, {
+      position: "fixed",
+      top: initialRect.top + 290,
+      left: initialRect.left,
+      xPercent: 0,
+      yPercent: 0,
       width: initialRect.width,
       height: initialRect.height,
-      padding: "1rem",
-      duration: 0.3,
-      ease: "power2.out",
+    })
+
+    Flip.from(state, {
+      duration: 0.7,
+      ease: "power2.inOut",
       onComplete: () => {
         gsap.set(element, { clearProps: "all" })
         placeholder.remove()
-        setExpandedProject(null)
         expandedCardData.current = {
           element: null,
           placeholder: null,
@@ -193,78 +165,16 @@ gsap.to(cardEl.querySelector(".overview-wrapper"), {
       },
     })
 
-    gsap.to(element.querySelector("img"), {
-      position: "relative",
-      top: "auto",
-      left: "auto",
-      borderRadius: "4px",
-      width: window.innerWidth >= 1536 ? "300px" : isMobile ? "" : "250px",
-      marginTop: element.querySelector("img")?.classList.contains("mt-6") ? "24px" : "",
-      duration: 0.3,
-      ease: "power2.out",
-    })
-
-    gsap.to(element.querySelector(".text"), {
-      position: isMobile ? "" : "absolute",
-      top: "16px",
-      width: isMobile ? "" : "60%",
-      marginTop: "0",
-      padding: 0,
-      duration: 0.3,
-      ease: "power2.out",
-    })
-
-    gsap.to(element.querySelector(".text h3"), {
-      fontSize: window.innerWidth >= 1536 ? "24px" : "1rem",
-      marginBottom: "0",
-      duration: 0.3,
-      ease: "power2.out",
-    })
-
-    gsap.to(element.querySelector(".text .tags"), {
-      position: "absolute",
-      opacity: 0,
-      marginBottom: "0",
-      y: 0,
-      duration: 0.3,
-      ease: "power2.out",
-    })
-
     gsap.to(".overlay", {
       opacity: 0,
       pointerEvents: "none",
-      duration: 0.3,
-      ease: "power2.out",
+      duration: 0.5,
+      ease: "power2.inOut",
     })
-
-    // Reset button position
-    const button = element.querySelector(".animated-button")
-    if (button) {
-      gsap.to(button, {
-        position: "static",
-        right: "auto",
-        top: "auto",
-        scale: 1,
-        zIndex: "auto",
-        duration: 0.5,
-        ease: "power3.out",
-      })
-    }
-
-    gsap.to(element.querySelector(".overview-wrapper"), {
-      opacity: 0,
-      height: 0,
-      duration: 0.1,
-      ease: "power2.out",
-      onComplete: () => {
-        // Ensure overflow is hidden after collapsing
-        gsap.set(element.querySelector(".overview-wrapper"), { overflow: "hidden" });
-      },
-    });
   }
 
   return (
-    <section ref={sectionRef} className="min-h-screen mb-20 relative px-4 md:px-10 max-w-[1700px] w-full mx-auto" id="projects">
+    <section ref={sectionRef} className="min-h-screen mb-20 relative px-4 md:px-10 max-w-[1400px] w-full mx-auto" id="projects">
       <Heading heading="Top Projects" />
 
       {/* Render overlay when a project is expanded */}
@@ -273,110 +183,143 @@ gsap.to(cardEl.querySelector(".overview-wrapper"), {
         onClick={handleOverlayClick}
       />
 
-      <div className="grid grid-cols-1 lg:w-[70%] justify-items-center gap-4 mt-8 mx-auto">
-        {/* Left Column: Projects */}
-        <div className="project-container relative w-full flex flex-col gap-4">
-          {topProjects?.map((project, i) => {
-            const IconComponent = project.organizationLogo as IconType
-            return (
-              <div
-                key={i}
-                onClick={(e) => {
-                  if (expandedProject?.title !== project.title) {
-                    handleCardClick(project, e)
-                  }
-                }}
-                className={`relative ${project.organization ? "md:h-[220px] 2xl:h-[250px]" : "md:h-[170px] 2xl:h-[200px]"} border border-white/20 text-white p-4 rounded-lg shadow project-card cursor-pointer ${expandedProject?.title === project.title ? "overflow-y-auto" : ""}`}
-              >
-                {expandedProject === project && (
-                  <AnimatedButton
-                    text={<X className="h-3 w-3" />}
-                    bg={`!absolute right-2 top-2 !p-2 !h-7 z-[100] bg-black md:!hidden ${expandedProject?.title === project.title ? "!opacity-100" : "!opacity-0"}`}
-                    onClick={handleOverlayClick}
-                  />
-                )}
-                <div className="flex items-center justify-end">
-                  <Image
-                    src={project.image || "/placeholder.svg?height=200&width=200"}
-                    alt={project.title}
-                    width={1000}
-                    height={1000}
-                    className={`rounded object-center aspect-video md:w-[250px] 2xl:w-[300px] object-cover relative ${project.organization ? "md:mt-6" : ""}`}
-                  />
+      <div className="project-container relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+        {topProjects?.map((project, i) => {
+          const IconComponent = project.organizationLogo as IconType
+          const isExpanded = expandedProject?.title === project.title
+          const hasGallery = project.image.length > 1
+          const displayedImage = isExpanded ? project.image[activeImageIndex] : project.image[0]
+
+          return (
+            <div
+              key={i}
+              onClick={(e) => {
+                if (!isExpanded) {
+                  handleCardClick(project, e)
+                }
+              }}
+              data-lenis-prevent={isExpanded ? true : undefined}
+              className="project-card relative flex flex-col h-full border border-white/20 text-white rounded-lg shadow cursor-pointer overflow-hidden"
+            >
+              {isExpanded && (
+                <AnimatedButton
+                  text={<X className="h-3 w-3" />}
+                  bg={`!absolute right-2 top-2 !p-2 !h-7 z-[100] bg-black md:!hidden ${isExpanded ? "!opacity-100" : "!opacity-0"}`}
+                  onClick={handleOverlayClick}
+                />
+              )}
+
+              <div className="relative w-full aspect-[2854/1432] overflow-hidden shrink-0 bg-black">
+                <Image
+                  key={isExpanded ? "expanded" : "collapsed"}
+                  src={displayedImage || "/placeholder.svg?height=200&width=200"}
+                  alt={project.title}
+                  fill
+                  quality={100}
+                  sizes={isExpanded ? "(max-width: 767px) 100vw, 1100px" : "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"}
+                  className="object-cover"
+                />
+              </div>
+
+              {isExpanded && hasGallery && (
+                <div className="thumbnails reveal-item  space-x-2 px-4 pt-3">
+                  {project.image.map((img, imgIdx) => (
+                    <button
+                      key={imgIdx}
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setActiveImageIndex(imgIdx)
+                      }}
+                      className={`relative w-14 h-9 rounded overflow-hidden border shrink-0 ${activeImageIndex === imgIdx ? "border-primary-500" : "border-white/20"}`}
+                    >
+                      <Image src={img} alt={`${project.title} screenshot ${imgIdx + 1}`} fill quality={100} className="object-cover object-top" />
+                    </button>
+                  ))}
                 </div>
-                <div className="text relative md:absolute top-4 md:w-[60%] md:pr-10 mb-4">
-                  <h3 className="font-bold 2xl:text-2xl mb-3">{project.title}</h3>
-                  <p className="line-clamp-2 mb-4 2xl:text-[18px]">{project.role}</p>
-                  {project.organization && (
-                    <div className="flex items-center gap-2">
-                      <div className="h-8 w-8 flex items-center justify-center rounded-lg overflow-hidden bg-white/10 mb-4 border border-white/20">
-                        <IconComponent className="text-primary-500 text-xl" />
-                      </div>
-                      {project.organizationURL && (
-                        <Link href={project.organizationURL} target="_blank" className="font-semibold mb-4">
-                          {project.organization}
-                        </Link>
-                      )}
-                    </div>
+              )}
+
+              <div className="text flex flex-col flex-1 p-4">
+                {isExpanded && <div className="title-sentinel h-px" />}
+                <div
+                  className={
+                    isExpanded
+                      ? `sticky top-[-1px] z-20 -mx-4 -mt-4 mb-3 px-4 pt-4 pb-3 bg-black transition-colors duration-200 flex items-center justify-between gap-4 ${isTitleStuck ? "border-b border-white/15" : ""}`
+                      : "mb-3"
+                  }
+                >
+                  <h3 className={`font-bold transition-[font-size] ${isExpanded ? "text-2xl md:text-3xl 2xl:text-4xl" : "2xl:text-2xl"}`}>{project.title}</h3>
+                  {isExpanded && project.link && (
+                    <AnimatedButton
+                      text="View Project"
+                      arrow
+                      href={project.link}
+                      expanded
+                      bg="2xl:h-12 2xl:px-7 2xl:text-xl shrink-0"
+                      target="_blank"
+                    />
                   )}
-                  <div
-                    className="tags flex justify-start items-center gap-2"
-                    style={{
-                      opacity: 0,
-                      position: "absolute",
-                    }}
-                  >
-                    {project.tags.map((Tag, i) => (
-                      <span key={i} className="text-xs p-1 rounded mr-1">
+                </div>
+                <p className="line-clamp-2 mb-4 2xl:text-[18px]">{project.role}</p>
+                {project.organization && (
+                  <div className="flex items-center gap-2">
+                    <div className="h-8 w-8 flex items-center justify-center rounded-lg overflow-hidden bg-white/10 mb-4 border border-white/20">
+                      <IconComponent className="text-primary-500 text-xl" />
+                    </div>
+                    {project.organizationURL && (
+                      <Link href={project.organizationURL} target="_blank" className="font-semibold mb-4">
+                        {project.organization}
+                      </Link>
+                    )}
+                  </div>
+                )}
+                {isExpanded && (
+                  <div className="tags reveal-item flex justify-start items-center gap-2">
+                    {project.tags.map((Tag, tagIdx) => (
+                      <span key={tagIdx} className="text-xs p-1 rounded mr-1">
                         <Tag className="h-8 w-8" />
                       </span>
                     ))}
                   </div>
-                  <div className="animated-button">
+                )}
+                {!isExpanded && (
+                  <div className="animated-button mt-auto">
                     <AnimatedButton
-                      text={expandedProject?.title === project.title ? "View Project" : "Overview"}
-                      arrow={expandedProject?.title === project.title}
-                      href={expandedProject?.title === project.title ? project.link : ""}
-                      expanded={expandedProject?.title === project.title}
-                      bg={`2xl:h-12 2xl:px-7 2xl:text-xl ${(expandedProject?.title === project.title && !project.link) ? "hidden" : "block"}`}
-                      target={expandedProject?.title === project.title ? "_blank" : undefined}
-                      onClick={
-                        expandedProject?.title !== project.title
-                          ? (e) => {
-                            e.stopPropagation()
-                            const card = (e.currentTarget as HTMLElement).closest(".project-card")
-                            if (card) {
-                              handleCardClick(project, { ...e, currentTarget: card } as React.MouseEvent<HTMLDivElement, MouseEvent>)
-                            }
-                          }
-                          : undefined
-                      }
+                      text="Overview"
+                      bg="2xl:h-12 2xl:px-7 2xl:text-xl block mt-4"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        const card = (e.currentTarget as HTMLElement).closest(".project-card")
+                        if (card) {
+                          handleCardClick(project, { ...e, currentTarget: card } as React.MouseEvent<HTMLDivElement, MouseEvent>)
+                        }
+                      }}
                     />
                   </div>
+                )}
 
-                  <div className="mt-6 overview-wrapper opacity-0 h-0 overflow-hidden">
-                    {expandedProject === project && (
-                      <>
-                        <h2 className="font-semibold text-3xl">Project Overview</h2>
-                        <p className="my-5">{expandedProject.description}</p>
-                        <h2 className="font-semibold text-3xl">Features</h2>
-                        {expandedProject.feature && (
-                          <ul className="list-disc list-inside my-5">
-                            {expandedProject.feature.map((item: string, i: number) => (
-                              <li key={i}>{item}</li>
-                            ))}
-                          </ul>
-                        )}
-                        <h2 className="font-semibold text-3xl my-5">Impact</h2>
-                        <p>{expandedProject.impact}</p>
-                      </>
+                {isExpanded && (
+                  <div className="overview-wrapper reveal-item mt-6">
+                    <h2 className="font-semibold text-3xl">Project Overview</h2>
+                    <p className="my-5">{expandedProject.description}</p>
+                    <h2 className="font-semibold text-3xl">Features</h2>
+                    {expandedProject.feature && (
+                      <ul className="my-5 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2.5 text-sm leading-relaxed text-white/80">
+                        {expandedProject.feature.map((item: string, featureIdx: number) => (
+                          <li key={featureIdx} className="flex items-start">
+                            <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full [background-image:-webkit-linear-gradient(45deg,#2563eb_6%,#1e40af_19%,#2563eb_100%)] mr-2"/>
+                            {item}</li>
+                        ))}
+                      </ul>
                     )}
+                    <h2 className="font-semibold text-3xl my-5">Impact</h2>
+                    <p>{expandedProject.impact}</p>
                   </div>
-                </div>
+                )}
               </div>
-            )
-          })}
-        </div>
+            </div>
+          )
+        })}
       </div>
     </section>
   )
