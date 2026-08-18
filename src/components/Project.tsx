@@ -143,7 +143,7 @@ const Project = () => {
 
     gsap.set(element, {
       position: "fixed",
-      top: initialRect.top + 290,
+      top: initialRect.top,
       left: initialRect.left,
       xPercent: 0,
       yPercent: 0,
