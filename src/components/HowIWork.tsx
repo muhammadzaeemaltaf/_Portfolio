@@ -111,6 +111,10 @@ export default function HowIWork() {
     () => {
       const cards = gsap.utils.toArray<HTMLElement>(".work-card");
 
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        return;
+      }
+
       // Stack every card except the first below the viewport, ready to slide up.
       gsap.set(cards.slice(1), { yPercent: 120 });
 
@@ -146,72 +150,87 @@ export default function HowIWork() {
         tl.to(card, { yPercent: 0, duration: 1 }, label);
       });
 
-      // Ambient artifacts — infinite drift, independent of scroll.
+      // Ambient artifacts — infinite drift, independent of scroll. These loop
+      // forever once created, so they're paused/resumed based on section
+      // visibility below to avoid ticking on every frame for the whole page
+      // lifetime (the same jank pattern fixed in bg.tsx's grid flicker).
+      const ambientTweens: (gsap.core.Tween | gsap.core.Timeline)[] = [];
+
       gsap.utils.toArray<HTMLElement>(".work-orb").forEach((orb, i) => {
-        gsap.to(orb, {
-          y: i % 2 ? 24 : -24,
-          x: i % 2 ? -14 : 14,
-          duration: 3.5 + i * 0.6,
-          ease: "sine.inOut",
-          repeat: -1,
-          yoyo: true,
-        });
+        ambientTweens.push(
+          gsap.to(orb, {
+            y: i % 2 ? 24 : -24,
+            x: i % 2 ? -14 : 14,
+            duration: 3.5 + i * 0.6,
+            ease: "sine.inOut",
+            repeat: -1,
+            yoyo: true,
+          })
+        );
       });
       gsap.utils.toArray<HTMLElement>(".work-ring").forEach((ring, i) => {
-        gsap.to(ring, {
-          rotate: i % 2 ? 360 : -360,
-          duration: 20 + i * 4,
-          ease: "none",
-          repeat: -1,
-        });
+        ambientTweens.push(
+          gsap.to(ring, {
+            rotate: i % 2 ? 360 : -360,
+            duration: 20 + i * 4,
+            ease: "none",
+            repeat: -1,
+          })
+        );
       });
 
       // --- Per-card themed artifacts ---
 
       // Understand: radar sweep + blinking signal dots
-      gsap.to(".art-radar-beam", {
-        rotate: 360,
-        duration: 4,
-        ease: "none",
-        repeat: -1,
-        transformOrigin: "left center",
-      });
-      gsap.to(".art-radar-dot", {
-        opacity: 0.15,
-        scale: 0.6,
-        duration: 0.9,
-        ease: "sine.inOut",
-        repeat: -1,
-        yoyo: true,
-        stagger: 0.35,
-      });
+      ambientTweens.push(
+        gsap.to(".art-radar-beam", {
+          rotate: 360,
+          duration: 4,
+          ease: "none",
+          repeat: -1,
+          transformOrigin: "left center",
+        }),
+        gsap.to(".art-radar-dot", {
+          opacity: 0.15,
+          scale: 0.6,
+          duration: 0.9,
+          ease: "sine.inOut",
+          repeat: -1,
+          yoyo: true,
+          stagger: 0.35,
+        })
+      );
 
       // Plan: blueprint paths drawing themselves + pulsing nodes
       gsap.utils.toArray<SVGPathElement>(".art-plan-path").forEach((path, i) => {
         const len = path.getTotalLength();
-        gsap.fromTo(
-          path,
-          { strokeDasharray: len, strokeDashoffset: len },
-          {
-            strokeDashoffset: 0,
-            duration: 2,
-            ease: "power1.inOut",
-            repeat: -1,
-            yoyo: true,
-            repeatDelay: 0.5,
-            delay: i * 0.4,
-          }
+        ambientTweens.push(
+          gsap.fromTo(
+            path,
+            { strokeDasharray: len, strokeDashoffset: len },
+            {
+              strokeDashoffset: 0,
+              duration: 2,
+              ease: "power1.inOut",
+              repeat: -1,
+              yoyo: true,
+              repeatDelay: 0.5,
+              delay: i * 0.4,
+            }
+          )
         );
       });
-      gsap.to(".art-plan-node", {
-        scale: 1.4,
-        duration: 1,
-        ease: "sine.inOut",
-        repeat: -1,
-        yoyo: true,
-        stagger: 0.3,
-        transformOrigin: "center center",
-      });
+      ambientTweens.push(
+        gsap.to(".art-plan-node", {
+          scale: 1.4,
+          duration: 1,
+          ease: "sine.inOut",
+          repeat: -1,
+          yoyo: true,
+          stagger: 0.3,
+          transformOrigin: "center center",
+        })
+      );
 
       // Build: code lines typing in a loop + blinking cursor
       const codeTl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
@@ -234,38 +253,57 @@ export default function HowIWork() {
           transformOrigin: "left center",
           delay: 1.2,
         });
-      gsap.to(".art-code-cursor", {
-        opacity: 0,
-        duration: 0.5,
-        ease: "steps(1)",
-        repeat: -1,
-        yoyo: true,
-      });
+      ambientTweens.push(
+        codeTl,
+        gsap.to(".art-code-cursor", {
+          opacity: 0,
+          duration: 0.5,
+          ease: "steps(1)",
+          repeat: -1,
+          yoyo: true,
+        })
+      );
 
       // Ship: rocket bob + exhaust flicker + orbiting satellite
-      gsap.to(".art-rocket", {
-        y: -14,
-        duration: 1.6,
-        ease: "sine.inOut",
-        repeat: -1,
-        yoyo: true,
+      ambientTweens.push(
+        gsap.to(".art-rocket", {
+          y: -14,
+          duration: 1.6,
+          ease: "sine.inOut",
+          repeat: -1,
+          yoyo: true,
+        }),
+        gsap.to(".art-rocket-trail", {
+          scaleY: 1.6,
+          opacity: 0.2,
+          duration: 0.25,
+          ease: "sine.inOut",
+          repeat: -1,
+          yoyo: true,
+          transformOrigin: "top center",
+        }),
+        gsap.to(".art-orbit", {
+          rotate: 360,
+          duration: 8,
+          ease: "none",
+          repeat: -1,
+          transformOrigin: "center center",
+        })
+      );
+
+      // Only run the ambient loops while the section is on/near screen.
+      const visibility = ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: "top bottom",
+        end: "bottom top",
+        onEnter: () => ambientTweens.forEach((t) => t.resume()),
+        onEnterBack: () => ambientTweens.forEach((t) => t.resume()),
+        onLeave: () => ambientTweens.forEach((t) => t.pause()),
+        onLeaveBack: () => ambientTweens.forEach((t) => t.pause()),
       });
-      gsap.to(".art-rocket-trail", {
-        scaleY: 1.6,
-        opacity: 0.2,
-        duration: 0.25,
-        ease: "sine.inOut",
-        repeat: -1,
-        yoyo: true,
-        transformOrigin: "top center",
-      });
-      gsap.to(".art-orbit", {
-        rotate: 360,
-        duration: 8,
-        ease: "none",
-        repeat: -1,
-        transformOrigin: "center center",
-      });
+      if (!visibility.isActive) {
+        ambientTweens.forEach((t) => t.pause());
+      }
     },
     { scope: sectionRef }
   );

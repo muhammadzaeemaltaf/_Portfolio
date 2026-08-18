@@ -160,6 +160,7 @@ export default function Navbar() {
             alt="Logo"
             height={60}
             width={60}
+            priority
             className="w-[44px] h-[44px] md:w-[50px] md:h-[50px] lg:w-[56px] lg:h-[56px]"
           />
         </span>

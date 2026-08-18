@@ -28,7 +28,6 @@ import {
 import { TbBrandMysql, TbBrandTypescript, TbCertificate, TbRobot } from "react-icons/tb";
 import { BsOpenai } from "react-icons/bs";
 import { VscMcp } from "react-icons/vsc";
-import gsap from "gsap";
 
 
 import VaultSneak from "../../public/project/vaultsneaks.png";
@@ -2527,18 +2526,19 @@ export const contactLinks = [
 ];
 
 export const scrollToView = (link?: string) => {
-  const scrollIntoView = document.querySelector(`#${link}`);
-  if (scrollIntoView && typeof (link) === "string") {
-    gsap.to(window, {
-      scrollTo: { y: scrollIntoView, offsetY: 0 },
-      duration: 1.5,
-      ease: "power1.inOut",
-    });
-  } else {
-    gsap.to(window, {
-      scrollTo: { y: 0 },
-      duration: 1.5,
-      ease: "power1.inOut",
-    });
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const target = typeof link === "string" ? document.getElementById(link) : null;
+  const smoothWindow = window as Window & { portfolioLenis?: { scrollTo: (target: Element | number, options?: { duration?: number }) => void } };
+
+  if (!reduceMotion && smoothWindow.portfolioLenis) {
+    smoothWindow.portfolioLenis.scrollTo(target ?? 0, { duration: 1.1 });
+    return;
   }
+
+  if (target) {
+    target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+    return;
+  }
+
+  window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
 };

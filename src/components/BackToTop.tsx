@@ -1,58 +1,46 @@
-import { useState, useEffect, useCallback } from "react";
+"use client";
+
+import { useState, useEffect, useRef } from "react";
 import { FiArrowUp } from "react-icons/fi";
-import { gsap } from "gsap";
-import { ScrollToPlugin } from "gsap/ScrollToPlugin"; // new import
 import { scrollToView } from "@/libs/data";
-gsap.registerPlugin(ScrollToPlugin); // new registration
 
 const BackToTop = () => {
   const [scrollPercentage, setScrollPercentage] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
 
-  // Debounce function with TypeScript
-  interface DebounceFunction {
-    (func: (...args: any[]) => void, wait: number): (...args: any[]) => void;
-  }
-
-  const debounce: DebounceFunction = (func, wait) => {
-    let timeout: NodeJS.Timeout | number;
-    return (...args: any[]) => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func(...args), wait);
-    };
-  };
-
-  const handleScroll = useCallback(() => {
-    requestAnimationFrame(() => {
-      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-      const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const newScrollPercentage = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-
-      setScrollPercentage(newScrollPercentage);
-      setIsVisible(scrollTop > 20);
-    });
-  }, []);
-
-  const debouncedHandleScroll = debounce(handleScroll, 16);
+  const frameRef = useRef<number | null>(null);
 
   useEffect(() => {
-    window.addEventListener("scroll", debouncedHandleScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", debouncedHandleScroll);
+    const handleScroll = () => {
+      if (frameRef.current !== null) return;
+      frameRef.current = requestAnimationFrame(() => {
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        setScrollPercentage(docHeight > 0 ? (scrollTop / docHeight) * 100 : 0);
+        setIsVisible(scrollTop > 200);
+        frameRef.current = null;
+      });
     };
-  }, [debouncedHandleScroll]);
 
-  // Scroll to top and reset progress after reaching top
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
+    };
+  }, []);
  
   return (
     isVisible && (
-      <div
+      <button
+        type="button"
+        aria-label="Back to top"
         onClick={() => scrollToView()}
         className="fixed bottom-8 right-8 group text-white rounded-full p-4 cursor-pointer flex justify-center items-center scale-150"
         style={{ width: "60px", height: "60px" }}
       >
         {/* Circular progress SVG */}
-        <svg width="60" height="60" viewBox="0 0 60 60" className="rotate-90">
+        <svg aria-hidden="true" width="60" height="60" viewBox="0 0 60 60" className="rotate-90">
           <circle
             cx="30"
             cy="30"
@@ -68,7 +56,7 @@ const BackToTop = () => {
 
         {/* Arrow Icon */}
         <FiArrowUp className="absolute text-white group-hover:text-blue-200 transition-colors duration-300" size={20} />
-      </div>
+      </button>
     )
   );
 };

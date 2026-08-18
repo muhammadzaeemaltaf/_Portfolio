@@ -17,30 +17,54 @@ const LogoLoader: React.FC<LogoLoaderProps> = ({
   duration = 1.5,
 }) => {
   const pathRef = useRef<SVGPathElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
-    if (pathRef.current) {
-      const path = pathRef.current;
-      const length = path.getTotalLength();
+    const path = pathRef.current;
+    const container = containerRef.current;
+    if (!path || !container) return;
 
-      // Set up the starting position
-      path.style.strokeDasharray = `${length}`;
-      path.style.strokeDashoffset = `${length}`;
-
-      // Define the animation
-      const animation = path.animate(
-        [{ strokeDashoffset: length }, { strokeDashoffset: 0 }],
-        {
-          duration: duration * 1000,
-          fill: "forwards",
-          easing: "ease-in-out",
-        }
-      );
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setHidden(true);
+      return;
     }
+
+    const length = path.getTotalLength();
+    path.style.strokeDasharray = `${length}`;
+    path.style.strokeDashoffset = `${length}`;
+
+    const drawAnimation = path.animate(
+      [{ strokeDashoffset: length }, { strokeDashoffset: 0 }],
+      {
+        duration: duration * 1000,
+        fill: "forwards",
+        easing: "ease-in-out",
+      }
+    );
+
+    // Overlay is purely a visual intro — it fades itself out once the logo
+    // finishes drawing rather than a parent unmounting it, so it never blocks
+    // the rest of the page from mounting/hydrating underneath it.
+    drawAnimation.finished
+      .then(() =>
+        container.animate([{ opacity: 1 }, { opacity: 0 }], {
+          duration: 400,
+          fill: "forwards",
+          easing: "ease-out",
+        }).finished
+      )
+      .then(() => setHidden(true))
+      .catch(() => setHidden(true));
   }, [duration]);
 
+  if (hidden) return null;
+
   return (
-    <div className="w-full min-h-[100dvh] flex justify-center items-center fixed top-0 left-0 bg-black/90 z-50">
+    <div
+      ref={containerRef}
+      className="w-full min-h-[100dvh] flex justify-center items-center fixed top-0 left-0 bg-black z-[100]"
+    >
       <svg
         width={width}
         height={height}

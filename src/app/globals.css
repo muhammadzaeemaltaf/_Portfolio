@@ -89,17 +89,22 @@ body {
   }
 }
 
-@keyframes grid-flicker {
-  0%, 100% {
-    stroke-opacity: 0.1;
-  }
-  50% {
-    stroke-opacity: var(--flicker-opacity, 0.35);
-  }
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.1) 0.5px, transparent 0.5px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0.5px, transparent 0.5px);
+  background-size: 50px 50px;
 }
 
-.grid-flicker-line {
-  animation: grid-flicker var(--flicker-duration, 2s) var(--flicker-delay, 0s) ease-in-out infinite;
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .work-stack { height: auto !important; min-height: 0 !important; }
+  .work-card { position: relative !important; inset: auto !important; margin-bottom: 1rem; }
 }
 
 @layer utilities {
