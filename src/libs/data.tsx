@@ -9,6 +9,7 @@ import {
   FaWordpress,
 } from "react-icons/fa6";
 import { IoLogoNodejs } from "react-icons/io";
+import { FaNodeJs } from "react-icons/fa6";
 import { IoLogoVercel } from "react-icons/io5";
 import { PiFramerLogoFill } from "react-icons/pi";
 import { RiNextjsFill, RiPhpLine, RiTailwindCssFill } from "react-icons/ri";
@@ -20,6 +21,8 @@ import {
   SiMysql,
   SiPhp,
   SiPostgresql,
+  SiMongodb,
+  SiExpress,
   SiSanity,
   SiShadcnui,
   SiTailwindcss,
@@ -2229,6 +2232,8 @@ export const skills = [
       { label: "Zustand", icon: zustand },
       { label: "Shadcn UI", icon: SiShadcnui },
       { label: "Laravel", icon: FaLaravel },
+      { label: "Express.js", icon: SiExpress },
+      { label: "Node.js", icon: FaNodeJs },
       { label: "Bootstrap", icon: FaBootstrap },
       { label: "Ajax", icon: ajax },
       { label: "JQuery", icon: SiJquery },
@@ -2238,7 +2243,8 @@ export const skills = [
     type: "Database",
     name: [
       { label: "MySQL", icon: TbBrandMysql },
-      { label: "Neon PostgreSQL", icon: SiPostgresql },
+      { label: "MongoDB", icon: SiMongodb },
+      { label: "PostgreSQL", icon: SiPostgresql },
     ]
   },
   {
