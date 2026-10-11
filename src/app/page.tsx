@@ -1,6 +1,6 @@
 import About from "@/components/About";
 import HeroSection from "@/components/Hero";
-import LogoLoader from "@/components/logoLoader";
+import PortraitLoader from "@/components/PortraitLoader";
 import Project from "@/components/Project";
 import Skills from "@/components/Skills";
 import HowIWork from "@/components/HowIWork";
@@ -14,8 +14,8 @@ import BackToTop from "@/components/BackToTop";
 export default function Home() {
   return (
     <div className="overflow-hidden">
-          <LogoLoader />
-          <Navbar />
+          <PortraitLoader />
+          {/* <Navbar /> */}
           <main>
             <section aria-label="Hero section" id="hero">
               <HeroSection />
