@@ -52,6 +52,8 @@ import Lexnis4 from "../../public/project/lexnis_4.png";
 import Lexnis5 from "../../public/project/lexnis_5.png";
 import Lexnis6 from "../../public/project/lexnis_6.png";
 import Lexnis7 from "../../public/project/lexnis_7.png";
+import LexnisBh from "../../public/project/lexnis-bh.png";
+import SquareOneMall from "../../public/project/squareonemall.png";
 import Recrot from "../../public/project/recrot.png";
 import { StaticImageData } from "next/image";
 import { BiSolidInstitution } from "react-icons/bi";
@@ -2421,6 +2423,52 @@ export const topProjects: {
       ],
       image: [Lexnis1, Lexnis2, Lexnis3, Lexnis4, Lexnis5, Lexnis6, Lexnis7],
       impact: "Gave Lexnis SOS staff real-time visibility and control over active safety operations.",
+      organization: "Innovative Widget",
+      organizationLogo: InnovativeWidget,
+      organizationURL: "https://innovativewidget.com/",
+    },
+    {
+      title: "Lexnis Technologies",
+      description: "A creative, motion-rich frontend-only marketing site for Lexnis Technologies (Bahrain), a technology and cybersecurity partner, presenting services, AI transformation, process, and case studies through scroll-driven storytelling.",
+      role:
+        "As a Frontend developer, I built the entire creative frontend: layout, animations, and responsive design. This is a frontend-only project with no backend.",
+      tags: [RiNextjsFill, RiTailwindCssFill, SiTypescript, SiGreensock],
+      feature: [
+        "Scroll-driven storytelling with GSAP ScrollTrigger and Lenis smooth scrolling on a single shared ticker",
+        "Light/dark \"realm\" sections with animated curtain, portal, and shutter transitions between pages",
+        "Canvas-based armillary hero visual with no WebGL dependency",
+        "Illustrative cybersecurity console and AI transformation sections built as interactive UI",
+        "Magnetic buttons, custom cursor, split-text reveals, and an animated preloader",
+        "Services catalogue with stack builder, portfolio gallery, case-study pages, about and contact pages",
+        "Self-hosted variable fonts, JSON-LD metadata, sitemap, robots, and Open Graph images for SEO",
+        "Reduced-motion support and breakpoint-aware animations for accessibility and performance"
+      ],
+      image: [LexnisBh],
+      impact: "Delivered a distinctive, high-polish brand presence that communicates Lexnis' technology and cybersecurity expertise.",
+      link: "https://www.lexnistechnologies.bh/",
+      organization: "Innovative Widget",
+      organizationLogo: InnovativeWidget,
+      organizationURL: "https://innovativewidget.com/",
+    },
+    {
+      title: "Square One Mall",
+      description: "A creative, animation-led frontend-only website concept for Square One Mall, Karachi, showcasing its floors, brands, dining, events, and visitor information in an immersive single-page experience.",
+      role:
+        "As a Frontend developer, I designed and built the immersive single-page experience, animations, and responsive layout. This is a frontend-only project with no backend.",
+      tags: [RiNextjsFill, RiTailwindCssFill, SiTypescript, SiGreensock],
+      feature: [
+        "Animated intro aperture and loader leading into a layered, particle-driven hero",
+        "Single-page journey: Discover, Explore, Brands, Dine, What's On, and Plan Your Visit",
+        "Interactive floor guide covering all five levels, Lower Ground to Third",
+        "Brand marquee and 3D brand cube showcasing the mall's tenants",
+        "Scroll-scrubbed text, parallax images, image reveals, and animated count-up stats",
+        "Lenis smooth scrolling, magnetic buttons, and a custom cursor",
+        "Mobile menu overlay and back-to-top navigation",
+        "Content centralised in a typed data file for easy updates"
+      ],
+      image: [SquareOneMall],
+      impact: "Turned a traditional mall site into an engaging, brand-forward digital experience.",
+      link: "https://squareonemall.vercel.app/",
       organization: "Innovative Widget",
       organizationLogo: InnovativeWidget,
       organizationURL: "https://innovativewidget.com/",
