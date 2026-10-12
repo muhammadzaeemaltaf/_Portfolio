@@ -1,105 +1,173 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useEffect, useRef } from "react"
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { skills } from "@/libs/data"
-import Heading from "./Heading"
+import { useRef, useState } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { skills } from "@/libs/data";
 
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
+// uneven horizontal bands, like blinds: each grows up from its own bottom edge, bottom band first
+const BANDS = [1.4, 0.6, 1, 0.5, 1.6, 0.8, 1.2, 0.9];
+const HEADING = "Tools I think in";
 
 export default function Skills() {
-  const containerRef = useRef<HTMLDivElement>(null)
+  const root = useRef<HTMLElement>(null);
+  const [row, setRow] = useState<number | null>(null); // row under the pointer: the others dim
 
-  // Scroll animation for skill items
-  useEffect(() => {
-    const skillItems = containerRef.current?.querySelectorAll(".skill-category li")
-    if (skillItems) {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 70%",
-        },
-      })
-      tl.fromTo(
-        skillItems,
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          stagger: 0.05,
-          ease: "power2.out",
-        },
-      )
-    }
-  }, [])
+  useGSAP(
+    () => {
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      // About holds still at its end, black blinds close over it, then Skills scrolls in
+      const veil = root.current!.querySelector<HTMLElement>(".skills-veil")!;
+      const about = document.getElementById("about")!;
+      // once the blinds are shut, About is dropped too so it never reappears as Skills scrolls in
+      const done = (over: boolean) => {
+        gsap.set(veil, { autoAlpha: over ? 0 : 1 });
+        about.style.visibility = over ? "hidden" : "";
+      };
+      if (!reduce) {
+        gsap.fromTo(
+          ".skills-band",
+          { scaleY: 0 },
+          {
+            scaleY: 1,
+            ease: "power2.inOut",
+            duration: 1,
+            stagger: { each: 0.1, from: "end" },
+            scrollTrigger: {
+              trigger: about, // an element, not "#about": selectors are scoped to this section
+              start: "bottom bottom",
+              end: "+=100%",
+              pin: true,
+              scrub: true, // exact, so onLeave only fires once every band is fully closed
+              onLeave: () => done(true),
+              onEnterBack: () => done(false),
+            },
+          }
+        );
+      }
+
+      gsap.from(".skills-char", {
+        scrollTrigger: { trigger: ".skills-heading", start: "top 85%" },
+        yPercent: 115,
+        duration: 0.9,
+        ease: "power4.out",
+        stagger: 0.03,
+      });
+      gsap.from(".skills-fade", {
+        scrollTrigger: { trigger: ".skills-heading", start: "top 85%" },
+        y: 16,
+        opacity: 0,
+        duration: 0.7,
+        stagger: 0.08,
+        ease: "power3.out",
+      });
+      // lines draw in, names rise out of a mask, tools fade up
+      gsap.from(".skills-line", {
+        scrollTrigger: { trigger: ".skills-list", start: "top 80%" },
+        scaleX: 0,
+        transformOrigin: "left center",
+        duration: 1.2,
+        ease: "power3.inOut",
+        stagger: 0.1,
+      });
+      gsap.from(".skills-name", {
+        scrollTrigger: { trigger: ".skills-list", start: "top 80%" },
+        yPercent: 110,
+        duration: 0.9,
+        ease: "power4.out",
+        stagger: 0.1,
+      });
+      gsap.from(".skills-tools", {
+        scrollTrigger: { trigger: ".skills-list", start: "top 80%" },
+        y: 14,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        stagger: 0.1,
+        delay: 0.3,
+        clearProps: "opacity", // else the inline value would beat the hover-dim class
+      });
+
+      return () => {
+        about.style.visibility = "";
+      };
+    },
+    { scope: root }
+  );
 
   return (
-    <section className="flex justify-center">
-      <div id="skills" className="mb-28 max-w-[53rem] scroll-mt-28 text-center sm:mb-40 px-4 md:px-0">
-        <Heading heading="Skills" />
-        <div
-          ref={containerRef}
-          className="grid gap-8 md:mt-5 relative"        >
-          {skills.map((category, catIndex) => (
-            <div key={catIndex} className="skill-category text-left mt-6 relative z-10">
-              <h3 className="text-xl text-center font-semibold text-white mb-4">
-                {category.type}
-              </h3>
-              <ul className="flex flex-wrap justify-center gap-3">
-                {category.name.map((skill, index) => (
-                  <SkillTag
-                    key={index}
-                    skill={skill}
-                  />
-                ))}
-              </ul>
-            </div>
+    <section ref={root} className="relative w-full bg-black px-4 pb-28 pt-24 text-white md:pb-40 md:pt-36">
+      {/* blinds: fixed over the viewport while About is pinned */}
+      <div aria-hidden className="skills-veil pointer-events-none fixed inset-0 z-30 flex flex-col">
+        {BANDS.map((g, i) => (
+          <div key={i} style={{ flexGrow: g }} className="skills-band basis-0 origin-bottom bg-black" />
+        ))}
+      </div>
+
+      <div className="mx-auto w-full max-w-6xl">
+        {/* 1 · label */}
+        <p className="skills-fade flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-white/45">
+          <span className="h-px w-8 bg-white/30" />
+          Skills
+        </p>
+
+        {/* 2 · headline */}
+        <h2 aria-label={HEADING} className="skills-heading mt-5 font-display text-4xl font-semibold leading-[1.1] tracking-[-0.035em] md:text-6xl">
+          {HEADING.split(" ").map((w, i) => (
+            <span key={i} aria-hidden className="mr-[0.25em] inline-block overflow-hidden align-bottom">
+              {w.split("").map((c, j) => (
+                <span key={j} className="skills-char inline-block">
+                  {c}
+                </span>
+              ))}
+            </span>
           ))}
-        </div>
+        </h2>
+
+        {/* 3 · field + its tools */}
+        <ul className="skills-list mt-16 md:mt-24" onPointerLeave={() => setRow(null)}>
+          {skills.map((cat, i) => {
+            const on = row === i;
+            return (
+              <li
+                key={cat.type}
+                onPointerEnter={() => setRow(i)}
+                className={`relative transition-opacity duration-500 ${row !== null && !on ? "opacity-30" : "opacity-100"}`}
+              >
+                <span aria-hidden className="skills-line absolute inset-x-0 top-0 h-px bg-white/15" />
+                {/* white line sweeps across the active row */}
+                <span aria-hidden className={`absolute inset-x-0 top-0 h-px origin-left bg-white transition-transform duration-700 ease-[cubic-bezier(.7,0,.2,1)] ${on ? "scale-x-100" : "scale-x-0"}`} />
+
+                <div className="grid gap-4 py-7 md:grid-cols-[1fr_1.3fr] md:gap-12 md:py-9">
+                  <h3 className="flex items-baseline gap-4 font-display text-2xl font-medium tracking-[-0.02em] md:text-3xl">
+                    <span className="font-mono text-xs tracking-widest text-white/35">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="inline-block overflow-hidden align-bottom">
+                      <span className="skills-name inline-block">{cat.type}</span>
+                    </span>
+                  </h3>
+
+                  <ul className="skills-tools flex flex-wrap gap-x-6 gap-y-2 text-base text-white/50 md:text-lg">
+                    {cat.name.map((t) => (
+                      <li key={t.label} className={`group/tool flex items-center transition-colors duration-300 hover:text-white ${on ? "text-white/80" : ""}`}>
+                        {/* icon slides in from nothing, pushing the word along */}
+                        <t.icon className="h-[1.1em] w-0 shrink-0 opacity-0 transition-all duration-300 ease-out group-hover/tool:mr-2 group-hover/tool:w-[1.1em] group-hover/tool:opacity-100" />
+                        {t.label}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </li>
+            );
+          })}
+          <li aria-hidden className="relative h-px">
+            <span className="skills-line absolute inset-0 bg-white/15" />
+          </li>
+        </ul>
       </div>
     </section>
-  )
-}
-
-interface SkillTagProps {
-  skill: {
-    label: string
-    icon: React.ElementType
-  }
-}
-
-function SkillTag({ skill }: SkillTagProps) {
-  const IconComponent = skill.icon
-  const tagRef = useRef<HTMLLIElement>(null)
-  const borderRef = useRef<HTMLDivElement>(null)
-
-  return (
-    <li
-      ref={tagRef}
-      onPointerMove={(event) => {
-        if (event.pointerType === "touch" || !borderRef.current) return
-        const rect = event.currentTarget.getBoundingClientRect()
-        borderRef.current.style.setProperty("--x-percentage", `${event.clientX - rect.left}px`)
-        borderRef.current.style.setProperty("--y-percentage", `${event.clientY - rect.top}px`)
-      }}
-      className="group/skill relative flex items-center gap-2 border border-white/15 text-center rounded-xl px-4 py-2 md:px-5 md:py-3 bg-white/10 text-white/80 overflow-hidden"
-    >
-      {/* Animated border element */}
-      <div
-        ref={borderRef}
-        className="absolute inset-[1px] -m-px rounded-xl pointer-events-none opacity-0 transition-opacity duration-300 hover-capable:group-hover/skill:opacity-100"
-        style={{
-          maskImage: "radial-gradient(150px 150px at var(--x-percentage) var(--y-percentage), black, transparent)",
-          WebkitMaskImage: "radial-gradient(150px 150px at var(--x-percentage) var(--y-percentage), black, transparent)",
-          border: "1px solid rgb(29, 78, 216)",
-        }}
-      />
-      <div className="absolute inset-0 -top-1 -left-1 opacity-30">
-        <IconComponent className="h-10 w-10" />
-      </div>
-      <span className="font-semibold relative z-10">{skill.label}</span>
-    </li>
-  )
+  );
 }

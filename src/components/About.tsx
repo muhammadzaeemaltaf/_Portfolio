@@ -85,25 +85,6 @@ export default function About() {
         { xPercent: -33, ease: "none", scrollTrigger: { trigger: "#about", start: "top bottom", end: "bottom top", scrub: 1 } }
       );
 
-      // soft light follows the pointer across the photo
-      const spot = root.current!.querySelector<HTMLElement>(".about-spot")!;
-      const photo = root.current!.querySelector<HTMLElement>(".about-photo")!;
-      gsap.set(spot, { "--sx": "50%", "--sy": "30%" });
-      const onMove = (e: PointerEvent) => {
-        const r = photo.getBoundingClientRect();
-        gsap.to(spot, {
-          "--sx": `${((e.clientX - r.left) / r.width) * 100}%`,
-          "--sy": `${((e.clientY - r.top) / r.height) * 100}%`,
-          opacity: 1,
-          duration: 0.5,
-          ease: "power3.out",
-          overwrite: "auto",
-        });
-      };
-      const onLeave = () => gsap.to(spot, { opacity: 0, duration: 0.6 });
-      photo.addEventListener("pointermove", onMove);
-      photo.addEventListener("pointerleave", onLeave);
-
       // Subtle zoom: photo sits normally until the section's top reaches the top of the screen, then eases in slightly as you keep scrolling
       gsap.to(".about-zoom", {
         scale: 1.06,
@@ -111,10 +92,6 @@ export default function About() {
         scrollTrigger: { trigger: "#about", start: "top top", end: "bottom top", scrub: 1 },
       });
 
-      return () => {
-        photo.removeEventListener("pointermove", onMove);
-        photo.removeEventListener("pointerleave", onLeave);
-      };
     },
     { scope: section }
   );
@@ -123,12 +100,11 @@ export default function About() {
     <section ref={section} className="relative flex min-h-[100svh] w-full flex-col justify-center overflow-hidden bone-bg px-4 py-20 text-[#1d1d1f]" id="about">
       <div ref={root} className="relative mx-auto grid w-full max-w-6xl items-stretch gap-12 md:grid-cols-[1fr_1fr] md:gap-16">
         {/* portrait: slow scroll zoom */}
-        <div data-cursor="hi" className="about-photo relative h-full min-h-[460px] w-full md:ml-[calc(-1*max(1rem,(100vw_-_72rem)/2))] md:min-h-[640px] md:w-[calc(100%+max(1rem,(100vw_-_72rem)/2))]">
+        <div className="about-photo relative h-full min-h-[460px] w-full md:ml-[calc(-1*max(1rem,(100vw_-_72rem)/2))] md:min-h-[640px] md:w-[calc(100%+max(1rem,(100vw_-_72rem)/2))]">
           <div className="about-card absolute inset-0 overflow-hidden" style={{ maskImage: "radial-gradient(ellipse 98% 82% at 56% 36%, #000 0%, #000 48%, rgba(0,0,0,.9) 58%, rgba(0,0,0,.7) 68%, rgba(0,0,0,.45) 78%, rgba(0,0,0,.2) 89%, transparent 100%)", WebkitMaskImage: "radial-gradient(ellipse 94% 72% at 46% 36%, #000 0%, #000 48%, rgba(0,0,0,.9) 58%, rgba(0,0,0,.7) 68%, rgba(0,0,0,.45) 78%, rgba(0,0,0,.2) 89%, transparent 100%)" }}>
             <div className="about-zoom absolute inset-0 origin-[left_bottom] will-change-transform">
             <Image src={PHOTO} alt="Muhammad Zaeem Altaf" fill priority sizes="(min-width:768px) 100vw, 100vw" className="select-none object-cover object-[left_bottom] drop-shadow-[0_30px_40px_rgba(0,0,0,0.18)]" />
             </div>
-            <div aria-hidden className="about-spot pointer-events-none absolute inset-0 opacity-0 mix-blend-soft-light" style={{ background: "radial-gradient(circle 260px at var(--sx, 50%) var(--sy, 30%), rgba(255,255,255,0.9), transparent 70%)" }} />
           </div>
 
           {/* radial mask on the photo + blurred blocks over the left, bottom and right edges, so no hard edge survives.
