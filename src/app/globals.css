@@ -2,11 +2,14 @@
 @import "lenis/dist/lenis.css";
 
 @theme {
-  --font-sans: var(--font-geist-sans, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono, ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace);
 }
 
 :root {
+  --font-montserrat: "Montserrat";
+  --font-poppins: "Poppins";
   --font-geist-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-geist-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
   --foreground-rgb: 255, 255, 255;
@@ -19,6 +22,7 @@
 } */
 
 body {
+  font-family: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
   scroll-behavior: smooth;
@@ -117,4 +121,26 @@ body {
     background:linear-gradient(to top, rgb(5, 5, 80), rgb(9, 9, 128));
     border-radius: 100vh;
   }
+}
+@layer base {
+  h1, h2, h3, h4, h5, h6 { font-family: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif; }
+}
+
+/* custom cursor: only on fine pointers, native cursor hidden except in text fields */
+@media (hover: hover) and (pointer: fine) {
+  html.has-cursor, html.has-cursor * { cursor: none !important; }
+  html.has-cursor input, html.has-cursor textarea { cursor: text !important; }
+}
+
+/* one shared light background for Hero and About: one gradient, pinned to the viewport */
+.bone-bg {
+  background-color: #f7f6f2;
+  background-image:
+    radial-gradient(150% 180% at 0% 100%, #fff 0%, #fff 25%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0.45) 75%, transparent 100%),
+    linear-gradient(to top right, transparent 40%, rgba(205,198,185,0.5) 100%);
+  background-size: 100% 100%;
+  background-position: left bottom;
+  background-repeat: no-repeat;
+  /* pinned to the viewport, so Hero and About always show the exact same light and flow into each other */
+  background-attachment: fixed;
 }

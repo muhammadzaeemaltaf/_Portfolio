@@ -18,7 +18,7 @@ const roles = [
 ];
 
 // pill button: a curved fill rises from below while the label rolls up and is replaced by its twin
-const Btn = ({ href, onClick, icon, label, solid, round }: { href?: string; onClick?: () => void; icon: React.ReactNode; label?: string; solid?: boolean; round?: boolean }) => {
+const Btn = ({ href, onClick, icon, label, solid, round, cursor }: { cursor?: string; href?: string; onClick?: () => void; icon: React.ReactNode; label?: string; solid?: boolean; round?: boolean }) => {
   const row = "flex h-5 items-center gap-2 text-sm font-medium transition-transform duration-500 ease-[cubic-bezier(.7,0,.2,1)] group-hover:-translate-y-full";
   const body = (
     <>
@@ -31,9 +31,9 @@ const Btn = ({ href, onClick, icon, label, solid, round }: { href?: string; onCl
   );
   const cls = `group relative inline-flex h-12 items-center justify-center overflow-hidden rounded-full border ${round ? "w-12" : "px-6"} ${solid ? "border-black bg-black text-white" : "border-black/20 text-[#1d1d1f]"}`;
   return href ? (
-    <a href={href} target="_blank" aria-label={label} className={cls}>{body}</a>
+    <a href={href} target="_blank" aria-label={label} data-cursor={cursor} className={cls}>{body}</a>
   ) : (
-    <button onClick={onClick} className={cls}>{body}</button>
+    <button onClick={onClick} data-cursor={cursor} className={cls}>{body}</button>
   );
 };
 
@@ -94,18 +94,16 @@ const HeroSection = () => {
   return (
     <section
       ref={root}
-      style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Helvetica Neue", Arial, sans-serif' }}
-      className="relative isolate flex min-h-[100svh] w-full max-w-[100vw] flex-col overflow-hidden bg-[#f7f6f2] px-6 pb-[80vw] pt-20 sm:pb-[60vw] lg:pb-0 text-[#1d1d1f] sm:px-10 lg:px-16"
+      className="relative isolate flex min-h-[100svh] w-full max-w-[100vw] flex-col overflow-hidden bone-bg px-6 pb-[80vw] pt-20 sm:pb-[60vw] lg:pb-0 text-[#1d1d1f] sm:px-10 lg:px-16"
     >
       <p className="sr-only">
         Portfolio of Muhammad Zaeem Altaf – Full-Stack Developer skilled in Next.js, React, TypeScript, Laravel, and PHP.
         Specializing in building modern, scalable web applications and e-commerce solutions.
       </p>
 
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(150%_180%_at_0%_100%,#ffffff_0%,#ffffff_25%,rgba(255,255,255,0.85)_50%,rgba(255,255,255,0.45)_75%,transparent_100%),linear-gradient(to_top_right,transparent_40%,rgba(205,198,185,0.5)_100%)]" />
 
       {/* 1. dominant name, full width */}
-      <h1 className="hero-word relative z-0 flex justify-center whitespace-nowrap text-[15.5vw] font-bold leading-[0.9] tracking-[-0.06em] select-none lg:-mt-6 lg:text-[13.4vw]">
+      <h1 className="hero-word relative z-0 flex font-display justify-center whitespace-nowrap text-[13vw] font-bold leading-[0.95] tracking-[0em] select-none lg:-mt-4 lg:text-[11.4vw]">
         <span className="sr-only">Muhammad Zaeem Altaf</span>
         {"ZAEEM ALTAF".split("").map((c, i) => (
           <span key={i} aria-hidden className="pb-[0.04em]">
@@ -127,8 +125,8 @@ const HeroSection = () => {
           Hey there! I am full-stack and creative developer building fast, scalable web apps and AI-powered products.
         </p>
         <div className="mt-8 flex flex-wrap items-center gap-3">
-          <Btn solid onClick={() => scrollToView("contact")} label="Hire me" icon={<FiArrowUpRight className="text-base" />} />
-          <Btn href="/MUHAMMAD ZAEEM ALTAF.pdf" label="CV" icon={<HiDownload className="text-base" />} />
+          <Btn solid cursor="talk" onClick={() => scrollToView("contact")} label="Hire me" icon={<FiArrowUpRight className="text-base" />} />
+          <Btn cursor="cv" href="/MUHAMMAD ZAEEM ALTAF.pdf" label="CV" icon={<HiDownload className="text-base" />} />
           <Btn round href="https://github.com/muhammadzaeemaltaf/" label="GitHub" icon={<FiGithub className="text-base" />} />
           <Btn round href="https://www.linkedin.com/in/muhammadzaeemaltaf/" label="LinkedIn" icon={<FaLinkedin className="text-base" />} />
         </div>

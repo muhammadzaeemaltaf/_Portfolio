@@ -1,172 +1,196 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Heading from "./Heading";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
+// Swap this to change the photo; the effects below work on any portrait.
+const PHOTO = "/about-me-image.png";
+
+const paragraphs = [
+  "I'm a Full-Stack Developer specializing in building fast, responsive, and scalable web applications with Next.js, React, TypeScript, Laravel, and Tailwind CSS. At Innovative Widget, I design and ship production-grade platforms end to end — from backend APIs and data models to polished, interactive interfaces — collaborating with a talented team to deliver and maintain high-quality solutions.",
+  "Alongside my work, I'm pursuing a Bachelor's in Computer Science at Virtual University and training in Cloud Applied Generative AI Engineering at GIAIC. I'm deeply interested in AI agents, LLM tooling, and the systems that power modern products, and I actively contribute to open source. Always learning and open to new opportunities — feel free to reach out on LinkedIn or via email.",
+];
+
+// words that get an ink underline drawn in as the paragraph lights up
+const KEYWORDS = new Set(["Full-Stack", "Next.js,", "React,", "TypeScript,", "Laravel,", "LLM"]);
+const HEADING = "Hi, I'm Zaeem";
+
+const facts = [
+  ["Now", "Full-Stack Developer · Innovative Widget"],
+  ["Studying", "BS Computer Science · Virtual University"],
+  ["Training", "Cloud Applied GenAI Engineering · GIAIC"],
+];
 
 export default function About() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const circleRef = useRef<SVGCircleElement>(null);
-  const imageRef = useRef<SVGImageElement>(null);
-  const firstParaRef = useRef<HTMLParagraphElement>(null);
-  const secondParaRef = useRef<HTMLParagraphElement>(null);
+  const root = useRef<HTMLDivElement>(null);
+  const section = useRef<HTMLElement>(null); // gsap scope: the marquee sits outside `root`
 
-  useEffect(() => {
-    if (
-      !containerRef.current ||
-      !circleRef.current ||
-      !firstParaRef.current ||
-      !secondParaRef.current
-    )
-      return;
+  useGSAP(
+    () => {
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const splitTextIntoWords = (element: HTMLElement) => {
-      const text = element.textContent || "";
-      const words = text.split(" ").map((word) => {
-        const span = document.createElement("span");
-        span.className = "word";
-        span.textContent = word + " ";
-        return span;
+      // text: words light up as you scroll
+      gsap.from(".about-word", {
+        scrollTrigger: { trigger: ".about-text", start: "top 75%", end: "bottom 55%", scrub: 0.3 },
+        opacity: 0.15,
+        stagger: 0.02,
+        ease: "none",
       });
-      element.innerHTML = "";
-      words.forEach((word) => element.appendChild(word));
-      return words;
-    };
+      // heading: letters rise out of a mask, centre-out
+      gsap.from(".about-char", {
+        scrollTrigger: { trigger: ".about-heading", start: "top 85%" },
+        yPercent: 115,
+        duration: 0.9,
+        ease: "power4.out",
+        stagger: { each: 0.04, from: "start" },
+      });
+      // keyword underlines draw in one after another
+      gsap.to(".about-hl", {
+        scrollTrigger: { trigger: ".about-text", start: "top 65%" },
+        backgroundSize: "100% 2px",
+        duration: 0.7,
+        ease: "power2.out",
+        stagger: 0.12,
+      });
+      gsap.from(".about-fact", {
+        scrollTrigger: { trigger: ".about-facts", start: "top 90%" },
+        y: 24,
+        opacity: 0,
+        duration: 0.7,
+        stagger: 0.12,
+        ease: "power3.out",
+      });
 
-    const firstParaWords = splitTextIntoWords(firstParaRef.current);
-    const secondParaWords = splitTextIntoWords(secondParaRef.current);
+      // card rises in
+      gsap.from(".about-card", {
+        scrollTrigger: { trigger: ".about-card", start: "top 85%" },
+        y: 80,
+        opacity: 0,
+        scale: 0.94,
+        duration: 1.1,
+        ease: "power3.out",
+      });
 
-    const allWords = [...firstParaWords, ...secondParaWords];
+      if (reduce) return;
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top center",
-        end: "center 80%",
-        scrub: 2,
-        // markers: true,
-      },
-    });
+      // outlined marquee drifts sideways with the scroll
+      gsap.fromTo(
+        ".about-marquee",
+        { xPercent: 0 },
+        { xPercent: -33, ease: "none", scrollTrigger: { trigger: "#about", start: "top bottom", end: "bottom top", scrub: 1 } }
+      );
 
-    tl.to(
-      circleRef.current,
-      {
-        attr: { r: 47 },
-        duration: 0.3,
-        ease: "power1.inOut",
-      },
-      0
-    );
+      // soft light follows the pointer across the photo
+      const spot = root.current!.querySelector<HTMLElement>(".about-spot")!;
+      const photo = root.current!.querySelector<HTMLElement>(".about-photo")!;
+      gsap.set(spot, { "--sx": "50%", "--sy": "30%" });
+      const onMove = (e: PointerEvent) => {
+        const r = photo.getBoundingClientRect();
+        gsap.to(spot, {
+          "--sx": `${((e.clientX - r.left) / r.width) * 100}%`,
+          "--sy": `${((e.clientY - r.top) / r.height) * 100}%`,
+          opacity: 1,
+          duration: 0.5,
+          ease: "power3.out",
+          overwrite: "auto",
+        });
+      };
+      const onLeave = () => gsap.to(spot, { opacity: 0, duration: 0.6 });
+      photo.addEventListener("pointermove", onMove);
+      photo.addEventListener("pointerleave", onLeave);
 
-    tl.fromTo(
-      imageRef.current,
-      {
-        filter: "brightness(0%)",
-        duration: 4,
-        ease: "slow(0.7,0.7,false)",
-      },
-      {
-        filter: "brightness(75%)",
-        duration: 0.4,
-        ease: "slow(0.7,0.7,false)",
-        transformOrigin: "center center",
-      },
-      0.1
-    );
+      // Subtle zoom: photo sits normally until the section's top reaches the top of the screen, then eases in slightly as you keep scrolling
+      gsap.to(".about-zoom", {
+        scale: 1.06,
+        ease: "none",
+        scrollTrigger: { trigger: "#about", start: "top top", end: "bottom top", scrub: 1 },
+      });
 
-    gsap.from(allWords, {
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top 30%",
-        end: "center center",
-        scrub: 0.1,
-
-        // markers: true,
-      },
-      opacity: 0,
-      y: 20,
-      stagger: 0.005,
-      duration: 0.1,
-      ease: "power1.out",
-    });
-  }, []);
+      return () => {
+        photo.removeEventListener("pointermove", onMove);
+        photo.removeEventListener("pointerleave", onLeave);
+      };
+    },
+    { scope: section }
+  );
 
   return (
-    <section className="relative w-full max-w-[1700px] mx-auto  px-4 bg-black" id="about">
-      <Heading heading="About Me" />
+    <section ref={section} className="relative flex min-h-[100svh] w-full flex-col justify-center overflow-hidden bone-bg px-4 py-20 text-[#1d1d1f]" id="about">
+      <div ref={root} className="relative mx-auto grid w-full max-w-6xl items-stretch gap-12 md:grid-cols-[1fr_1fr] md:gap-16">
+        {/* portrait: slow scroll zoom */}
+        <div data-cursor="hi" className="about-photo relative h-full min-h-[460px] w-full md:ml-[calc(-1*max(1rem,(100vw_-_72rem)/2))] md:min-h-[640px] md:w-[calc(100%+max(1rem,(100vw_-_72rem)/2))]">
+          <div className="about-card absolute inset-0 overflow-hidden" style={{ maskImage: "radial-gradient(ellipse 98% 82% at 56% 36%, #000 0%, #000 48%, rgba(0,0,0,.9) 58%, rgba(0,0,0,.7) 68%, rgba(0,0,0,.45) 78%, rgba(0,0,0,.2) 89%, transparent 100%)", WebkitMaskImage: "radial-gradient(ellipse 94% 72% at 46% 36%, #000 0%, #000 48%, rgba(0,0,0,.9) 58%, rgba(0,0,0,.7) 68%, rgba(0,0,0,.45) 78%, rgba(0,0,0,.2) 89%, transparent 100%)" }}>
+            <div className="about-zoom absolute inset-0 origin-[left_bottom] will-change-transform">
+            <Image src={PHOTO} alt="Muhammad Zaeem Altaf" fill priority sizes="(min-width:768px) 100vw, 100vw" className="select-none object-cover object-[left_bottom] drop-shadow-[0_30px_40px_rgba(0,0,0,0.18)]" />
+            </div>
+            <div aria-hidden className="about-spot pointer-events-none absolute inset-0 opacity-0 mix-blend-soft-light" style={{ background: "radial-gradient(circle 260px at var(--sx, 50%) var(--sy, 30%), rgba(255,255,255,0.9), transparent 70%)" }} />
+          </div>
 
-      <div
-        ref={containerRef}
-        className="flex flex-col md:flex-row items-center gap-8 md:gap-16"
-      >
-        <div className="w-full md:w-1/2 relative">
-          <svg
-            className="content__img w-full max-w-2xl mx-auto"
-            viewBox="0 0 100 100"
-          >
-            <defs>
-              <filter id="displacementFilter1">
-                <feTurbulence
-                  type="fractalNoise"
-                  baseFrequency="0.03"
-                  numOctaves="2"
-                  result="noise"
-                />
-                <feDisplacementMap
-                  in="SourceGraphic"
-                  in2="noise"
-                  scale="40"
-                  xChannelSelector="R"
-                  yChannelSelector="G"
-                />
-              </filter>
-              <mask id="circleMask1">
-                <circle
-                  ref={circleRef}
-                  cx="50%"
-                  cy="50%"
-                  r="0"
-                  data-value-final="47"
-                  fill="white"
-                  className="mask"
-                  style={{ filter: "url(#displacementFilter1)" }}
-                />
-              </mask>
-            </defs>
-            <image
-              ref={imageRef}
-              xlinkHref="/profile-pic.png"
-              width="100%"
-              height="100%"
-              mask="url(#circleMask1)"
-              preserveAspectRatio="xMidYMid slice"
-              style={{ transformOrigin: "center center" }}
-            />
-          </svg>
+          {/* radial mask on the photo + blurred blocks over the left, bottom and right edges, so no hard edge survives.
+              They use the same pinned bone-bg as the section, so they match the page exactly at any scroll position. */}
+          <div aria-hidden className="bone-bg pointer-events-none absolute -bottom-44 -left-24 -right-12 z-10 h-80 blur-[55px]" />
+          <div aria-hidden className="bone-bg pointer-events-none absolute -bottom-32 -left-24 -right-12 z-10 h-[26rem] opacity-70 blur-[90px]" />
+          <div aria-hidden className="bone-bg pointer-events-none absolute -bottom-44 -left-28 -top-10 z-10 w-52 blur-[55px]" />
+          <div aria-hidden className="bone-bg pointer-events-none absolute -bottom-40 -right-12 -top-10 z-10 w-40 blur-[45px]" />
+          <div aria-hidden className="bone-bg pointer-events-none absolute -bottom-40 -left-40 z-10 h-[30rem] w-[10rem] rounded-full blur-[90px]" />
         </div>
 
-        <div className="left-right__step-inner w-full md:w-1/2 md:pl-8">
-          <div className="text-base text-center md:text-[18px] md:text-start leading-relaxed text-gray-400">
-            <p ref={firstParaRef} className="mb-5">
-              I&apos;m a Full-Stack Developer specializing in building fast, responsive, and
-              scalable web applications with Next.js, React, TypeScript, Laravel, and Tailwind CSS.
-              At Innovative Widget, I design and ship production-grade platforms end to end — from
-              backend APIs and data models to polished, interactive interfaces — collaborating with
-              a talented team to deliver and maintain high-quality solutions.
-            </p>
-
-            <p ref={secondParaRef}>
-              Alongside my work, I&apos;m pursuing a Bachelor&apos;s in Computer Science at Virtual
-              University and training in Cloud Applied Generative AI Engineering at GIAIC. I&apos;m
-              deeply interested in AI agents, LLM tooling, and the systems that power modern
-              products, and I actively contribute to open source. Always learning and open to new
-              opportunities — feel free to reach out on LinkedIn or via email.
-            </p>
+        {/* text */}
+        <div className="relative z-20 flex w-full flex-col justify-center">
+          <p className="flex items-center gap-3 text-xs font-medium uppercase tracking-[0.25em] text-black/45">
+            <span className="h-px w-8 bg-black/30" />
+            About me
+          </p>
+          <h2 aria-label={`${HEADING}.`} className="about-heading mb-8 mt-4 text-4xl font-semibold leading-[1.15] tracking-[-0.03em] md:text-6xl">
+            {HEADING.split("").map((c, i) => (
+              <span key={i} aria-hidden className="inline-block overflow-hidden align-bottom">
+                <span className="about-char inline-block">{c === " " ? "\u00A0" : c}</span>
+              </span>
+            ))}
+            <span aria-hidden className="inline-block overflow-hidden align-bottom">
+              <span className="about-char inline-block text-black/25">.</span>
+            </span>
+          </h2>
+          <div className="about-text space-y-5 text-base leading-relaxed text-black/75 md:text-[18px]">
+            {paragraphs.map((p, i) => (
+              <p key={i}>
+                {p.split(" ").map((w, j) => (
+                  <span key={j} className="about-word inline-block">
+                    {KEYWORDS.has(w) ? (
+                      <span className="about-hl bg-[linear-gradient(#2563eb,#2563eb)] bg-[length:0%_2px] bg-left-bottom bg-no-repeat pb-0.5">{w}</span>
+                    ) : (
+                      w
+                    )}
+                    &nbsp;
+                  </span>
+                ))}
+              </p>
+            ))}
           </div>
+
+          <dl className="about-facts mt-10 divide-y divide-black/10 border-y border-black/10">
+            {facts.map(([k, v]) => (
+              <div key={k} data-cursor="" className="about-fact group relative flex items-baseline justify-between gap-6 overflow-hidden px-3 py-4">
+                <span aria-hidden className="absolute inset-0 -z-0 translate-y-full bg-[#1d1d1f] transition-transform duration-500 ease-[cubic-bezier(.7,0,.2,1)] group-hover:translate-y-0" />
+                <dt className="relative text-xs uppercase tracking-[0.2em] text-black/40 transition-colors duration-500 group-hover:text-white/60">{k}</dt>
+                <dd className="relative text-right text-sm text-[#1d1d1f] transition-all duration-500 group-hover:-translate-x-1 group-hover:text-white md:text-base">{v}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
+
+      {/* outlined marquee: moves with scroll */}
+      <div aria-hidden className="relative z-20 mt-16 overflow-hidden whitespace-nowrap select-none">
+        <div className="about-marquee font-display inline-block text-[10vw] font-bold leading-none text-transparent [-webkit-text-stroke:1px_rgba(0,0,0,0.22)]">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <span key={i}>Full-Stack - Creative - Agentic AI - </span>
+          ))}
         </div>
       </div>
     </section>

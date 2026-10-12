@@ -1,13 +1,8 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import Cursor from "@/components/Cursor";
 import SmoothScroll from "@/components/SmoothScroll";
 import "./globals.css";
-
-// Use CSS custom properties with system font fallbacks
-// This avoids Google Fonts fetch timeouts during build
-const fontVariables = {
-  variable: "--font-geist-sans --font-geist-mono",
-};
 
 const siteUrl = "https://muhammadzaeemaltaf.vercel.app";
 
@@ -98,6 +93,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Google Fonts via <link>: next/font/google breaks under Turbopack dev */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Poppins:wght@300;400;500;600&display=swap"
+        />
         {/* Schema.org Structured Data for Google */}
         <script
           type="application/ld+json"
@@ -212,6 +214,7 @@ export default function RootLayout({
         className="antialiased"
       >
         <SmoothScroll />
+        <Cursor />
         {children}
       </body>
     </html>
