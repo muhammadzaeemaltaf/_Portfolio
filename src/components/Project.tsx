@@ -1,327 +1,264 @@
 "use client"
 
-import React, { useState, useEffect, useRef } from "react"
-import { gsap } from "gsap"
+import { useEffect, useRef, useState } from "react"
+import gsap from "gsap"
+import { useGSAP } from "@gsap/react"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { Flip } from "gsap/Flip"
-import Heading from "@/components/Heading"
-import { topProjects } from "@/libs/data"
 import Image from "next/image"
-import { useMediaQuery } from "@/hooks/use-media-query"
-import { AnimatedButton } from "./AnimateButton"
-import { X } from "lucide-react"
-import { IconType } from "react-icons"
 import Link from "next/link"
+import { X } from "lucide-react"
+import { topProjects } from "@/libs/data"
+import { AnimatedButton } from "./AnimateButton"
+import { projectLines } from "./projectLines"
 
-gsap.registerPlugin(ScrollTrigger, Flip)
+gsap.registerPlugin(ScrollTrigger, useGSAP)
+
+// one card per project, centred at [left %, top %] with width in vw, kept clear of the word in the middle
+const SCATTER = [
+  [13, 18, 17], [40, 11, 13], [67, 13, 15], [88, 24, 15], [10, 64, 15], [90, 68, 14], [26, 86, 16], [74, 87, 17],
+]
+const photos = topProjects.map((p) => p.image[0]).slice(0, SCATTER.length)
+
+const TAGLINE = "A curated selection of platforms, products and sites I've built."
+
+// TRIONN /work layout: one stream, each card parked in a lane at one of four widths (lg values are theirs;
+// md is widened so tablet cards don't get cramped; below md every card is a centred 90% column)
+const LANE = { left: "md:ml-[4%] md:mr-auto", right: "md:ml-auto md:mr-[4%]", center: "md:mx-auto" }
+const SIZE = {
+  small: "md:w-[40%] lg:w-[29%]",
+  medium: "md:w-[46%] lg:w-[36%]",
+  large: "md:w-[52%] lg:w-[41%]",
+  xlarge: "md:w-[58%] lg:w-[46%]",
+}
+const LAYOUT: [keyof typeof LANE, keyof typeof SIZE][] = [
+  ["left", "large"], ["right", "medium"], ["left", "large"], ["center", "xlarge"],
+  ["right", "large"], ["left", "medium"], ["center", "xlarge"], ["right", "small"],
+]
 
 const Project = () => {
-  const [expandedProject, setExpandedProject] = useState<any>(null)
-  const [activeImageIndex, setActiveImageIndex] = useState(0)
-  const [isTitleStuck, setIsTitleStuck] = useState(false)
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const expandedCardData = useRef<{
-    element: HTMLElement | null
-    placeholder: HTMLElement | null
-    initialRect: DOMRect | null
-  }>({ element: null, placeholder: null, initialRect: null })
-
-  const isMobile = useMediaQuery("(max-width: 767px)")
+  const root = useRef<HTMLDivElement>(null)
+  const dialog = useRef<HTMLDialogElement>(null)
+  const [open, setOpen] = useState<number | null>(null)
+  const [shot, setShot] = useState(0)
+  const project = open === null ? null : topProjects[open]
 
   useEffect(() => {
-    if (sectionRef.current) {
-      gsap.from(".project-card", {
-        scrollTrigger: {
-          trigger: ".project-card",
-          start: "top 80%",
-          toggleActions: "play none none reverse",
-        },
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-        stagger: 0.2,
-      })
-    }
-  }, [])
+    if (open !== null) dialog.current?.showModal()
+  }, [open])
 
-  // Fade in the expanded-only content (tags, thumbnails, overview) once it mounts,
-  // and track whether the sticky title bar has scrolled to the top of the card.
-  useEffect(() => {
-    const element = expandedCardData.current.element
-    if (expandedProject && element) {
-      const items = element.querySelectorAll(".reveal-item")
-      gsap.fromTo(
-        items,
-        { opacity: 0, y: 12 },
-        { opacity: 1, y: 0, duration: 0.35, stagger: 0.08, ease: "power2.out" }
-      )
+  useGSAP(
+    () => {
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      const intro = root.current!.querySelector<HTMLElement>(".pw-intro")!
+      const word = root.current!.querySelector<HTMLElement>(".pw-word")!
+      const photoEls = gsap.utils.toArray<HTMLElement>(".pw-photo")
 
-      const sentinel = element.querySelector(".title-sentinel")
-      if (sentinel) {
-        const observer = new IntersectionObserver(
-          ([entry]) => setIsTitleStuck(!entry.isIntersecting),
-          { root: element, threshold: 0 }
-        )
-        observer.observe(sentinel)
-        return () => observer.disconnect()
+      if (!reduce) {
+        // idle levitation on the inner card, so it never fights the scroll tween on the outer one
+        photoEls.forEach((el) => {
+          gsap.to(el.firstElementChild, {
+            y: () => gsap.utils.random(-22, 22),
+            x: () => gsap.utils.random(-12, 12),
+            rotation: () => gsap.utils.random(-4, 4),
+            duration: () => gsap.utils.random(2.5, 4.5),
+            ease: "sine.inOut",
+            repeat: -1,
+            yoyo: true,
+            repeatRefresh: true,
+          })
+        })
       }
-    }
-  }, [expandedProject])
 
-  const handleCardClick = (project: any, e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const cardEl = e.currentTarget
-    const computedStyle = window.getComputedStyle(cardEl)
+      // centre of "mza" inside the intro, measured live so it survives resizes
+      const targetLeft = () => word.getBoundingClientRect().left - intro.getBoundingClientRect().left + word.offsetWidth / 2
+      const targetTop = () => word.getBoundingClientRect().top - intro.getBoundingClientRect().top + word.offsetHeight / 2
 
-    // Capture the card's current (grid) position/size so Flip can morph from it precisely.
-    const state = Flip.getState(cardEl)
-    const rect = cardEl.getBoundingClientRect()
+      const tl = gsap.timeline(
+        reduce
+          ? { paused: true }
+          : { scrollTrigger: { trigger: intro, start: "top top", end: "+=220%", pin: true, scrub: true, invalidateOnRefresh: true } }
+      )
+      // one by one, each card dives into the word and the word fills a step whiter
+      photoEls.forEach((el, i) => {
+        tl.to(el, { left: targetLeft, top: targetTop, scale: 0.05, opacity: 0, ease: "power2.in", duration: 1 }, i * 0.6)
+      })
+      tl.fromTo(".pw-fill", { clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0% 0 0 0)", ease: "none", duration: (photoEls.length - 1) * 0.6 + 1 }, 0)
+        .to({}, { duration: 0.6 }) // hold the white word a beat before the section moves on
+      if (reduce) tl.progress(1)
 
-    // Placeholder keeps this card's exact grid cell reserved so sibling
-    // cards don't reshuffle columns while this card floats above the grid.
-    const placeholder = document.createElement("div")
-    placeholder.style.width = `${rect.width}px`
-    placeholder.style.height = `${rect.height}px`
-    placeholder.style.gridColumn = computedStyle.gridColumn
-    placeholder.style.gridRow = computedStyle.gridRow
-    placeholder.classList.add("invisible")
-    cardEl.parentNode?.insertBefore(placeholder, cardEl)
+      // three threads draw down the stream and reveal each card as they reach it
+      if (!reduce) {
+        return projectLines(
+          root.current!.querySelector<HTMLElement>(".pw-list")!,
+          root.current!.querySelector<HTMLCanvasElement>(".pw-lines")!,
+          gsap.utils.toArray<HTMLElement>(".pw-card"),
+          gsap.utils.toArray<HTMLElement>(".pw-thumb")
+        )
+      }
+    },
+    { scope: root }
+  )
 
-    expandedCardData.current = {
-      element: cardEl,
-      placeholder,
-      initialRect: rect,
-    }
-
-    gsap.set(document.body, { overflow: "hidden" })
-
-    const modalWidth = isMobile ? window.innerWidth : Math.min(1100, window.innerWidth * 0.68)
-    const modalHeight = isMobile ? window.innerHeight : window.innerHeight * 0.85
-
-    gsap.set(cardEl, {
-      position: "fixed",
-      top: "50%",
-      left: "50%",
-      xPercent: -50,
-      yPercent: -50,
-      width: modalWidth,
-      height: modalHeight,
-      margin: 0,
-      overflow: "hidden",
-      backgroundColor: "black",
-      zIndex: 100,
-    })
-
-    Flip.from(state, {
-      duration: 0.7,
-      ease: "power2.inOut",
-      onComplete: () => {
-        setExpandedProject(project)
-        gsap.set(cardEl, { overflow: "auto" })
-      },
-    })
-
-    gsap.to(".overlay", {
-      opacity: 1,
-      pointerEvents: "auto",
-      duration: 0.3,
-      ease: "power2.out",
-    })
-  }
-
-  const handleOverlayClick = () => {
-    const { element, placeholder, initialRect } = expandedCardData.current
-    if (!element || !placeholder || !initialRect) return
-
-    const state = Flip.getState(element)
-
-    gsap.set(document.body, { overflow: "auto" })
-    gsap.set(element, { overflow: "hidden" })
-    // Unmount expanded-only content immediately so it doesn't linger while the card shrinks back.
-    setExpandedProject(null)
-    setActiveImageIndex(0)
-    setIsTitleStuck(false)
-
-    gsap.set(element, {
-      position: "fixed",
-      top: initialRect.top,
-      left: initialRect.left,
-      xPercent: 0,
-      yPercent: 0,
-      width: initialRect.width,
-      height: initialRect.height,
-    })
-
-    Flip.from(state, {
-      duration: 0.7,
-      ease: "power2.inOut",
-      onComplete: () => {
-        gsap.set(element, { clearProps: "all" })
-        placeholder.remove()
-        expandedCardData.current = {
-          element: null,
-          placeholder: null,
-          initialRect: null,
-        }
-      },
-    })
-
-    gsap.to(".overlay", {
-      opacity: 0,
-      pointerEvents: "none",
-      duration: 0.5,
-      ease: "power2.inOut",
-    })
+  const close = () => {
+    dialog.current?.close()
   }
 
   return (
-    <section ref={sectionRef} className="min-h-screen mb-20 relative px-4 md:px-10 max-w-[1400px] w-full mx-auto" id="projects">
-      <Heading heading="Top Projects" />
-
-      {/* Render overlay when a project is expanded */}
-      <div
-        className="fixed inset-0 bg-black/50 backdrop-blur-md z-50 cursor-pointer pointer-events-none opacity-0 overlay"
-        onClick={handleOverlayClick}
-      />
-
-      <div className="project-container relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-        {topProjects?.map((project, i) => {
-          const IconComponent = project.organizationLogo as IconType
-          const isExpanded = expandedProject?.title === project.title
-          const hasGallery = project.image.length > 1
-          const displayedImage = isExpanded ? project.image[activeImageIndex] : project.image[0]
-
+    <div ref={root} className="relative w-full bg-black text-white">
+      {/* intro: floating project cards dive into "mza" one by one until it is solid white */}
+      <div className="pw-intro relative h-svh w-full overflow-hidden">
+        <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
+          <h2 className="pw-word relative font-display text-[28vw] font-extrabold leading-[0.8] tracking-[-0.06em] md:text-[17vw]">
+            <span className="text-transparent [-webkit-text-stroke:1.5px_white]">mza</span>
+            <span aria-hidden className="pw-fill absolute inset-0 text-white">mza</span>
+          </h2>
+          <p className="mt-6 font-display text-2xl font-semibold tracking-[-0.02em] md:text-4xl">My work</p>
+          <p className="mt-3 max-w-md text-sm text-white/60 md:text-base">{TAGLINE}</p>
+        </div>
+        {photos.map((src, i) => {
+          const [l, t, w] = SCATTER[i]
           return (
             <div
               key={i}
-              onClick={(e) => {
-                if (!isExpanded) {
-                  handleCardClick(project, e)
-                }
-              }}
-              data-lenis-prevent={isExpanded ? true : undefined}
-              className="project-card relative flex flex-col h-full border border-white/20 text-white rounded-lg shadow cursor-pointer overflow-hidden"
+              className="pw-photo absolute -translate-x-1/2 -translate-y-1/2"
+              style={{ left: `${l}%`, top: `${t}%`, width: `max(${w}vw, 120px)` }}
             >
-              {isExpanded && (
-                <AnimatedButton
-                  text={<X className="h-3 w-3" />}
-                  bg={`!absolute right-2 top-2 !p-2 !h-7 z-[100] bg-black md:!hidden ${isExpanded ? "!opacity-100" : "!opacity-0"}`}
-                  onClick={handleOverlayClick}
-                />
-              )}
-
-              <div className="relative w-full aspect-[2854/1432] overflow-hidden shrink-0 bg-black">
-                <Image
-                  key={isExpanded ? "expanded" : "collapsed"}
-                  src={displayedImage || "/placeholder.svg?height=200&width=200"}
-                  alt={project.title}
-                  fill
-                  quality={100}
-                  sizes={isExpanded ? "(max-width: 767px) 100vw, 1100px" : "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"}
-                  className="object-cover"
-                />
-              </div>
-
-              {isExpanded && hasGallery && (
-                <div className="thumbnails reveal-item  space-x-2 px-4 pt-3">
-                  {project.image.map((img, imgIdx) => (
-                    <button
-                      key={imgIdx}
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        setActiveImageIndex(imgIdx)
-                      }}
-                      className={`relative w-14 h-9 rounded overflow-hidden border shrink-0 ${activeImageIndex === imgIdx ? "border-primary-500" : "border-white/20"}`}
-                    >
-                      <Image src={img} alt={`${project.title} screenshot ${imgIdx + 1}`} fill quality={100} className="object-cover object-top" />
-                    </button>
-                  ))}
-                </div>
-              )}
-
-              <div className="text flex flex-col flex-1 p-4">
-                {isExpanded && <div className="title-sentinel h-px" />}
-                <div
-                  className={
-                    isExpanded
-                      ? `sticky top-[-1px] z-20 -mx-4 -mt-4 mb-3 px-4 pt-4 pb-3 bg-black transition-colors duration-200 flex items-center justify-between gap-4 ${isTitleStuck ? "border-b border-white/15" : ""}`
-                      : "mb-3"
-                  }
-                >
-                  <h3 className={`font-bold transition-[font-size] ${isExpanded ? "text-2xl md:text-3xl 2xl:text-4xl" : "2xl:text-2xl"}`}>{project.title}</h3>
-                  {isExpanded && project.link && (
-                    <AnimatedButton
-                      text="View Project"
-                      arrow
-                      href={project.link}
-                      expanded
-                      bg="2xl:h-12 2xl:px-7 2xl:text-xl shrink-0"
-                      target="_blank"
-                    />
-                  )}
-                </div>
-                <p className="line-clamp-2 mb-4 2xl:text-[18px]">{project.role}</p>
-                {project.organization && (
-                  <div className="flex items-center gap-2">
-                    <div className="h-8 w-8 flex items-center justify-center rounded-lg overflow-hidden bg-white/10 mb-4 border border-white/20">
-                      <IconComponent className="text-primary-500 text-xl" />
-                    </div>
-                    {project.organizationURL && (
-                      <Link href={project.organizationURL} target="_blank" className="font-semibold mb-4">
-                        {project.organization}
-                      </Link>
-                    )}
-                  </div>
-                )}
-                {isExpanded && (
-                  <div className="tags reveal-item flex justify-start items-center gap-2">
-                    {project.tags.map((Tag, tagIdx) => (
-                      <span key={tagIdx} className="text-xs p-1 rounded mr-1">
-                        <Tag className="h-8 w-8" />
-                      </span>
-                    ))}
-                  </div>
-                )}
-                {!isExpanded && (
-                  <div className="animated-button mt-auto">
-                    <AnimatedButton
-                      text="Overview"
-                      bg="2xl:h-12 2xl:px-7 2xl:text-xl block mt-4"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        const card = (e.currentTarget as HTMLElement).closest(".project-card")
-                        if (card) {
-                          handleCardClick(project, { ...e, currentTarget: card } as React.MouseEvent<HTMLDivElement, MouseEvent>)
-                        }
-                      }}
-                    />
-                  </div>
-                )}
-
-                {isExpanded && (
-                  <div className="overview-wrapper reveal-item mt-6">
-                    <h2 className="font-semibold text-3xl">Project Overview</h2>
-                    <p className="my-5">{expandedProject.description}</p>
-                    <h2 className="font-semibold text-3xl">Features</h2>
-                    {expandedProject.feature && (
-                      <ul className="my-5 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2.5 text-sm leading-relaxed text-white/80">
-                        {expandedProject.feature.map((item: string, featureIdx: number) => (
-                          <li key={featureIdx} className="flex items-start">
-                            <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full [background-image:-webkit-linear-gradient(45deg,#2563eb_6%,#1e40af_19%,#2563eb_100%)] mr-2"/>
-                            {item}</li>
-                        ))}
-                      </ul>
-                    )}
-                    <h2 className="font-semibold text-3xl my-5">Impact</h2>
-                    <p>{expandedProject.impact}</p>
-                  </div>
-                )}
+              <div className="relative aspect-[16/10] overflow-hidden rounded-lg border border-white/10 shadow-2xl shadow-black">
+                <Image src={src} alt="" fill sizes="20vw" className="object-cover object-top" />
               </div>
             </div>
           )
         })}
       </div>
-    </section>
+
+      {/* threads drawn behind the cards (fixed + viewport-sized; projectLines paints only the stream's range) */}
+      <canvas aria-hidden className="pw-lines pointer-events-none fixed left-0 top-0 h-lvh w-full motion-reduce:hidden" />
+
+      {/* stream: cards zig-zag down left / centre / right lanes */}
+      <ul className="pw-list relative z-10 flex w-full flex-col gap-20 pb-32 pt-10 lg:pb-48 lg:pt-20">
+        {topProjects.map((p, i) => {
+          const [lane, size] = LAYOUT[i % LAYOUT.length]
+          return (
+            <li key={p.title} className={`pw-card mx-auto w-[90%] ${LANE[lane]} ${SIZE[size]}`}>
+              <button
+                type="button"
+                data-cursor="View"
+                onClick={() => {
+                  setShot(0)
+                  setOpen(i)
+                }}
+                className="group block w-full text-left"
+              >
+                <div className="pw-thumb relative mb-6 aspect-[812/568] w-full overflow-hidden rounded-lg bg-white/5">
+                  <Image
+                    src={p.image[0]}
+                    alt={p.title}
+                    fill
+                    quality={90}
+                    sizes="(max-width: 767px) 90vw, (max-width: 1023px) 58vw, 46vw"
+                    className="object-cover object-left-top transition-transform duration-[1.2s] ease-[cubic-bezier(.2,.8,.2,1)] group-hover:scale-[1.03]"
+                  />
+                </div>
+                <h3 className="font-display text-2xl font-semibold tracking-[-0.02em] sm:w-7/12 md:text-3xl">{p.title}</h3>
+                <div className="mt-4 flex flex-col justify-between gap-6 sm:flex-row sm:items-end sm:gap-10">
+                  <p className="line-clamp-2 max-w-80 text-sm text-white/60 sm:w-7/12">{p.role}</p>
+                  <span className="relative shrink-0 self-start pb-2 font-mono text-xs uppercase tracking-[0.2em] text-[#D8D8D8] sm:self-auto">
+                    Explore project
+                    <span className="absolute inset-x-0 bottom-0 h-px origin-left bg-[#D8D8D8] transition-transform duration-500 group-hover:scale-x-0" />
+                  </span>
+                </div>
+              </button>
+            </li>
+          )
+        })}
+      </ul>
+
+      {/* details */}
+      <dialog
+        ref={dialog}
+        data-lenis-prevent
+        onClose={() => setOpen(null)}
+        onClick={(e) => e.target === e.currentTarget && close()}
+        className="m-auto h-svh overflow-y-auto max-h-none w-full max-w-none bg-black text-white backdrop:bg-black/70 backdrop:backdrop-blur-md md:h-[85vh] md:max-w-[1100px] md:rounded-xl md:border md:border-white/15"
+      >
+        {project && (
+          <div className="relative">
+            <button
+              type="button"
+              aria-label="Close"
+              onClick={close}
+              className="fixed right-4 top-4 z-10 rounded-full border border-white/20 bg-black/70 p-2 md:absolute"
+            >
+              <X className="h-4 w-4" />
+            </button>
+            <div className="relative aspect-[2854/1432] w-full bg-black">
+              <Image src={project.image[shot]} alt={project.title} fill quality={100} sizes="(max-width: 767px) 100vw, 1100px" className="object-cover" />
+            </div>
+            {project.image.length > 1 && (
+              <div className="flex gap-2 overflow-x-auto px-6 pt-4">
+                {project.image.map((img, j) => (
+                  <button
+                    key={j}
+                    type="button"
+                    onClick={() => setShot(j)}
+                    className={`relative h-9 w-14 shrink-0 overflow-hidden rounded border ${shot === j ? "border-primary-500" : "border-white/20"}`}
+                  >
+                    <Image src={img} alt={`${project.title} screenshot ${j + 1}`} fill className="object-cover object-top" />
+                  </button>
+                ))}
+              </div>
+            )}
+            <div className="p-6 md:p-8">
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <h3 className="font-display text-2xl font-semibold md:text-4xl">{project.title}</h3>
+                {project.link && <AnimatedButton text="View Project" arrow href={project.link} expanded bg="shrink-0" target="_blank" />}
+              </div>
+              <p className="mt-3 text-white/70">{project.role}</p>
+              {project.organization && project.organizationLogo && (
+                <div className="mt-4 flex items-center gap-2">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/20 bg-white/10">
+                    <project.organizationLogo className="text-xl text-primary-500" />
+                  </span>
+                  {project.organizationURL ? (
+                    <Link href={project.organizationURL} target="_blank" className="font-semibold">
+                      {project.organization}
+                    </Link>
+                  ) : (
+                    <span className="font-semibold">{project.organization}</span>
+                  )}
+                </div>
+              )}
+              <div className="mt-5 flex items-center gap-3">
+                {project.tags.map((Tag, j) => (
+                  <Tag key={j} className="h-7 w-7" />
+                ))}
+              </div>
+              <h4 className="mt-8 font-display text-2xl font-semibold">Project Overview</h4>
+              <p className="mt-3 text-white/80">{project.description}</p>
+              {project.feature && (
+                <>
+                  <h4 className="mt-8 font-display text-2xl font-semibold">Features</h4>
+                  <ul className="mt-4 grid grid-cols-1 gap-x-8 gap-y-2.5 text-sm leading-relaxed text-white/80 md:grid-cols-2">
+                    {project.feature.map((f) => (
+                      <li key={f} className="flex items-start gap-2">
+                        <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[#2563eb]" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+              {project.impact && (
+                <>
+                  <h4 className="mt-8 font-display text-2xl font-semibold">Impact</h4>
+                  <p className="mt-3 text-white/80">{project.impact}</p>
+                </>
+              )}
+            </div>
+          </div>
+        )}
+      </dialog>
+    </div>
   )
 }
 

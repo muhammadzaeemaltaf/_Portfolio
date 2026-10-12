@@ -26,11 +26,11 @@ export default function Home() {
             <section aria-label="Technical skills and technologies" id="skills">
               <Skills />
             </section>
-            <section aria-label="How I work — my process" id="how-i-work">
-              <HowIWork />
-            </section>
             <section aria-label="Portfolio projects" id="projects">
               <Project />
+            </section>
+            <section aria-label="How I work — my process" id="how-i-work">
+              <HowIWork />
             </section>
             <section aria-label="Professional work experience" id="experience">
               <Experience />
