@@ -99,15 +99,15 @@ const Project = () => {
   return (
     <div ref={root} className="relative w-full bg-black text-white">
       {/* intro: floating project cards dive into "My work" one by one until it is solid white */}
-      <div className="pw-intro relative h-svh w-full overflow-hidden">
+      <div className="pw-intro relative z-50 h-svh w-full overflow-hidden">
         <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
-          <h2 className="pw-word relative whitespace-nowrap font-display text-[16vw] font-extrabold leading-[0.9] tracking-[-0.04em] md:text-[10vw]">
+          <h2 className="pw-word relative z-20 whitespace-nowrap font-display text-[12vw] font-extrabold leading-[0.9] tracking-[-0.04em] md:text-[6vw]">
             <span className="text-transparent [-webkit-text-stroke:1.5px_white]">My work</span>
             <span aria-hidden className="pw-fill absolute inset-0 text-white">My work</span>
+            {/* the three threads leave from here, from behind the heading (h2 is z-20, above the canvas) */}
+            <span aria-hidden className="pw-dot absolute left-1/2 top-1/2 -z-10 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 opacity-0" />
           </h2>
-          {/* the three threads leave from here */}
-          <span aria-hidden className="pw-dot mt-5 h-1.5 w-1.5 rounded-full bg-[#D7D7CD]" />
-          <p className="mt-5 max-w-md text-sm text-white/60 md:text-base">{TAGLINE}</p>
+          <p className="mt-4 max-w-md text-sm text-white/60 md:text-base">{TAGLINE}</p>
         </div>
         {photos.map((src, i) => {
           const [l, t, w] = SCATTER[i]
