@@ -61,11 +61,13 @@ export function projectLines(
   cards: HTMLElement[],
   thumbs: HTMLElement[],
   intro: HTMLElement,
-  origin: HTMLElement
+  origin: HTMLElement,
+  finish: HTMLElement
 ) {
   const ctx = canvas.getContext("2d")!
   let lines: Pt[][] = []
   let dots: { x: number; y: number }[] = []
+  let lastDot = { x: 0, y: 0 }
   let start = 0, end = 1, head = 0, running = false
   const opacity = cards.map(() => 0)
 
@@ -89,8 +91,12 @@ export function projectLines(
       const r = t.getBoundingClientRect()
       return { x: r.left + r.width / 2, y: r.top + sy }
     })
-    end = dots[dots.length - 1].y // threads stop on the last card's dot, not at the section's end
-    const stops = dots
+    // threads fan out again after the last card and knot together on the closing dot, where the section ends
+    const f = finish.getBoundingClientRect()
+    const last = { x: f.left + f.width / 2, y: f.top + sy + f.height / 2 }
+    end = last.y
+    lastDot = last
+    const stops = [...dots, last]
     const spread = 0.15 + Math.random() * 0.13
     const fans = stops.map(() => fan(spread))
     lines = LINE_SEEDS.map((_, l) => {
@@ -159,6 +165,7 @@ export function projectLines(
     ctx.fillStyle = "rgb(215,215,205)"
     ctx.globalAlpha = 0.55
     dots.forEach((d) => dot(d.x, d.y - sy))
+    dot(lastDot.x, lastDot.y - sy)
     ctx.fillStyle = "rgb(200,200,200)"
     ctx.globalAlpha = 0.85
     heads.forEach((d) => dot(d.x, d.y))

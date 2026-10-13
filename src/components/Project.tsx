@@ -85,7 +85,8 @@ const Project = () => {
           gsap.utils.toArray<HTMLElement>(".pw-card"),
           gsap.utils.toArray<HTMLElement>(".pw-thumb"),
           intro,
-          root.current!.querySelector<HTMLElement>(".pw-dot")!
+          root.current!.querySelector<HTMLElement>(".pw-dot")!,
+          root.current!.querySelector<HTMLElement>(".pw-end")!
         )
       }
     },
@@ -165,6 +166,8 @@ const Project = () => {
             </li>
           )
         })}
+        {/* the threads come to rest here */}
+        <li aria-hidden className="pw-end mx-auto h-1.5 w-1.5 rounded-full bg-[#D7D7CD] motion-reduce:hidden" />
       </ul>
 
       {/* details */}
