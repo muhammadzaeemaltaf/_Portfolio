@@ -55,7 +55,14 @@ function fan(spread: number) {
   return [a, b, c]
 }
 
-export function projectLines(list: HTMLElement, canvas: HTMLCanvasElement, cards: HTMLElement[], thumbs: HTMLElement[]) {
+export function projectLines(
+  list: HTMLElement,
+  canvas: HTMLCanvasElement,
+  cards: HTMLElement[],
+  thumbs: HTMLElement[],
+  intro: HTMLElement,
+  origin: HTMLElement
+) {
   const ctx = canvas.getContext("2d")!
   let lines: Pt[][] = []
   let dots: { x: number; y: number }[] = []
@@ -73,17 +80,21 @@ export function projectLines(list: HTMLElement, canvas: HTMLCanvasElement, cards
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
 
     const box = list.getBoundingClientRect()
-    start = box.top + sy - innerHeight / 2 // threads leave from the intro's lower half, like TRIONN's header
-    end = box.bottom + sy
+    // threads leave from the dot under the heading. The intro may be pinned (fixed) right now, so place the
+    // dot by its offset inside the intro, measured from where the intro sits once unpinned: right above the list
+    const o = origin.getBoundingClientRect()
+    const from = { x: o.left + o.width / 2, y: box.top + sy - intro.offsetHeight + (o.top - intro.getBoundingClientRect().top) + o.height / 2 }
+    start = from.y
     dots = thumbs.map((t) => {
       const r = t.getBoundingClientRect()
       return { x: r.left + r.width / 2, y: r.top + sy }
     })
-    const stops = [...dots, { x: w / 2, y: end }]
+    end = dots[dots.length - 1].y // threads stop on the last card's dot, not at the section's end
+    const stops = dots
     const spread = 0.15 + Math.random() * 0.13
     const fans = stops.map(() => fan(spread))
     lines = LINE_SEEDS.map((_, l) => {
-      const pts = [{ x: w / 2, y: start }]
+      const pts = [from]
       let prev = start
       stops.forEach((s, i) => {
         const fx = w * fans[i][l]
@@ -108,7 +119,10 @@ export function projectLines(list: HTMLElement, canvas: HTMLCanvasElement, cards
   }
 
   function draw() {
-    head += (target() - head) * 0.14
+    // ease towards the scroll position, but land on it exactly: the last card's dot is the end, and an
+    // asymptotic ease would stop a hair short and never reveal that card
+    const goal = target()
+    head = Math.abs(goal - head) < 0.5 ? goal : head + (goal - head) * 0.14
     syncCards(false)
 
     const sy = scrollY
@@ -128,8 +142,8 @@ export function projectLines(list: HTMLElement, canvas: HTMLCanvasElement, cards
       for (const p of pts) {
         if (p.y > head || p.y - sy > h + 40) break
         if (p.y - sy < -40) continue
-        // wiggle travels along the thread, calming to nothing as it nears a card dot
-        let damp = 1
+        // wiggle travels along the thread, calming to nothing at the heading dot, each card dot and the end
+        let damp = Math.min(1, (p.y - start) / (0.03 * len), (end - p.y) / (0.03 * len))
         for (const d of dots) damp = Math.min(damp, Math.abs(p.y - d.y) / (0.03 * len))
         const n = ((p.y - start) / len) * Math.PI * 32 + 0.5 * time + 2.1 * LINE_SEEDS[l]
         const i = Math.cos(n) * amp * damp, j = Math.sin(n) * amp * 0.35 * damp

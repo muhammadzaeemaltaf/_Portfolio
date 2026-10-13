@@ -21,19 +21,10 @@ const photos = topProjects.map((p) => p.image[0]).slice(0, SCATTER.length)
 
 const TAGLINE = "A curated selection of platforms, products and sites I've built."
 
-// TRIONN /work layout: one stream, each card parked in a lane at one of four widths (lg values are theirs;
-// md is widened so tablet cards don't get cramped; below md every card is a centred 90% column)
+// TRIONN /work layout: one stream, each card parked in a lane, all at one size
+// (below md every card is a centred 90% column)
 const LANE = { left: "md:ml-[4%] md:mr-auto", right: "md:ml-auto md:mr-[4%]", center: "md:mx-auto" }
-const SIZE = {
-  small: "md:w-[40%] lg:w-[29%]",
-  medium: "md:w-[46%] lg:w-[36%]",
-  large: "md:w-[52%] lg:w-[41%]",
-  xlarge: "md:w-[58%] lg:w-[46%]",
-}
-const LAYOUT: [keyof typeof LANE, keyof typeof SIZE][] = [
-  ["left", "large"], ["right", "medium"], ["left", "large"], ["center", "xlarge"],
-  ["right", "large"], ["left", "medium"], ["center", "xlarge"], ["right", "small"],
-]
+const LAYOUT: (keyof typeof LANE)[] = ["left", "right", "left", "center", "right", "left", "center", "right"]
 
 const Project = () => {
   const root = useRef<HTMLDivElement>(null)
@@ -69,7 +60,7 @@ const Project = () => {
         })
       }
 
-      // centre of "mza" inside the intro, measured live so it survives resizes
+      // centre of "My work" inside the intro, measured live so it survives resizes
       const targetLeft = () => word.getBoundingClientRect().left - intro.getBoundingClientRect().left + word.offsetWidth / 2
       const targetTop = () => word.getBoundingClientRect().top - intro.getBoundingClientRect().top + word.offsetHeight / 2
 
@@ -92,7 +83,9 @@ const Project = () => {
           root.current!.querySelector<HTMLElement>(".pw-list")!,
           root.current!.querySelector<HTMLCanvasElement>(".pw-lines")!,
           gsap.utils.toArray<HTMLElement>(".pw-card"),
-          gsap.utils.toArray<HTMLElement>(".pw-thumb")
+          gsap.utils.toArray<HTMLElement>(".pw-thumb"),
+          intro,
+          root.current!.querySelector<HTMLElement>(".pw-dot")!
         )
       }
     },
@@ -105,15 +98,16 @@ const Project = () => {
 
   return (
     <div ref={root} className="relative w-full bg-black text-white">
-      {/* intro: floating project cards dive into "mza" one by one until it is solid white */}
+      {/* intro: floating project cards dive into "My work" one by one until it is solid white */}
       <div className="pw-intro relative h-svh w-full overflow-hidden">
         <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
-          <h2 className="pw-word relative font-display text-[28vw] font-extrabold leading-[0.8] tracking-[-0.06em] md:text-[17vw]">
-            <span className="text-transparent [-webkit-text-stroke:1.5px_white]">mza</span>
-            <span aria-hidden className="pw-fill absolute inset-0 text-white">mza</span>
+          <h2 className="pw-word relative whitespace-nowrap font-display text-[16vw] font-extrabold leading-[0.9] tracking-[-0.04em] md:text-[10vw]">
+            <span className="text-transparent [-webkit-text-stroke:1.5px_white]">My work</span>
+            <span aria-hidden className="pw-fill absolute inset-0 text-white">My work</span>
           </h2>
-          <p className="mt-6 font-display text-2xl font-semibold tracking-[-0.02em] md:text-4xl">My work</p>
-          <p className="mt-3 max-w-md text-sm text-white/60 md:text-base">{TAGLINE}</p>
+          {/* the three threads leave from here */}
+          <span aria-hidden className="pw-dot mt-5 h-1.5 w-1.5 rounded-full bg-[#D7D7CD]" />
+          <p className="mt-5 max-w-md text-sm text-white/60 md:text-base">{TAGLINE}</p>
         </div>
         {photos.map((src, i) => {
           const [l, t, w] = SCATTER[i]
@@ -137,9 +131,9 @@ const Project = () => {
       {/* stream: cards zig-zag down left / centre / right lanes */}
       <ul className="pw-list relative z-10 flex w-full flex-col gap-20 pb-32 pt-10 lg:pb-48 lg:pt-20">
         {topProjects.map((p, i) => {
-          const [lane, size] = LAYOUT[i % LAYOUT.length]
+          const lane = LAYOUT[i % LAYOUT.length]
           return (
-            <li key={p.title} className={`pw-card mx-auto w-[90%] ${LANE[lane]} ${SIZE[size]}`}>
+            <li key={p.title} className={`pw-card mx-auto w-[90%] md:w-[50%] lg:w-[40%] ${LANE[lane]}`}>
               <button
                 type="button"
                 data-cursor="View"
@@ -155,7 +149,7 @@ const Project = () => {
                     alt={p.title}
                     fill
                     quality={90}
-                    sizes="(max-width: 767px) 90vw, (max-width: 1023px) 58vw, 46vw"
+                    sizes="(max-width: 767px) 90vw, (max-width: 1023px) 50vw, 40vw"
                     className="object-cover object-left-top transition-transform duration-[1.2s] ease-[cubic-bezier(.2,.8,.2,1)] group-hover:scale-[1.03]"
                   />
                 </div>
