@@ -73,7 +73,7 @@ const Project = () => {
       photoEls.forEach((el, i) => {
         tl.to(el, { left: targetLeft, top: targetTop, scale: 0.05, opacity: 0, ease: "power2.in", duration: 1 }, i * 0.6)
       })
-      tl.fromTo(".pw-fill", { clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0% 0 0 0)", ease: "none", duration: (photoEls.length - 1) * 0.6 + 1 }, 0)
+      tl.fromTo(".pw-fill", { clipPath: "inset(130% -5% -30% -5%)" }, { clipPath: "inset(-30% -5% -30% -5%)", ease: "none", duration: (photoEls.length - 1) * 0.6 + 1 }, 0)
         .to({}, { duration: 0.6 }) // hold the white word a beat before the section moves on
       if (reduce) tl.progress(1)
 
@@ -102,9 +102,9 @@ const Project = () => {
       {/* intro: floating project cards dive into "My work" one by one until it is solid white */}
       <div className="pw-intro relative z-50 h-svh w-full overflow-hidden">
         <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
-          <h2 className="pw-word relative z-20 whitespace-nowrap font-display text-[12vw] font-extrabold leading-[0.9] tracking-[-0.04em] md:text-[6vw]">
-            <span className="text-transparent [-webkit-text-stroke:1.5px_white]">My work</span>
-            <span aria-hidden className="pw-fill absolute inset-0 text-white">My work</span>
+          <h2 className="pw-word relative z-20 whitespace-nowrap font-display text-[12vw] font-extrabold leading-[0.9] tracking-[-0.02em] md:text-[6vw]">
+            <span className="text-black [-webkit-text-stroke:3px_white] [paint-order:stroke_fill] [stroke-linejoin:round]">My Project</span>
+            <span aria-hidden className="pw-fill absolute inset-0 text-white">My Project</span>
             {/* the three threads leave from here, from behind the heading (h2 is z-20, above the canvas) */}
             <span aria-hidden className="pw-dot absolute left-1/2 top-1/2 -z-10 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 opacity-0" />
           </h2>

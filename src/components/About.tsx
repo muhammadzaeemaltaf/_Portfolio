@@ -78,13 +78,6 @@ export default function About() {
 
       if (reduce) return;
 
-      // outlined marquee drifts sideways with the scroll
-      gsap.fromTo(
-        ".about-marquee",
-        { xPercent: 0 },
-        { xPercent: -33, ease: "none", scrollTrigger: { trigger: "#about", start: "top bottom", end: "bottom top", scrub: 1 } }
-      );
-
       // Subtle zoom: photo sits normally until the section's top reaches the top of the screen, then eases in slightly as you keep scrolling
       gsap.to(".about-zoom", {
         scale: 1.06,
@@ -158,15 +151,6 @@ export default function About() {
               </div>
             ))}
           </dl>
-        </div>
-      </div>
-
-      {/* outlined marquee: moves with scroll */}
-      <div aria-hidden className="relative z-20 mt-16 overflow-hidden whitespace-nowrap select-none">
-        <div className="about-marquee font-display inline-block text-[10vw] font-bold leading-none text-transparent [-webkit-text-stroke:1px_rgba(0,0,0,0.22)]">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <span key={i}>Full-Stack - Creative - Agentic AI - </span>
-          ))}
         </div>
       </div>
     </section>
