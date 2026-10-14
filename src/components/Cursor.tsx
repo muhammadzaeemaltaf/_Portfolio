@@ -9,6 +9,7 @@ const INTERACTIVE = "a, button, [role='button'], summary, label, [data-cursor]";
 // grows into a soft filled disc (blend-difference keeps it readable on light and
 // dark sections); elements with data-cursor="text" also show that label in mono.
 const Cursor = () => {
+  const root = useRef<HTMLDivElement>(null);
   const dot = useRef<HTMLDivElement>(null);
   const ring = useRef<HTMLDivElement>(null);
   const label = useRef<HTMLSpanElement>(null);
@@ -40,6 +41,7 @@ const Cursor = () => {
       const el = (e.target as Element | null)?.closest?.(INTERACTIVE) as HTMLElement | null;
       const text = el?.dataset.cursor ?? "";
       if (label.current) label.current.textContent = text;
+      if (root.current) root.current.style.mixBlendMode = text === "View" ? "normal" : ""; // no colour inversion over project cards
       gsap.to(ring.current, { scale: el ? (text ? 3.2 : 2.2) : 1, duration: 0.35, ease: "power3.out", overwrite: "auto" });
       gsap.to(dot.current, { scale: el ? 0.4 : 1, duration: 0.25, overwrite: "auto" });
       gsap.to(ring.current, { backgroundColor: el ? "rgba(255,255,255,1)" : "rgba(255,255,255,0)", duration: 0.3, overwrite: false });
@@ -65,7 +67,7 @@ const Cursor = () => {
   }, []);
 
   return (
-    <div aria-hidden className="pointer-events-none fixed left-0 top-0 z-[200] mix-blend-difference">
+    <div ref={root} aria-hidden className="pointer-events-none fixed left-0 top-0 z-[200] mix-blend-difference">
       <div ref={ring} className="absolute left-0 top-0 flex h-9 w-9 items-center justify-center rounded-full border border-white">
         <span ref={label} className="font-mono text-[5px] font-semibold uppercase tracking-wider text-black" />
       </div>

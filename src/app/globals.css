@@ -144,3 +144,8 @@ body {
   /* pinned to the viewport, so Hero and About always show the exact same light and flow into each other */
   background-attachment: fixed;
 }
+
+/* whole-site flip to white bg / black text; media are flipped back so they keep their colours */
+html { transition: filter 0.6s ease; }
+html.site-light { filter: invert(1) hue-rotate(180deg); }
+html.site-light :is(img, video, iframe) { filter: invert(1) hue-rotate(180deg); }

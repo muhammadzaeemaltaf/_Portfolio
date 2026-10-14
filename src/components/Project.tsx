@@ -37,6 +37,20 @@ const Project = () => {
     if (open !== null) dialog.current?.showModal()
   }, [open])
 
+  // once the threads come to rest, flip the whole site to white bg / black text (see .site-light in globals.css)
+  useEffect(() => {
+    const st = ScrollTrigger.create({
+      trigger: root.current!.querySelector(".pw-end"),
+      start: "top 60%",
+      end: "max",
+      onToggle: (self) => document.documentElement.classList.toggle("site-light", self.isActive),
+    })
+    return () => {
+      st.kill()
+      document.documentElement.classList.remove("site-light")
+    }
+  }, [])
+
   useGSAP(
     () => {
       const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches
