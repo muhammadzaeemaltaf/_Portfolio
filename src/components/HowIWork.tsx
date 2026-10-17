@@ -4,388 +4,250 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Search, PenLine, Code2, Rocket } from "lucide-react";
-import Heading from "./Heading";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const steps = [
   {
     title: "Understand",
-    icon: Search,
+    accent: "the problem",
     description:
       "Dig into the problem, the users, and the constraints before touching code — surfacing real requirements over assumptions.",
-    badges: ["Discovery", "User Research", "Requirements"],
   },
   {
     title: "Plan",
-    icon: PenLine,
+    accent: "the system",
     description:
       "Map the architecture, data models, and API contracts, then break the work into clear, shippable pieces.",
-    badges: ["Architecture", "Data Models", "API Contracts"],
   },
   {
     title: "Build",
-    icon: Code2,
+    accent: "with care",
     description:
       "Write clean, typed, responsive code — production-grade from the first commit, with polished interactions.",
-    badges: ["TypeScript", "Responsive", "Clean Code"],
   },
   {
     title: "Ship",
-    icon: Rocket,
+    accent: "& support",
     description:
       "Deploy, verify in the real environment, and iterate on feedback — maintaining what's live, not just launching it.",
-    badges: ["Deploy", "Verify", "Iterate"],
   },
 ];
 
-const artifacts = [
-  // Understand — radar sweep scanning for signals
-  <div key="understand" className="relative h-80 w-80 xl:h-96 xl:w-96">
-    <div className="absolute inset-0 rounded-full border border-[#1d4ed8]/30" />
-    <div className="absolute inset-6 rounded-full border border-[#1d4ed8]/25" />
-    <div className="absolute inset-12 rounded-full border border-[#1d4ed8]/20" />
-    <div className="absolute top-1/2 left-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#1d4ed8]" />
-    <div className="art-radar-beam absolute top-1/2 left-1/2 h-px w-1/2 bg-gradient-to-r from-[#1d4ed8] to-transparent" />
-    <span className="art-radar-dot absolute top-[22%] left-[64%] h-2 w-2 rounded-full bg-[#1d4ed8]" />
-    <span className="art-radar-dot absolute top-[58%] left-[20%] h-1.5 w-1.5 rounded-full bg-[#1d4ed8]" />
-    <span className="art-radar-dot absolute top-[72%] left-[70%] h-2 w-2 rounded-full bg-[#1d4ed8]" />
-  </div>,
+const HEADING = "How I Work";
 
-  // Plan — blueprint wireframe drawing itself
-  <svg key="plan" viewBox="0 0 220 220" className="h-80 w-80 xl:h-96 xl:w-96" fill="none">
-    <defs>
-      <pattern id="plan-grid" width="22" height="22" patternUnits="userSpaceOnUse">
-        <path d="M22 0H0V22" stroke="#1d4ed8" strokeOpacity="0.12" />
-      </pattern>
-    </defs>
-    <rect width="220" height="220" fill="url(#plan-grid)" />
-    <path className="art-plan-path" d="M30 40h90v50H30z" stroke="#1d4ed8" strokeOpacity="0.7" strokeWidth="1.5" />
-    <path className="art-plan-path" d="M140 60h50v90h-50z" stroke="#1d4ed8" strokeOpacity="0.5" strokeWidth="1.5" />
-    <path className="art-plan-path" d="M30 120h70v60H30z" stroke="#1d4ed8" strokeOpacity="0.5" strokeWidth="1.5" />
-    <path className="art-plan-path" d="M120 90h20M100 120v-30M140 150h-40" stroke="#1d4ed8" strokeOpacity="0.6" strokeWidth="1.5" />
-    <circle className="art-plan-node" cx="120" cy="90" r="3.5" fill="#1d4ed8" />
-    <circle className="art-plan-node" cx="100" cy="120" r="3.5" fill="#1d4ed8" />
-    <circle className="art-plan-node" cx="140" cy="150" r="3.5" fill="#1d4ed8" />
-  </svg>,
+// the shape rolling along the line gains sides as it goes, ending as a circle
+const SIDES = [4, 5, 6, 8, 10, 12, 16, 24, 40, 64];
+// sample count divisible by every low side count's vertex spacing (8, 10, 12, 16, 20, 24) so corners stay sharp
+const SAMPLES = 240;
+const ease = (t: number) => t * t * (3 - 2 * t);
+const clamp01 = (t: number) => Math.min(Math.max(t, 0), 1);
 
-  // Build — code editor typing lines
-  <div key="build" className="relative h-80 w-96 rounded-xl border border-[#1d4ed8]/40 bg-black/60 p-7 overflow-hidden">
-    <div className="flex gap-2 mb-7">
-      <span className="h-3 w-3 rounded-full bg-[#1d4ed8]/70" />
-      <span className="h-3 w-3 rounded-full bg-[#1d4ed8]/40" />
-      <span className="h-3 w-3 rounded-full bg-[#1d4ed8]/20" />
-    </div>
-    <div className="space-y-5">
-      <div className="art-code-line h-2.5 w-3/4 rounded bg-[#1d4ed8]/70" />
-      <div className="art-code-line h-2.5 w-1/2 rounded bg-white/25 ml-6" />
-      <div className="art-code-line h-2.5 w-2/3 rounded bg-[#1d4ed8]/50 ml-6" />
-      <div className="art-code-line h-2.5 w-1/3 rounded bg-white/25 ml-12" />
-      <div className="art-code-line h-2.5 w-3/5 rounded bg-[#1d4ed8]/40 ml-6" />
-      <div className="art-code-line h-2.5 w-1/4 rounded bg-white/25" />
-    </div>
-    <span className="art-code-cursor absolute bottom-7 left-7 h-5 w-2.5 bg-[#1d4ed8]" />
-  </div>,
-
-  // Ship — rocket lifting off with orbiting satellite
-  <div key="ship" className="relative h-80 w-80 xl:h-96 xl:w-96 flex items-center justify-center">
-    <div className="absolute inset-4 rounded-full border border-dashed border-[#1d4ed8]/25" />
-    <div className="art-orbit absolute inset-4">
-      <span className="absolute -top-1 left-1/2 h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-[#1d4ed8] shadow-[0_0_10px_rgba(29,78,216,0.9)]" />
-    </div>
-    <div className="art-rocket relative flex flex-col items-center">
-      <Rocket className="h-24 w-24 text-[#1d4ed8] -rotate-45" />
-      <div className="art-rocket-trail mt-1 h-14 w-2 rounded-full bg-gradient-to-b from-[#1d4ed8] to-transparent" />
-    </div>
-    <span className="art-radar-dot absolute top-6 right-10 h-1 w-1 rounded-full bg-white/60" />
-    <span className="art-radar-dot absolute bottom-10 left-8 h-1 w-1 rounded-full bg-white/50" />
-    <span className="art-radar-dot absolute top-16 left-12 h-1 w-1 rounded-full bg-white/40" />
-  </div>,
-];
+// distance from the centre to the edge of a regular n-gon (circumradius 1) at angle a, flat side on top when rot = 0
+const polyRadius = (n: number, a: number, rot: number) => {
+  const seg = (2 * Math.PI) / n;
+  const local = ((((a - rot + Math.PI / 2 - Math.PI / n) % seg) + seg) % seg) - Math.PI / n;
+  return Math.cos(Math.PI / n) / Math.cos(local);
+};
 
 export default function HowIWork() {
   const sectionRef = useRef<HTMLElement>(null);
 
   useGSAP(
     () => {
-      const cards = gsap.utils.toArray<HTMLElement>(".work-card");
+      const section = sectionRef.current!;
+      const stage = section.querySelector<HTMLElement>(".hw-stage")!;
+      const wave = section.querySelector<SVGPathElement>(".hw-wave")!;
+      const shape = section.querySelector<SVGPathElement>(".hw-shape")!;
+      const dot = section.querySelector<SVGCircleElement>(".hw-dot")!;
+      const cols = gsap.utils.toArray<HTMLElement>(".hw-col");
+      const state = { q: 0, sq: 0 }; // q: line, sq: rolling shape (starts once the first column is almost open)
+      const size = { W: 0, H: 0 };
+      // the shape's outline relative to its centre, reused every frame
+      const ox = new Float32Array(SAMPLES);
+      const oy = new Float32Array(SAMPLES);
 
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        return;
-      }
+      // measured only on resize/refresh: reading layout inside draw() right after the
+      // previous frame's attribute writes forced a synchronous layout every frame
+      const measure = () => {
+        size.W = stage.clientWidth;
+        size.H = stage.clientHeight;
+      };
 
-      // Stack every card except the first below the viewport, ready to slide up.
-      gsap.set(cards.slice(1), { yPercent: 120 });
+      // everything is laid out in vw/vh of the stage, so it scales with the screen
+      const draw = () => {
+        const { W, H } = size;
+        if (!W || !H) return;
+        const vw = W / 100;
+        const vh = H / 100;
+        const s = ease(clamp01((state.q - 0.1) / 0.75));
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: ".work-stack",
-          start: "center center",
-          end: () => `+=${(cards.length - 1) * 100}%`,
-          pin: true,
-          scrub: 1,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
-        defaults: { ease: "none" },
-      });
-
-      cards.forEach((card, i) => {
-        if (i === 0) return;
-        const label = `card${i}`;
-        // Every earlier card shrinks one more notch, so depth stays visible:
-        // deepest card ends smallest, each newer card slightly larger.
-        for (let j = 0; j < i; j++) {
-          tl.to(
-            cards[j],
-            {
-              scale: 1 - 0.04 * (i - j),
-              transformOrigin: "center top",
-              duration: 1,
-            },
-            label
-          );
+        // scalloped line: arches flatten and tighten until it is a straight line
+        const A = 2.45 * vw * (1 - s);
+        const P = (8.9 - 6.1 * s) * vw;
+        const L = (56.6 - 2.1 * s) * vh;
+        const lineY = (x: number) => L - A * Math.abs(Math.sin((Math.PI * (x + 0.8 * vw)) / P));
+        let d = "";
+        for (let x = 0; x <= W + 4; x += 4) {
+          d += `${x ? "L" : "M"}${x} ${lineY(x).toFixed(1)}`;
         }
-        tl.to(card, { yPercent: 0, duration: 1 }, label);
-      });
+        wave.setAttribute("d", d);
 
-      // Ambient artifacts — infinite drift, independent of scroll. These loop
-      // forever once created, so they're paused/resumed based on section
-      // visibility below to avoid ticking on every frame for the whole page
-      // lifetime (the same jank pattern fixed in bg.tsx's grid flicker).
-      const ambientTweens: (gsap.core.Tween | gsap.core.Timeline)[] = [];
+        // the rolling polygon: it rolls in from off-screen left, stays a square until it
+        // reaches its old resting spot, then morphs into a circle
+        const R = 6.3 * vw;
+        const xStart = -R - 2 * vw;
+        const x0 = 4.6 * vw;
+        const xEnd = 92.5 * vw;
+        const cx = xStart + (xEnd - xStart) * state.sq;
+        const rot = (cx - x0) / R;
 
-      gsap.utils.toArray<HTMLElement>(".work-orb").forEach((orb, i) => {
-        ambientTweens.push(
-          gsap.to(orb, {
-            y: i % 2 ? 24 : -24,
-            x: i % 2 ? -14 : 14,
-            duration: 3.5 + i * 0.6,
-            ease: "sine.inOut",
-            repeat: -1,
-            yoyo: true,
-          })
-        );
-      });
-      gsap.utils.toArray<HTMLElement>(".work-ring").forEach((ring, i) => {
-        ambientTweens.push(
-          gsap.to(ring, {
-            rotate: i % 2 ? 360 : -360,
-            duration: 20 + i * 4,
-            ease: "none",
-            repeat: -1,
-          })
-        );
-      });
+        // fractional position in SIDES, blended between neighbouring polygons so sides grow without popping
+        const k = ease(clamp01((cx - x0) / (xEnd - x0))) * (SIDES.length - 1);
+        const i0 = Math.min(Math.floor(k), SIDES.length - 2);
+        const f = k - i0;
+        const n0 = SIDES[i0];
+        const n1 = SIDES[i0 + 1];
+        // rest it on the line: drop the centre until the lowest point of the outline (against
+        // the line beneath that point, so it rides the arches too) just touches it
+        let cy = Infinity;
+        for (let i = 0; i < SAMPLES; i++) {
+          const a = rot - Math.PI / 2 + (2 * Math.PI * i) / SAMPLES;
+          const r = R * (polyRadius(n0, a, rot) * (1 - f) + polyRadius(n1, a, rot) * f);
+          ox[i] = r * Math.cos(a);
+          oy[i] = r * Math.sin(a);
+          cy = Math.min(cy, lineY(cx + ox[i]) - oy[i]);
+        }
+        let p = "";
+        for (let i = 0; i < SAMPLES; i++) {
+          p += `${i ? "L" : "M"}${(cx + ox[i]).toFixed(1)} ${(cy + oy[i]).toFixed(1)}`;
+        }
+        shape.setAttribute("d", p + "Z");
+        dot.setAttribute("cx", cx.toFixed(1));
+        dot.setAttribute("cy", cy.toFixed(1));
+      };
+      const refresh = () => {
+        measure();
+        draw();
+      };
 
-      // --- Per-card themed artifacts ---
-
-      // Understand: radar sweep + blinking signal dots
-      ambientTweens.push(
-        gsap.to(".art-radar-beam", {
-          rotate: 360,
-          duration: 4,
-          ease: "none",
-          repeat: -1,
-          transformOrigin: "left center",
-        }),
-        gsap.to(".art-radar-dot", {
-          opacity: 0.15,
-          scale: 0.6,
-          duration: 0.9,
-          ease: "sine.inOut",
-          repeat: -1,
-          yoyo: true,
-          stagger: 0.35,
-        })
-      );
-
-      // Plan: blueprint paths drawing themselves + pulsing nodes
-      gsap.utils.toArray<SVGPathElement>(".art-plan-path").forEach((path, i) => {
-        const len = path.getTotalLength();
-        ambientTweens.push(
-          gsap.fromTo(
-            path,
-            { strokeDasharray: len, strokeDashoffset: len },
-            {
-              strokeDashoffset: 0,
-              duration: 2,
-              ease: "power1.inOut",
-              repeat: -1,
-              yoyo: true,
-              repeatDelay: 0.5,
-              delay: i * 0.4,
-            }
-          )
-        );
-      });
-      ambientTweens.push(
-        gsap.to(".art-plan-node", {
-          scale: 1.4,
-          duration: 1,
-          ease: "sine.inOut",
-          repeat: -1,
-          yoyo: true,
-          stagger: 0.3,
-          transformOrigin: "center center",
-        })
-      );
-
-      // Build: code lines typing in a loop + blinking cursor
-      const codeTl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
-      codeTl
-        .fromTo(
-          ".art-code-line",
-          { scaleX: 0 },
-          {
-            scaleX: 1,
-            duration: 0.5,
-            ease: "power2.out",
-            stagger: 0.35,
-            transformOrigin: "left center",
-          }
-        )
-        .to(".art-code-line", {
-          scaleX: 0,
-          duration: 0.3,
-          stagger: 0.1,
-          transformOrigin: "left center",
-          delay: 1.2,
+      const mm = gsap.matchMedia();
+      mm.add("(min-width: 1024px)", () => {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          state.q = state.sq = 1;
+          refresh();
+          return;
+        }
+        refresh();
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: "+=350%",
+            pin: true,
+            // Lenis already eases the scroll; a scrub delay on top of it made the scene lag and rubber-band
+            scrub: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+            onRefresh: refresh,
+          },
+          defaults: { ease: "none" },
+          // one redraw per frame, however many state tweens moved
+          onUpdate: draw,
         });
-      ambientTweens.push(
-        codeTl,
-        gsap.to(".art-code-cursor", {
-          opacity: 0,
-          duration: 0.5,
-          ease: "steps(1)",
-          repeat: -1,
-          yoyo: true,
-        })
-      );
-
-      // Ship: rocket bob + exhaust flicker + orbiting satellite
-      ambientTweens.push(
-        gsap.to(".art-rocket", {
-          y: -14,
-          duration: 1.6,
-          ease: "sine.inOut",
-          repeat: -1,
-          yoyo: true,
-        }),
-        gsap.to(".art-rocket-trail", {
-          scaleY: 1.6,
-          opacity: 0.2,
-          duration: 0.25,
-          ease: "sine.inOut",
-          repeat: -1,
-          yoyo: true,
-          transformOrigin: "top center",
-        }),
-        gsap.to(".art-orbit", {
-          rotate: 360,
-          duration: 8,
-          ease: "none",
-          repeat: -1,
-          transformOrigin: "center center",
-        })
-      );
-
-      // Only run the ambient loops while the section is on/near screen.
-      const visibility = ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top bottom",
-        end: "bottom top",
-        onEnter: () => ambientTweens.forEach((t) => t.resume()),
-        onEnterBack: () => ambientTweens.forEach((t) => t.resume()),
-        onLeave: () => ambientTweens.forEach((t) => t.pause()),
-        onLeaveBack: () => ambientTweens.forEach((t) => t.pause()),
+        // columns grow up from the bottom one after another, left first
+        tl.fromTo(
+          cols,
+          { clipPath: "inset(100% 0% 0% 0%)" },
+          { clipPath: "inset(0% 0% 0% 0%)", ease: "power2.inOut", duration: 2.2, stagger: 0.25 },
+          0
+        )
+          .to(state, { q: 1, duration: 3.2 }, 0)
+          // the shape rolls in from the left edge as column one finishes opening, easing to a stop
+          .fromTo(state, { sq: 0 }, { sq: 1, ease: "power1.out", duration: 1.9, immediateRender: false }, 1.3)
+          // settle: the whole stage lifts a touch at the end
+          .to(stage, { y: "-2.65vh", ease: "power1.inOut", duration: 0.4 }, 3.2)
+          .to({}, { duration: 0.4 }, 3.6);
+        return () => {
+          gsap.set(cols, { clearProps: "clipPath" });
+          gsap.set(stage, { clearProps: "transform" });
+        };
       });
-      if (!visibility.isActive) {
-        ambientTweens.forEach((t) => t.pause());
+      // headline rises in as the section arrives, then stays put above the pinned scene
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        gsap.from(".hw-char", {
+          scrollTrigger: { trigger: section, start: "top 75%" },
+          yPercent: 115,
+          duration: 0.9,
+          ease: "power4.out",
+          stagger: 0.03,
+        });
+        gsap.from(".hw-fade", {
+          scrollTrigger: { trigger: section, start: "top 75%" },
+          y: 16,
+          opacity: 0,
+          duration: 0.7,
+          ease: "power3.out",
+        });
       }
+
+      // the stage sits under the headline, so its size can change without a window resize (e.g. once fonts load)
+      const ro = new ResizeObserver(refresh);
+      ro.observe(stage);
+      return () => {
+        ro.disconnect();
+        mm.revert();
+      };
     },
     { scope: sectionRef }
   );
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative w-full max-w-[1400px] mx-auto px-4 md:px-10 py-16 bg-black"
-      id="how-i-work"
-    >
-      <Heading heading="How I Work" />
-
-      <div className="work-stack relative mt-12 md:mt-16 h-[70vh] min-h-[480px]">
-        {steps.map((step, i) => {
-          const Icon = step.icon;
-          return (
-            <div
-              key={step.title}
-              className="work-card absolute left-0 right-0 bottom-0 flex items-center justify-center"
-              style={{
-                zIndex: i + 1,
-                // Last card covers the full stack and hides everything behind it.
-                top: i === steps.length - 1 ? 0 : i * 36,
-                willChange: "transform",
-              }}
-            >
-              <div className="relative w-full h-full rounded-2xl border border-white/15 bg-[#050505] p-8 md:p-14 overflow-hidden flex flex-col justify-center">
-                {/* Animated artifacts */}
-                <div className="work-orb absolute -top-16 -right-16 h-64 w-64 rounded-full bg-[#1d4ed8]/15 blur-3xl pointer-events-none" />
-                <div className="work-orb absolute -bottom-20 -left-10 h-56 w-56 rounded-full bg-[#1d4ed8]/10 blur-3xl pointer-events-none" />
-                <div className="work-ring absolute top-8 right-8 h-24 w-24 rounded-full border border-dashed border-[#1d4ed8]/40 pointer-events-none hidden md:block" />
-                <div className="work-ring absolute bottom-10 right-1/4 h-14 w-14 rounded-full border border-[#1d4ed8]/25 pointer-events-none hidden md:block" />
-
-                {/* Step number watermark */}
-                <span className="absolute top-2 right-6 text-8xl md:text-[10rem] font-bold text-[#1d4ed8]/20 select-none pointer-events-none leading-none">
-                  0{i + 1}
+    <section ref={sectionRef} id="how-i-work" className="relative w-full overflow-hidden bg-black text-white lg:flex lg:h-[100svh] lg:flex-col">
+      <header className="px-4 pt-16 lg:px-[1vw] lg:pt-[4.17vh]">
+        <p className="hw-fade flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-white/45 lg:gap-[0.83vw] lg:text-[0.83vw]">
+          <span className="h-px w-8 bg-white/30 lg:w-[2.2vw]" />
+          Process
+        </p>
+        <h2 aria-label={HEADING} className="mt-4 font-display text-4xl font-semibold leading-[1.1] tracking-[-0.035em] md:text-6xl lg:mt-[1vw] lg:text-[4.17vw]">
+          {HEADING.split(" ").map((w, i) => (
+            <span key={i} aria-hidden className="mr-[0.25em] inline-block overflow-hidden align-bottom">
+              {w.split("").map((c, j) => (
+                <span key={j} className="hw-char inline-block">
+                  {c}
                 </span>
+              ))}
+            </span>
+          ))}
+        </h2>
+      </header>
 
-                {/* Themed artifact — right side */}
-                <div className="absolute inset-y-0 right-8 md:right-16 z-10 hidden lg:flex items-center pointer-events-none">
-                  {artifacts[i]}
-                </div>
+      <div className="hw-stage relative flex flex-col gap-3 px-4 pb-10 pt-8 lg:min-h-0 lg:flex-1 lg:flex-row lg:gap-[0.63vw] lg:px-[1vw] lg:pb-[1.9vh] lg:pt-[5vh]">
+        {steps.map((step, i) => (
+          <article
+            key={step.title}
+            className="hw-col relative flex min-h-[70vw] flex-col justify-end bg-white p-5 text-black sm:min-h-[50vw] lg:min-h-0 lg:flex-1 lg:p-[1vw] lg:pb-[1.3vw]"
+          >
+            <span className="absolute left-5 top-5 font-mono text-xs lg:left-[1vw] lg:top-[1.3vw] lg:text-[0.65vw]">
+              0{i + 1}
+            </span>
+            <h3 className="font-display text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.02em] lg:text-[1.5vw] lg:leading-[1.15]">
+              {step.title}
+              <br />
+              <span className="opacity-55">{step.accent}</span>
+            </h3>
+            <p className="mt-5 max-w-[26rem] text-sm leading-snug lg:mt-[1.4vw] lg:max-w-[21vw] lg:text-[0.85vw] lg:leading-[1.35]">
+              {step.description}
+            </p>
+          </article>
+        ))}
 
-                <div className="relative z-10 max-w-2xl">
-                  <div className="h-14 w-14 rounded-xl bg-black border border-[#1d4ed8] flex items-center justify-center mb-6 shadow-[0_0_15px_-3px_rgba(10,60,207,0.7)]">
-                    <Icon className="h-6 w-6 text-primary-500" />
-                  </div>
-
-                  <h3 className="text-3xl md:text-4xl font-semibold text-white mb-4">
-                    {step.title}
-                  </h3>
-                  <p className="text-gray-400 text-base md:text-lg leading-relaxed mb-6">
-                    {step.description}
-                  </p>
-
-                  <div className="flex flex-wrap gap-2">
-                    {step.badges.map((badge) => (
-                      <span
-                        key={badge}
-                        className="px-3 py-1 rounded-full text-xs md:text-sm text-gray-300 border border-[#1d4ed8]/50 bg-[#1d4ed8]/10"
-                      >
-                        {badge}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Progress dots */}
-                <div className="absolute bottom-6 left-8 md:left-14 flex gap-2">
-                  {steps.map((_, d) => (
-                    <span
-                      key={d}
-                      className={`h-1.5 rounded-full transition-all ${
-                        d === i ? "w-6 bg-[#1d4ed8]" : "w-1.5 bg-white/20"
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-          );
-        })}
+        {/* scalloped line and the shape rolling on it: strokes are black so the site's white flip renders them white */}
+        <svg aria-hidden className="pointer-events-none absolute inset-0 hidden h-full w-full text-black lg:block" fill="none" stroke="currentColor">
+          <path className="hw-wave" strokeWidth="1.2" />
+          <path className="hw-shape" strokeWidth="1.2" />
+          <circle className="hw-dot" r="3" fill="currentColor" stroke="none" />
+        </svg>
       </div>
     </section>
   );
