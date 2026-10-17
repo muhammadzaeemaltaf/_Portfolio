@@ -19,17 +19,17 @@ const roles = [
 
 // pill button: a curved fill rises from below while the label rolls up and is replaced by its twin
 const Btn = ({ href, onClick, icon, label, solid, round, cursor }: { cursor?: string; href?: string; onClick?: () => void; icon: React.ReactNode; label?: string; solid?: boolean; round?: boolean }) => {
-  const row = "flex h-5 items-center gap-2 text-sm font-medium transition-transform duration-500 ease-[cubic-bezier(.7,0,.2,1)] group-hover:-translate-y-full";
+  const row = "flex h-5 items-center gap-2 text-sm lg:h-[1.4vw] lg:gap-[0.55vw] lg:text-[0.97vw] font-medium transition-transform duration-500 ease-[cubic-bezier(.7,0,.2,1)] group-hover:-translate-y-full";
   const body = (
     <>
       <span className={`absolute inset-0 translate-y-full rounded-t-[50%] transition-all duration-500 ease-[cubic-bezier(.7,0,.2,1)] group-hover:translate-y-0 group-hover:rounded-t-none ${solid ? "bg-white" : "bg-black"}`} />
-      <span className="relative block h-5 overflow-hidden">
+      <span className="relative block h-5 overflow-hidden lg:h-[1.4vw]">
         <span className={row}>{icon}{!round && label}</span>
         <span aria-hidden className={`${row} absolute left-0 top-full ${solid ? "text-black" : "text-white"}`}>{icon}{!round && label}</span>
       </span>
     </>
   );
-  const cls = `group relative inline-flex h-12 items-center justify-center overflow-hidden rounded-full border ${round ? "w-12" : "px-6"} ${solid ? "border-black bg-black text-white" : "border-black/20 text-[#1d1d1f]"}`;
+  const cls = `group relative inline-flex h-12 items-center justify-center overflow-hidden rounded-full border lg:h-[3.33vw] ${round ? "w-12 lg:w-[3.33vw]" : "px-6 lg:px-[1.67vw]"} ${solid ? "border-black bg-black text-white" : "border-black/20 text-[#1d1d1f]"}`;
   return href ? (
     <a href={href} target="_blank" aria-label={label} data-cursor={cursor} className={cls}>{body}</a>
   ) : (
@@ -94,7 +94,7 @@ const HeroSection = () => {
   return (
     <section
       ref={root}
-      className="relative isolate flex min-h-[100svh] w-full max-w-[100vw] flex-col overflow-hidden bone-bg px-6 pb-[80vw] pt-20 sm:pb-[60vw] lg:pb-0 text-[#1d1d1f] sm:px-10 lg:px-16"
+      className="relative isolate flex min-h-[100svh] w-full max-w-[100vw] flex-col overflow-hidden bone-bg px-6 pb-[80vw] pt-20 sm:pb-[60vw] lg:pb-0 lg:pt-[5.5vw] text-[#1d1d1f] sm:px-10 lg:px-[4.4vw]"
     >
       <p className="sr-only">
         Portfolio of Muhammad Zaeem Altaf – Full-Stack Developer skilled in Next.js, React, TypeScript, Laravel, and PHP.
@@ -114,26 +114,26 @@ const HeroSection = () => {
 
       {/* 2. portrait rises in front of the name's lower edge */}
       <div className="hero-portrait pointer-events-none absolute inset-x-0 -bottom-[20%] z-10 flex justify-center">
-        <div id="hero-portrait" className="hero-portrait-inner relative aspect-square w-[92vw] max-w-[640px] sm:w-[66vw] lg:w-[50vw] lg:max-w-[780px]">
+        <div id="hero-portrait" className="hero-portrait-inner relative aspect-square w-[92vw] max-w-[640px] sm:w-[66vw] lg:w-[50vw] lg:max-w-none">
           <Image src="/new-profile.png" alt="Muhammad Zaeem Altaf" fill priority sizes="(min-width:1024px) 50vw, 92vw" className="object-contain object-bottom" />
         </div>
       </div>
 
       {/* 3. intro, left */}
-      <div className="hero-fade relative z-20 mt-8 max-w-[22rem] lg:absolute lg:left-16 lg:top-[56%] lg:mt-0 lg:max-w-[23rem]">
-        <p className="text-xl font-normal leading-snug tracking-tight lg:text-2xl">
+      <div className="hero-fade relative z-20 mt-8 max-w-[22rem] lg:absolute lg:left-[4.4vw] lg:top-[56%] lg:mt-0 lg:max-w-[25.5vw]">
+        <p className="text-xl font-normal leading-snug tracking-tight lg:text-[1.67vw]">
           Hey there! I am full-stack and creative developer building fast, scalable web apps and AI-powered products.
         </p>
-        <div className="mt-8 flex flex-wrap items-center gap-3">
-          <Btn solid cursor="talk" onClick={() => scrollToView("contact")} label="Hire me" icon={<FiArrowUpRight className="text-base" />} />
-          <Btn cursor="cv" href="/MUHAMMAD ZAEEM ALTAF.pdf" label="CV" icon={<HiDownload className="text-base" />} />
-          <Btn round href="https://github.com/muhammadzaeemaltaf/" label="GitHub" icon={<FiGithub className="text-base" />} />
-          <Btn round href="https://www.linkedin.com/in/muhammadzaeemaltaf/" label="LinkedIn" icon={<FaLinkedin className="text-base" />} />
+        <div className="mt-8 flex flex-wrap items-center gap-3 lg:mt-[2.2vw] lg:gap-[0.83vw]">
+          <Btn solid cursor="talk" onClick={() => scrollToView("contact")} label="Hire me" icon={<FiArrowUpRight className="text-base lg:text-[1.1vw]" />} />
+          <Btn cursor="cv" href="/MUHAMMAD ZAEEM ALTAF.pdf" label="CV" icon={<HiDownload className="text-base lg:text-[1.1vw]" />} />
+          <Btn round href="https://github.com/muhammadzaeemaltaf/" label="GitHub" icon={<FiGithub className="text-base lg:text-[1.1vw]" />} />
+          <Btn round href="https://www.linkedin.com/in/muhammadzaeemaltaf/" label="LinkedIn" icon={<FaLinkedin className="text-base lg:text-[1.1vw]" />} />
         </div>
       </div>
 
       {/* 4. roles, right: one lights up at a time */}
-      <ul className="hero-fade absolute right-16 top-[56%] z-20 hidden space-y-2.5 text-right text-xl font-medium tracking-tight lg:block">
+      <ul className="hero-fade absolute right-[4.4vw] top-[56%] z-20 hidden space-y-2.5 text-right text-xl font-medium lg:space-y-[0.7vw] lg:text-[1.4vw] tracking-tight lg:block">
         {roles.map((r, i) => (
           <li key={r} className={`transition-colors duration-700 ${i === active ? "text-[#1d1d1f]" : "text-black/20"}`}>
             {r}

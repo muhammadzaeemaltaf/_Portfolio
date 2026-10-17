@@ -90,10 +90,10 @@ export default function About() {
   );
 
   return (
-    <section ref={section} className="relative flex min-h-[100svh] w-full flex-col justify-center overflow-hidden bone-bg px-4 py-20 text-[#1d1d1f]" id="about">
-      <div ref={root} className="relative mx-auto grid w-full max-w-6xl items-stretch gap-12 md:grid-cols-[1fr_1fr] md:gap-16">
+    <section ref={section} className="relative flex min-h-[100svh] w-full flex-col justify-center overflow-hidden bone-bg px-4 py-20 lg:py-[5.5vw] text-[#1d1d1f]" id="about">
+      <div ref={root} className="relative mx-auto grid w-full max-w-6xl items-stretch gap-12 md:grid-cols-[1fr_1fr] md:gap-16 lg:max-w-[80vw] lg:gap-[4.4vw]">
         {/* portrait: slow scroll zoom */}
-        <div className="about-photo relative h-full min-h-[460px] w-full md:ml-[calc(-1*max(1rem,(100vw_-_72rem)/2))] md:min-h-[640px] md:w-[calc(100%+max(1rem,(100vw_-_72rem)/2))]">
+        <div className="about-photo relative h-full min-h-[460px] w-full md:ml-[calc(-1*max(1rem,(100vw_-_72rem)/2))] md:min-h-[640px] md:w-[calc(100%+max(1rem,(100vw_-_72rem)/2))] lg:ml-[-10vw] lg:min-h-[44vw] lg:w-[calc(100%+10vw)]">
           <div className="about-card absolute inset-0 overflow-hidden" style={{ maskImage: "radial-gradient(ellipse 98% 82% at 56% 36%, #000 0%, #000 48%, rgba(0,0,0,.9) 58%, rgba(0,0,0,.7) 68%, rgba(0,0,0,.45) 78%, rgba(0,0,0,.2) 89%, transparent 100%)", WebkitMaskImage: "radial-gradient(ellipse 94% 72% at 46% 36%, #000 0%, #000 48%, rgba(0,0,0,.9) 58%, rgba(0,0,0,.7) 68%, rgba(0,0,0,.45) 78%, rgba(0,0,0,.2) 89%, transparent 100%)" }}>
             <div className="about-zoom absolute inset-0 origin-[left_bottom] will-change-transform">
             <Image src={PHOTO} alt="Muhammad Zaeem Altaf" fill priority sizes="(min-width:768px) 100vw, 100vw" className="select-none object-cover object-[left_bottom] drop-shadow-[0_30px_40px_rgba(0,0,0,0.18)]" />
@@ -111,11 +111,11 @@ export default function About() {
 
         {/* text */}
         <div className="relative z-20 flex w-full flex-col justify-center">
-          <p className="flex items-center gap-3 text-xs font-medium uppercase tracking-[0.25em] text-black/45">
-            <span className="h-px w-8 bg-black/30" />
+          <p className="flex items-center gap-3 text-xs font-medium uppercase tracking-[0.25em] text-black/45 lg:gap-[0.83vw] lg:text-[0.83vw]">
+            <span className="h-px w-8 bg-black/30 lg:w-[2.2vw]" />
             About me
           </p>
-          <h2 aria-label={`${HEADING}.`} className="about-heading mb-8 mt-4 text-4xl font-semibold leading-[1.15] tracking-[-0.03em] md:text-6xl">
+          <h2 aria-label={`${HEADING}.`} className="about-heading mb-8 mt-4 text-4xl font-semibold leading-[1.15] tracking-[-0.03em] md:text-6xl lg:mb-[2.2vw] lg:mt-[1.1vw] lg:text-[4.17vw]">
             {HEADING.split("").map((c, i) => (
               <span key={i} aria-hidden className="inline-block overflow-hidden align-bottom">
                 <span className="about-char inline-block">{c === " " ? "\u00A0" : c}</span>
@@ -125,7 +125,7 @@ export default function About() {
               <span className="about-char inline-block text-black/25">.</span>
             </span>
           </h2>
-          <div className="about-text space-y-5 text-base leading-relaxed text-black/75 md:text-[18px]">
+          <div className="about-text space-y-5 text-base leading-relaxed text-black/75 md:text-[18px] lg:space-y-[1.4vw] lg:text-[1.25vw]">
             {paragraphs.map((p, i) => (
               <p key={i}>
                 {p.split(" ").map((w, j) => (
@@ -142,12 +142,12 @@ export default function About() {
             ))}
           </div>
 
-          <dl className="about-facts mt-10 divide-y divide-black/10 border-y border-black/10">
+          <dl className="about-facts mt-10 lg:mt-[2.8vw] divide-y divide-black/10 border-y border-black/10">
             {facts.map(([k, v]) => (
-              <div key={k} data-cursor="" className="about-fact group relative flex items-baseline justify-between gap-6 overflow-hidden px-3 py-4">
+              <div key={k} data-cursor="" className="about-fact group relative flex items-baseline justify-between gap-6 overflow-hidden px-3 py-4 lg:px-[0.83vw] lg:py-[1.1vw]">
                 <span aria-hidden className="absolute inset-0 -z-0 translate-y-full bg-[#1d1d1f] transition-transform duration-500 ease-[cubic-bezier(.7,0,.2,1)] group-hover:translate-y-0" />
-                <dt className="relative text-xs uppercase tracking-[0.2em] text-black/40 transition-colors duration-500 group-hover:text-white/60">{k}</dt>
-                <dd className="relative text-right text-sm text-[#1d1d1f] transition-all duration-500 group-hover:-translate-x-1 group-hover:text-white md:text-base">{v}</dd>
+                <dt className="relative text-xs uppercase tracking-[0.2em] text-black/40 lg:text-[0.83vw] transition-colors duration-500 group-hover:text-white/60">{k}</dt>
+                <dd className="relative text-right text-sm text-[#1d1d1f] transition-all duration-500 group-hover:-translate-x-1 group-hover:text-white md:text-base lg:text-[1.1vw]">{v}</dd>
               </div>
             ))}
           </dl>

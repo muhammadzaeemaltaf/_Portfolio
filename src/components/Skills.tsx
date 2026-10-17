@@ -100,7 +100,7 @@ export default function Skills() {
   );
 
   return (
-    <section ref={root} className="relative w-full bg-black px-4 pb-28 pt-24 text-white md:pb-40 md:pt-36">
+    <section ref={root} className="relative w-full bg-black px-4 pb-28 pt-24 text-white md:pb-40 md:pt-36 lg:pb-[11vw] lg:pt-[10vw]">
       {/* blinds: fixed over the viewport while About is pinned */}
       <div aria-hidden className="skills-veil pointer-events-none fixed inset-0 z-30 flex flex-col">
         {BANDS.map((g, i) => (
@@ -108,15 +108,15 @@ export default function Skills() {
         ))}
       </div>
 
-      <div className="mx-auto w-full max-w-6xl">
+      <div className="mx-auto w-full max-w-6xl lg:max-w-[80vw]">
         {/* 1 · label */}
-        <p className="skills-fade flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-white/45">
-          <span className="h-px w-8 bg-white/30" />
+        <p className="skills-fade flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-white/45 lg:gap-[0.83vw] lg:text-[0.83vw]">
+          <span className="h-px w-8 bg-white/30 lg:w-[2.2vw]" />
           Skills
         </p>
 
         {/* 2 · headline */}
-        <h2 aria-label={HEADING} className="skills-heading mt-5 font-display text-4xl font-semibold leading-[1.1] tracking-[-0.035em] md:text-6xl">
+        <h2 aria-label={HEADING} className="skills-heading mt-5 font-display text-4xl font-semibold leading-[1.1] tracking-[-0.035em] md:text-6xl lg:mt-[1.4vw] lg:text-[4.17vw]">
           {HEADING.split(" ").map((w, i) => (
             <span key={i} aria-hidden className="mr-[0.25em] inline-block overflow-hidden align-bottom">
               {w.split("").map((c, j) => (
@@ -129,7 +129,7 @@ export default function Skills() {
         </h2>
 
         {/* 3 · field + its tools */}
-        <ul className="skills-list mt-16 md:mt-24" onPointerLeave={() => setRow(null)}>
+        <ul className="skills-list mt-16 md:mt-24 lg:mt-[6.67vw]" onPointerLeave={() => setRow(null)}>
           {skills.map((cat, i) => {
             const on = row === i;
             return (
@@ -142,15 +142,15 @@ export default function Skills() {
                 {/* white line sweeps across the active row */}
                 <span aria-hidden className={`absolute inset-x-0 top-0 h-px origin-left bg-white transition-transform duration-700 ease-[cubic-bezier(.7,0,.2,1)] ${on ? "scale-x-100" : "scale-x-0"}`} />
 
-                <div className="grid gap-4 py-7 md:grid-cols-[1fr_1.3fr] md:gap-12 md:py-9">
-                  <h3 className="flex items-baseline gap-4 font-display text-2xl font-medium tracking-[-0.02em] md:text-3xl">
-                    <span className="font-mono text-xs tracking-widest text-white/35">{String(i + 1).padStart(2, "0")}</span>
+                <div className="grid gap-4 py-7 md:grid-cols-[1fr_1.3fr] md:gap-12 md:py-9 lg:gap-[3.33vw] lg:py-[2.5vw]">
+                  <h3 className="flex items-baseline gap-4 font-display text-2xl font-medium tracking-[-0.02em] md:text-3xl lg:gap-[1.1vw] lg:text-[2.08vw]">
+                    <span className="font-mono text-xs tracking-widest text-white/35 lg:text-[0.83vw]">{String(i + 1).padStart(2, "0")}</span>
                     <span className="inline-block overflow-hidden align-bottom">
                       <span className="skills-name inline-block">{cat.type}</span>
                     </span>
                   </h3>
 
-                  <ul className="skills-tools flex flex-wrap gap-x-6 gap-y-2 text-base text-white/50 md:text-lg">
+                  <ul className="skills-tools flex flex-wrap gap-x-6 gap-y-2 text-base text-white/50 md:text-lg lg:gap-x-[1.67vw] lg:gap-y-[0.55vw] lg:text-[1.25vw]">
                     {cat.name.map((t) => (
                       <li key={t.label} className={`group/tool flex items-center transition-colors duration-300 hover:text-white ${on ? "text-white/80" : ""}`}>
                         {/* icon slides in from nothing, pushing the word along */}
