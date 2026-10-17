@@ -17,6 +17,7 @@ export default function Education() {
 
   useEffect(() => {
     if (!timelineRef.current) return
+    const existing = new Set(ScrollTrigger.getAll())
 
     // Main timeline for the vertical line animation
     const timeline = gsap.timeline({
@@ -87,9 +88,11 @@ export default function Education() {
         })
     })
 
-    // Cleanup ScrollTriggers on unmount
+    // Cleanup only the ScrollTriggers created here on unmount — killing getAll() also
+    // took out the other sections' pins and Project's site-light flip
+    const own = ScrollTrigger.getAll().filter((trigger) => !existing.has(trigger))
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+      own.forEach((trigger) => trigger.kill())
     }
   }, [])
 

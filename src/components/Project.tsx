@@ -37,13 +37,17 @@ const Project = () => {
     if (open !== null) dialog.current?.showModal()
   }, [open])
 
-  // once the threads come to rest, flip the whole site to white bg / black text (see .site-light in globals.css)
+  // once the threads come to rest, flip the whole site to white bg / black text (see .site-light in globals.css).
+  // Driven by the start alone: an `end: "max"` measured before the page below finished growing
+  // (How I Work's pin spacer etc.) switched the flip back off part-way down the page.
   useEffect(() => {
+    const flip = (on: boolean) => document.documentElement.classList.toggle("site-light", on)
     const st = ScrollTrigger.create({
       trigger: root.current!.querySelector(".pw-end"),
       start: "top 60%",
-      end: "max",
-      onToggle: (self) => document.documentElement.classList.toggle("site-light", self.isActive),
+      onEnter: () => flip(true),
+      onLeaveBack: () => flip(false),
+      onRefresh: (self) => flip(self.scroll() >= self.start),
     })
     return () => {
       st.kill()
