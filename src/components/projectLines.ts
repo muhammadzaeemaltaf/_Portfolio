@@ -138,8 +138,8 @@ export function projectLines(
     const time = gsap.ticker.time
     ctx.clearRect(0, 0, canvas.clientWidth, h)
 
-    ctx.strokeStyle = "rgb(48,54,64)"
-    ctx.lineWidth = 1
+    ctx.strokeStyle = "rgb(72,80,94)"
+    ctx.lineWidth = 1.8
     ctx.lineCap = ctx.lineJoin = "round"
     const heads: { x: number; y: number }[] = []
     lines.forEach((pts, l) => {
