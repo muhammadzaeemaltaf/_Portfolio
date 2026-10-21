@@ -94,7 +94,7 @@ const HeroSection = () => {
   return (
     <section
       ref={root}
-      className="relative isolate flex min-h-[100svh] w-full max-w-[100vw] flex-col overflow-hidden bone-bg px-6 pb-[80vw] pt-20 sm:pb-[60vw] lg:pb-0 lg:pt-[5.5vw] text-[#1d1d1f] sm:px-10 lg:px-[4.4vw]"
+      className="relative isolate flex min-h-[100svh] w-full max-w-[100vw] flex-col overflow-hidden bone-bg px-6 pb-[80vw] pt-20 sm:pb-[60vw] lg:pb-0 lg:pt-[5.5vw] text-[#1d1d1f] sm:px-10 lg:px-[1vw]"
     >
       <p className="sr-only">
         Portfolio of Muhammad Zaeem Altaf – Full-Stack Developer skilled in Next.js, React, TypeScript, Laravel, and PHP.
@@ -103,9 +103,9 @@ const HeroSection = () => {
 
 
       {/* 1. dominant name, full width */}
-      <h1 className="hero-word relative z-0 flex font-display justify-center whitespace-nowrap text-[13vw] font-bold leading-[0.95] tracking-[0em] select-none lg:-mt-4 lg:text-[11.4vw]">
+      <h1 className="hero-word relative z-0 flex font-display justify-center whitespace-nowrap text-[10vw] font-bold leading-[0.95] tracking-[0em] select-none lg:-mt-4 lg:text-[11.2vw]">
         <span className="sr-only">Muhammad Zaeem Altaf</span>
-        {"ZAEEM ALTAF".split("").map((c, i) => (
+        {"M.ZAEEM ALTAF".split("").map((c, i) => (
           <span key={i} aria-hidden className="pb-[0.04em]">
             <span className="hero-letter inline-block">{c === " " ? " " : c}</span>
           </span>
@@ -120,7 +120,7 @@ const HeroSection = () => {
       </div>
 
       {/* 3. intro, left */}
-      <div className="hero-fade relative z-20 mt-8 max-w-[22rem] lg:absolute lg:left-[4.4vw] lg:top-[56%] lg:mt-0 lg:max-w-[25.5vw]">
+      <div className="hero-fade relative z-20 mt-8 max-w-[22rem] lg:absolute lg:left-[1vw] lg:top-[56%] lg:mt-0 lg:max-w-[25.5vw]">
         <p className="text-xl font-normal leading-snug tracking-tight lg:text-[1.67vw]">
           Hey there! I am full-stack and creative developer building fast, scalable web apps and AI-powered products.
         </p>
@@ -133,7 +133,7 @@ const HeroSection = () => {
       </div>
 
       {/* 4. roles, right: one lights up at a time */}
-      <ul className="hero-fade absolute right-[4.4vw] top-[56%] z-20 hidden space-y-2.5 text-right text-xl font-medium lg:space-y-[0.7vw] lg:text-[1.4vw] tracking-tight lg:block">
+      <ul className="hero-fade absolute lg:right-[1vw] top-[56%] z-20 hidden space-y-2.5 text-right text-xl font-medium lg:space-y-[0.7vw] lg:text-[1.4vw] tracking-tight lg:block">
         {roles.map((r, i) => (
           <li key={r} className={`transition-colors duration-700 ${i === active ? "text-[#1d1d1f]" : "text-black/20"}`}>
             {r}

@@ -44,11 +44,11 @@ function spline(pts: { x: number; y: number }[]): Pt[] {
 function fan(spread: number) {
   const r = (a: number, b: number) => a + Math.random() * (b - a)
   const base = r(0.25, 0.7)
-  let [a, b, c] = [0, 0, 0].map(() => Math.max(0.05, Math.min(0.9, base + r(-spread, spread)))).sort((x, y) => x - y)
+  let [a, b, c] = [0, 0, 0].map(() => Math.max(0.02, Math.min(0.96, base + r(-spread, spread)))).sort((x, y) => x - y)
   if (b - a < 0.12) b = a + 0.12
   if (c - b < 0.12) c = b + 0.12
-  if (c > 0.92) {
-    c = 0.92
+  if (c > 0.97) {
+    c = 0.97
     b = Math.min(b, c - 0.12)
     a = Math.min(a, b - 0.12)
   }
@@ -139,7 +139,7 @@ export function projectLines(
     ctx.clearRect(0, 0, canvas.clientWidth, h)
 
     ctx.strokeStyle = "rgb(72,80,94)"
-    ctx.lineWidth = 1.8
+    ctx.lineWidth = Math.max(1.5, innerWidth * 0.0011)
     ctx.lineCap = ctx.lineJoin = "round"
     const heads: { x: number; y: number }[] = []
     lines.forEach((pts, l) => {

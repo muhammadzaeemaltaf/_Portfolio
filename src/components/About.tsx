@@ -90,13 +90,13 @@ export default function About() {
   );
 
   return (
-    <section ref={section} className="relative flex min-h-[100svh] w-full flex-col justify-center overflow-hidden bone-bg px-4 py-20 lg:py-[5.5vw] text-[#1d1d1f]" id="about">
-      <div ref={root} className="relative mx-auto grid w-full max-w-6xl items-stretch gap-12 md:grid-cols-[1fr_1fr] md:gap-16 lg:max-w-[80vw] lg:gap-[4.4vw]">
+    <section ref={section} className="relative flex min-h-[100svh] w-full flex-col justify-center overflow-hidden bone-bg px-4 py-20 lg:px-[1vw] lg:py-[5.5vw] text-[#1d1d1f]" id="about">
+      <div ref={root} className="relative mx-auto grid w-full max-w-6xl items-stretch gap-12 md:grid-cols-[1fr_1fr] md:gap-16 lg:max-w-none lg:gap-[4.4vw]">
         {/* portrait: slow scroll zoom */}
-        <div className="about-photo relative h-full min-h-[460px] w-full md:ml-[calc(-1*max(1rem,(100vw_-_72rem)/2))] md:min-h-[640px] md:w-[calc(100%+max(1rem,(100vw_-_72rem)/2))] lg:ml-[-10vw] lg:min-h-[44vw] lg:w-[calc(100%+10vw)]">
+        <div className="about-photo relative h-full min-h-[460px] w-full md:ml-[calc(-1*max(1rem,(100vw_-_72rem)/2))] md:min-h-[640px] md:w-[calc(100%+max(1rem,(100vw_-_72rem)/2))] lg:ml-[-1vw] lg:min-h-[44vw] lg:w-[calc(100%+1vw)]">
           <div className="about-card absolute inset-0 overflow-hidden" style={{ maskImage: "radial-gradient(ellipse 98% 82% at 56% 36%, #000 0%, #000 48%, rgba(0,0,0,.9) 58%, rgba(0,0,0,.7) 68%, rgba(0,0,0,.45) 78%, rgba(0,0,0,.2) 89%, transparent 100%)", WebkitMaskImage: "radial-gradient(ellipse 94% 72% at 46% 36%, #000 0%, #000 48%, rgba(0,0,0,.9) 58%, rgba(0,0,0,.7) 68%, rgba(0,0,0,.45) 78%, rgba(0,0,0,.2) 89%, transparent 100%)" }}>
             <div className="about-zoom absolute inset-0 origin-[left_bottom] will-change-transform">
-            <Image src={PHOTO} alt="Muhammad Zaeem Altaf" fill priority sizes="(min-width:768px) 100vw, 100vw" className="select-none object-cover object-[left_bottom] drop-shadow-[0_30px_40px_rgba(0,0,0,0.18)]" />
+            <Image src={PHOTO} alt="Muhammad Zaeem Altaf" fill priority sizes="(min-width:768px) 100vw, 100vw" className="select-none object-cover object-[left_bottom] lg:object-contain drop-shadow-[0_30px_40px_rgba(0,0,0,0.18)]" />
             </div>
           </div>
 

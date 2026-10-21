@@ -100,7 +100,7 @@ export default function Skills() {
   );
 
   return (
-    <section ref={root} className="relative w-full bg-black px-4 pb-28 pt-24 text-white md:pb-40 md:pt-36 lg:pb-[11vw] lg:pt-[10vw]">
+    <section ref={root} className="relative w-full bg-black px-4 pb-28 pt-24 text-white md:pb-40 md:pt-36 lg:px-[1vw] lg:pb-[11vw] lg:pt-[10vw]">
       {/* blinds: fixed over the viewport while About is pinned */}
       <div aria-hidden className="skills-veil pointer-events-none fixed inset-0 z-30 flex flex-col">
         {BANDS.map((g, i) => (
@@ -108,7 +108,7 @@ export default function Skills() {
         ))}
       </div>
 
-      <div className="mx-auto w-full max-w-6xl lg:max-w-[80vw]">
+      <div className="mx-auto w-full max-w-6xl lg:max-w-none">
         {/* 1 · label */}
         <p className="skills-fade flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-white/45 lg:gap-[0.83vw] lg:text-[0.83vw]">
           <span className="h-px w-8 bg-white/30 lg:w-[2.2vw]" />

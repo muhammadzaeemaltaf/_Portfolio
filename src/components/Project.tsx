@@ -23,7 +23,7 @@ const TAGLINE = "A curated selection of platforms, products and sites I've built
 
 // TRIONN /work layout: one stream, each card parked in a lane, all at one size
 // (below md every card is a centred 90% column)
-const LANE = { left: "md:ml-[4%] md:mr-auto", right: "md:ml-auto md:mr-[4%]", center: "md:mx-auto" }
+const LANE = { left: "md:ml-[4%] md:mr-auto lg:ml-[1vw]", right: "md:ml-auto md:mr-[4%] lg:mr-[1vw]", center: "md:mx-auto" }
 const LAYOUT: (keyof typeof LANE)[] = ["left", "right", "left", "center", "right", "left", "center", "right"]
 
 const Project = () => {
@@ -126,7 +126,7 @@ const Project = () => {
             {/* the three threads leave from here, from behind the heading (h2 is z-20, above the canvas) */}
             <span aria-hidden className="pw-dot absolute left-1/2 top-1/2 -z-10 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 opacity-0" />
           </h2>
-          <p className="mt-4 max-w-md text-sm text-white/60 md:text-base">{TAGLINE}</p>
+          <p className="mt-4 max-w-md text-sm text-white/60 md:text-base lg:mt-[1vw] lg:max-w-[30vw] lg:text-[1.1vw]">{TAGLINE}</p>
         </div>
         {photos.map((src, i) => {
           const [l, t, w] = SCATTER[i]
@@ -152,7 +152,7 @@ const Project = () => {
         {topProjects.map((p, i) => {
           const lane = LAYOUT[i % LAYOUT.length]
           return (
-            <li key={p.title} className={`pw-card mx-auto w-[90%] md:w-[50%] lg:w-[40%] ${LANE[lane]}`}>
+            <li key={p.title} className={`pw-card mx-auto w-[90%] md:w-[50%] lg:w-[46%] ${LANE[lane]}`}>
               <button
                 type="button"
                 data-cursor="View"
@@ -168,14 +168,14 @@ const Project = () => {
                     alt={p.title}
                     fill
                     quality={90}
-                    sizes="(max-width: 767px) 90vw, (max-width: 1023px) 50vw, 40vw"
+                    sizes="(max-width: 767px) 90vw, (max-width: 1023px) 50vw, 46vw"
                     className="object-cover object-left-top transition-transform duration-[1.2s] ease-[cubic-bezier(.2,.8,.2,1)] group-hover:scale-[1.03]"
                   />
                 </div>
-                <h3 className="font-display text-2xl font-semibold tracking-[-0.02em] sm:w-7/12 md:text-3xl">{p.title}</h3>
+                <h3 className="font-display text-2xl font-semibold tracking-[-0.02em] sm:w-7/12 md:text-3xl lg:text-[2vw]">{p.title}</h3>
                 <div className="mt-4 flex flex-col justify-between gap-6 sm:flex-row sm:items-end sm:gap-10">
-                  <p className="line-clamp-2 max-w-80 text-sm text-white/60 sm:w-7/12">{p.role}</p>
-                  <span className="relative shrink-0 self-start pb-2 font-mono text-xs uppercase tracking-[0.2em] text-[#D8D8D8] sm:self-auto">
+                  <p className="line-clamp-2 max-w-80 text-sm text-white/60 sm:w-7/12 lg:max-w-[22vw] lg:text-[0.9vw]">{p.role}</p>
+                  <span className="relative shrink-0 self-start pb-2 font-mono text-xs uppercase tracking-[0.2em] text-[#D8D8D8] lg:text-[0.75vw] sm:self-auto">
                     Explore project
                     <span className="absolute inset-x-0 bottom-0 h-px origin-left bg-[#D8D8D8] transition-transform duration-500 group-hover:scale-x-0" />
                   </span>
