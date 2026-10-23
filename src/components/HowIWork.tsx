@@ -7,6 +7,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
+// uneven horizontal bands, like blinds: each grows up from its own bottom edge, bottom band first (same as Skills)
+const BANDS = [1.4, 0.6, 1, 0.5, 1.6, 0.8, 1.2, 0.9];
+
 const steps = [
   {
     title: "Understand",
@@ -53,6 +56,7 @@ const polyRadius = (n: number, a: number, rot: number) => {
 
 export default function HowIWork() {
   const sectionRef = useRef<HTMLElement>(null);
+  const veilRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
@@ -138,6 +142,43 @@ export default function HowIWork() {
         draw();
       };
 
+      const veil = veilRef.current!;
+      const bands = Array.from(veil.children);
+      // after the scene, blinds close over it inside the same pin, then Services scrolls in.
+      // once they are shut the scene is dropped so it never shows as it scrolls away
+      const closeBlinds = (
+        tl: gsap.core.Timeline,
+        at: number,
+        length: number,
+      ) =>
+        tl.fromTo(
+          bands,
+          { scaleY: 0 },
+          {
+            scaleY: 1,
+            ease: "power2.inOut",
+            duration: length,
+            stagger: { each: length / 10, from: "end" },
+          },
+          at,
+        );
+      // Project's flip reads this flag so a later refresh can't switch the white theme back on
+      const setPast = (over: boolean) =>
+        over
+          ? document.documentElement.setAttribute("data-past-process", "")
+          : document.documentElement.removeAttribute("data-past-process");
+      const done = (over: boolean) => {
+        // Services onward stays dark: the white flip from Projects only runs up to here
+        gsap.set(veil, { autoAlpha: over ? 0 : 1 });
+        section.style.visibility = over ? "hidden" : "";
+        setPast(over);
+        // no 0.6s fade here: the page just snaps dark as you scroll past
+        const root = document.documentElement;
+        root.style.transition = "none";
+        root.classList.toggle("site-light", !over);
+        void root.offsetHeight;
+        root.style.transition = "";
+      };
       const mm = gsap.matchMedia();
       mm.add("(min-width: 1024px)", () => {
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -150,13 +191,19 @@ export default function HowIWork() {
           scrollTrigger: {
             trigger: section,
             start: "top top",
-            end: "+=350%",
+            end: "+=450%",
+            onLeave: () => done(true),
+            onEnterBack: () => done(false),
             pin: true,
             // Lenis already eases the scroll; a scrub delay on top of it made the scene lag and rubber-band
             scrub: true,
             anticipatePin: 1,
             invalidateOnRefresh: true,
-            onRefresh: refresh,
+            onRefresh: (self) => {
+              refresh();
+              if (self.scroll() >= self.end) done(true);
+              else setPast(false);
+            },
           },
           defaults: { ease: "none" },
           // one redraw per frame, however many state tweens moved
@@ -190,6 +237,7 @@ export default function HowIWork() {
           // settle: the whole stage lifts a touch at the end
           .to(stage, { y: "-2.65vh", ease: "power1.inOut", duration: 0.4 }, 3.2)
           .to({}, { duration: 0.4 }, 3.6);
+        closeBlinds(tl, 4, 1.143);
         return () => {
           gsap.set(cols, { clearProps: "clipPath" });
           gsap.set(stage, { clearProps: "transform" });
@@ -210,19 +258,31 @@ export default function HowIWork() {
           scrollTrigger: {
             trigger: section,
             start: "top top",
-            end: () => `+=${Math.abs(slide()) * 2.8}`,
+            end: () => `+=${Math.abs(slide()) * 2.8 * 1.4}`,
+            onLeave: () => done(true),
+            onEnterBack: () => done(false),
             pin: true,
             scrub: true,
             anticipatePin: 1,
             invalidateOnRefresh: true,
-            onRefresh: refresh,
+            onRefresh: (self) => {
+              refresh();
+              if (self.scroll() >= self.end) done(true);
+              else setPast(false);
+            },
           },
           defaults: { ease: "none" },
           onUpdate: draw,
         });
         tl.to(track, { x: slide, duration: 1 }, 0)
           .to(state, { q: 1, duration: 0.5 }, 0)
-          .fromTo(state, { sq: 0 }, { sq: 1, duration: 1, immediateRender: false }, 0);
+          .fromTo(
+            state,
+            { sq: 0 },
+            { sq: 1, duration: 1, immediateRender: false },
+            0,
+          );
+        closeBlinds(tl, 1, 0.4);
         return () => {
           gsap.set(track, { clearProps: "transform" });
         };
@@ -251,6 +311,8 @@ export default function HowIWork() {
       return () => {
         ro.disconnect();
         mm.revert();
+        section.style.visibility = "";
+        setPast(false);
       };
     },
     { scope: sectionRef },
@@ -262,6 +324,20 @@ export default function HowIWork() {
       id="how-i-work"
       className="relative w-full overflow-hidden bg-black text-white flex h-[100svh] flex-col"
     >
+      {/* blinds: fixed over the viewport during the tail of the pin. bg-white because the site is inverted here, so they render black */}
+      <div
+        ref={veilRef}
+        aria-hidden
+        className="pointer-events-none fixed inset-0 z-30 flex flex-col"
+      >
+        {BANDS.map((g, i) => (
+          <div
+            key={i}
+            style={{ flexGrow: g }}
+            className="origin-bottom basis-0 bg-white"
+          />
+        ))}
+      </div>
       <header className="px-4 pt-20 lg:px-[1vw] lg:pt-[4.17vh]">
         <p className="hw-fade flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-white/45 lg:gap-[0.83vw] lg:text-[0.83vw]">
           <span className="h-px w-8 bg-white/30 lg:w-[2.2vw]" />

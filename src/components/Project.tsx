@@ -41,7 +41,12 @@ const Project = () => {
   // Driven by the start alone: an `end: "max"` measured before the page below finished growing
   // (How I Work's pin spacer etc.) switched the flip back off part-way down the page.
   useEffect(() => {
-    const flip = (on: boolean) => document.documentElement.classList.toggle("site-light", on)
+    // stays dark once How I Work's blinds have closed (HowIWork sets data-past-process)
+    const flip = (on: boolean) =>
+      document.documentElement.classList.toggle(
+        "site-light",
+        on && !document.documentElement.hasAttribute("data-past-process"),
+      )
     const st = ScrollTrigger.create({
       trigger: root.current!.querySelector(".pw-end"),
       start: "top 60%",
