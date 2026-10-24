@@ -242,7 +242,7 @@ export default function Services() {
       className="relative h-[100svh] w-full overflow-hidden bg-black text-white"
     >
       <div className="relative h-full w-full">
-        <header className="absolute inset-x-0 top-0 z-20 flex items-start justify-between bg-gradient-to-b from-black via-black/90 to-transparent px-6 pb-8 pt-6 lg:px-[3vw] lg:pt-[2.6vh]">
+        <header className="absolute inset-x-0 top-0 z-20 flex items-start justify-between bg-gradient-to-b from-black via-black/90 to-transparent px-4 pb-8 pt-6 lg:px-[1vw] lg:pt-[2.6vh]">
           <h2
             aria-label="Our Services"
             className="font-display text-lg font-medium tracking-[-0.02em] lg:text-[1.2vw]"
@@ -258,7 +258,7 @@ export default function Services() {
         </header>
 
         {/* left: big titles, the active one is centred and bright */}
-        <div className="sv-in absolute left-[3vw] top-[52%] hidden w-[38%] lg:block">
+        <div className="sv-in absolute left-[1vw] top-[52%] hidden w-[38%] lg:block">
           <ul className="sv-list absolute left-0 top-0 w-full">
             {services.map((s, i) => (
               <li key={s.title} className="sv-row py-[2.8vh]">
@@ -280,7 +280,7 @@ export default function Services() {
         </div>
 
         {/* right: image cards travel upwards in step with the list */}
-        <div className="sv-in absolute inset-x-4 top-[52%] lg:inset-x-auto lg:left-auto lg:right-[3vw] lg:w-[46.5vw]">
+        <div className="sv-in absolute inset-x-4 top-[52%] lg:inset-x-auto lg:left-auto lg:right-[1vw] lg:w-[46.5vw]">
           <div className="sv-stack absolute left-0 top-0 flex w-full flex-col gap-[3vh]">
             {services.map((s, i) => (
               <article

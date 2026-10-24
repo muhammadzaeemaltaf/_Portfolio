@@ -2284,7 +2284,7 @@ export const experiencesData = [
     location: "Innovative Widget",
     href: "https://innovativewidget.com/",
     description:
-      "Full Stack Developer with experties in Next.JS, Laravel. Design, developed and deployed user-friendly full-stack web applications.",
+      "Full Stack Developer with expertise in Next.js and Laravel. Design, developed and deployed user-friendly full-stack web applications.",
     icon: InnovativeWidget,
     date: "Oct-2024 - present",
   },
