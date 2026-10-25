@@ -1,4 +1,6 @@
 import About from "@/components/About";
+import LightBackdrop from "@/components/LightBackdrop";
+import Statement from "@/components/Statement";
 import HeroSection from "@/components/Hero";
 import PortraitLoader from "@/components/PortraitLoader";
 import Project from "@/components/Project";
@@ -16,10 +18,14 @@ export default function Home() {
   return (
     <div className="overflow-hidden">
       <PortraitLoader />
+      <LightBackdrop />
       {/* <Navbar /> */}
       <main>
         <section aria-label="Hero section" id="hero">
           <HeroSection />
+        </section>
+        <section aria-label="What I believe about building software" id="statement">
+          <Statement />
         </section>
         <section aria-label="About Muhammad Zaeem Altaf" id="about">
           <About />

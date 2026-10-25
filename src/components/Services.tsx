@@ -244,11 +244,11 @@ export default function Services() {
       <div className="relative h-full w-full">
         <header className="absolute inset-x-0 top-0 z-20 flex items-start justify-between bg-gradient-to-b from-black via-black/90 to-transparent px-4 pb-8 pt-6 lg:px-[1vw] lg:pt-[2.6vh]">
           <h2
-            aria-label="Our Services"
+            aria-label="Services"
             className="font-display text-lg font-medium tracking-[-0.02em] lg:text-[1.2vw]"
           >
             <span aria-hidden className="block overflow-hidden pb-[0.1em]">
-              {"Our Services".split("").map((c, i) => (
+              {"Services".split("").map((c, i) => (
                 <span key={i} className="sv-char inline-block">
                   {c === " " ? "\u00A0" : c}
                 </span>

@@ -90,7 +90,7 @@ export default function About() {
   );
 
   return (
-    <section ref={section} className="relative flex min-h-[100svh] w-full flex-col justify-center overflow-hidden bone-bg px-4 py-20 lg:px-[1vw] lg:py-[5.5vw] text-[#1d1d1f]" id="about">
+    <section ref={section} className="relative flex min-h-[100svh] w-full flex-col justify-center overflow-hidden px-4 py-20 lg:px-[1vw] lg:py-[5.5vw] text-[#1d1d1f]" id="about">
       <div ref={root} className="relative mx-auto grid w-full max-w-6xl items-stretch gap-12 md:grid-cols-[1fr_1fr] md:gap-16 lg:max-w-none lg:gap-[4.4vw]">
         {/* portrait: slow scroll zoom */}
         <div className="about-photo relative h-full min-h-[460px] w-full md:ml-[calc(-1*max(1rem,(100vw_-_72rem)/2))] md:min-h-[640px] md:w-[calc(100%+max(1rem,(100vw_-_72rem)/2))] lg:ml-[-1vw] lg:min-h-[44vw] lg:w-[calc(100%+1vw)]">
