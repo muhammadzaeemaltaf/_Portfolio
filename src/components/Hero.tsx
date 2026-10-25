@@ -39,6 +39,10 @@ const Btn = ({ href, onClick, icon, label, solid, round, cursor }: { cursor?: st
 
 gsap.registerPlugin(ScrollTrigger);
 
+// opaque above the edge, transparent below it; --f (0→1) drives the edge from below the section to above it
+const fadeEdge = "linear-gradient(to bottom, #000 calc(100% - var(--f) * 130%), transparent calc(130% - var(--f) * 130%))";
+const fadeMask = { maskImage: fadeEdge, WebkitMaskImage: fadeEdge };
+
 const HeroSection = () => {
   const root = useRef<HTMLElement>(null);
   const [active, setActive] = useState(0);
@@ -78,11 +82,12 @@ const HeroSection = () => {
         clearTimeout(failsafe);
       });
 
-      // scroll parallax: name lags behind, portrait rises faster
+      // scroll parallax: name lags behind, portrait rises faster; a soft mask edge (--f) sweeps up from the bottom, fading the hero out
       if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         const tl = gsap.timeline({ scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: true } });
         tl.to(".hero-word", { y: 160, ease: "none" }, 0)
-          .to(".hero-portrait-inner", { y: -90, ease: "none" }, 0);
+          .to(".hero-portrait-inner", { y: -90, ease: "none" }, 0)
+          .to(root.current, { "--f": 1, ease: "none" }, 0);
       }
     }, root);
     return () => {
@@ -94,6 +99,7 @@ const HeroSection = () => {
   return (
     <section
       ref={root}
+      style={{ "--f": 0, ...fadeMask } as React.CSSProperties}
       className="relative isolate flex min-h-[100svh] w-full max-w-[100vw] flex-col overflow-hidden bone-bg px-6 pb-[80vw] pt-20 sm:pb-[60vw] lg:pb-0 lg:pt-[5.5vw] text-[#1d1d1f] sm:px-10 lg:px-[1vw]"
     >
       <p className="sr-only">

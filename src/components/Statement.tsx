@@ -55,32 +55,66 @@ export default function Statement() {
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-      // the whole block settles to full size as it arrives and eases back a touch as it leaves
-      gsap
-        .timeline({
-          defaults: { ease: "none" },
+      // desktop: the section pins when it reaches the top and its content scales down while held, then scrolling carries on
+      const scene = gsap.matchMedia();
+      scene.add("(min-width: 1024px)", () => {
+        gsap.to(".st-content", {
+          scale: 0.94,
+          ease: "none",
           scrollTrigger: {
             trigger: section.current,
-            start: "top bottom",
+            start: "top top",
+            end: "+=50%",
+            pin: true,
+            scrub: 0.6,
+            anticipatePin: 1,
+          },
+        });
+      });
+      // smaller screens flow normally: the block just eases back a touch as it leaves
+      scene.add("(max-width: 1023px)", () => {
+        gsap.to(".st-content", {
+          scale: 0.94,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section.current,
+            start: "center center",
             end: "bottom top",
             scrub: 0.6,
           },
-        })
-        .fromTo(".st-content", { scale: 0.94 }, { scale: 1, duration: 1 })
-        .to(".st-content", { scale: 0.94, duration: 1 });
+        });
+      });
 
       // each block lights up word by word as it scrolls through the middle of the screen
-      gsap.utils.toArray<HTMLElement>(".st-block").forEach((block) => {
-        gsap.from(block.querySelectorAll(".st-word"), {
-          scrollTrigger: {
-            trigger: block,
-            start: "top 85%",
-            end: "bottom 55%",
-            scrub: 0.3,
-          },
-          opacity: 0.15,
-          stagger: 0.04,
-          ease: "none",
+      // (on desktop the section pins, so the blocks stop moving: light them up as the section rises into place instead)
+      scene.add("(min-width: 1024px)", () => {
+        gsap.utils.toArray<HTMLElement>(".st-block").forEach((block) => {
+          gsap.from(block.querySelectorAll(".st-word"), {
+            scrollTrigger: {
+              trigger: section.current,
+              start: "top 85%",
+              end: "top 15%",
+              scrub: 0.3,
+            },
+            opacity: 0.15,
+            stagger: 0.04,
+            ease: "none",
+          });
+        });
+      });
+      scene.add("(max-width: 1023px)", () => {
+        gsap.utils.toArray<HTMLElement>(".st-block").forEach((block) => {
+          gsap.from(block.querySelectorAll(".st-word"), {
+            scrollTrigger: {
+              trigger: block,
+              start: "top 85%",
+              end: "bottom 55%",
+              scrub: 0.3,
+            },
+            opacity: 0.15,
+            stagger: 0.04,
+            ease: "none",
+          });
         });
       });
 
@@ -106,47 +140,10 @@ export default function Statement() {
         },
       );
 
-      // mouse only: the photo tilts toward the pointer and words near it lift
+      // mouse only: words near the pointer lift
       const mm = gsap.matchMedia();
       mm.add("(hover: hover) and (pointer: fine)", () => {
         const root = section.current!;
-        const photo = root.querySelector<HTMLElement>(".st-photo")!;
-        const shift = root.querySelector<HTMLElement>(".st-photo-shift")!;
-
-        const rx = gsap.quickTo(photo, "rotationX", {
-          duration: 0.6,
-          ease: "power3.out",
-        });
-        const ry = gsap.quickTo(photo, "rotationY", {
-          duration: 0.6,
-          ease: "power3.out",
-        });
-        const sx = gsap.quickTo(shift, "xPercent", {
-          duration: 0.8,
-          ease: "power3.out",
-        });
-        const sy = gsap.quickTo(shift, "yPercent", {
-          duration: 0.8,
-          ease: "power3.out",
-        });
-        gsap.set(photo, { transformPerspective: 700 });
-        const tilt = (e: PointerEvent) => {
-          const r = photo.getBoundingClientRect();
-          const px = (e.clientX - r.left) / r.width - 0.5;
-          const py = (e.clientY - r.top) / r.height - 0.5;
-          ry(px * 14);
-          rx(-py * 14);
-          sx(-px * 5); // the picture slides the other way inside its frame
-          sy(-py * 5);
-        };
-        const rest = () => {
-          rx(0);
-          ry(0);
-          sx(0);
-          sy(0);
-        };
-        photo.addEventListener("pointermove", tilt);
-        photo.addEventListener("pointerleave", rest);
 
         // words within reach of the pointer rise and grow a little, the nearest most
         const words = gsap.utils.toArray<HTMLElement>(".st-word", root);
@@ -185,15 +182,11 @@ export default function Statement() {
         root.addEventListener("pointerleave", leave);
 
         return () => {
-          photo.removeEventListener("pointermove", tilt);
-          photo.removeEventListener("pointerleave", rest);
           root.removeEventListener("pointerenter", enter);
           root.removeEventListener("pointermove", move);
           root.removeEventListener("pointerleave", leave);
           gsap.ticker.remove(follow);
-          gsap.set([photo, shift, ...words], {
-            clearProps: "rotationX,rotationY,xPercent,yPercent,y,scale",
-          });
+          gsap.set(words, { clearProps: "y,scale" });
         };
       });
     },
@@ -203,7 +196,7 @@ export default function Statement() {
   return (
     <div
       ref={section}
-      className="bone-bg relative w-full overflow-hidden px-4 py-20 text-[#1d1d1f] md:px-8 lg:flex lg:min-h-[100svh] lg:items-center lg:px-[1vw] lg:py-[9vh]"
+      className="relative w-full overflow-hidden px-4 py-20 text-[#1d1d1f] md:px-8 lg:flex lg:min-h-[100svh] lg:items-center lg:px-[1vw] lg:py-[9vh]"
     >
       <div className="st-content mx-auto grid w-full max-w-6xl gap-12 md:gap-16 lg:max-w-none lg:grid-cols-2 lg:gap-[1vw]">
         {/* left: the statement on top, a small note anchored to the bottom */}

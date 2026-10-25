@@ -41,7 +41,7 @@ const Cursor = () => {
       const el = (e.target as Element | null)?.closest?.(INTERACTIVE) as HTMLElement | null;
       const text = el?.dataset.cursor ?? "";
       if (label.current) label.current.textContent = text;
-      if (root.current) root.current.style.mixBlendMode = text === "View" ? "normal" : ""; // no colour inversion over project cards
+      if (root.current) root.current.style.mixBlendMode = text === "View" || text === "Hi" ? "normal" : ""; // no colour inversion over project cards or the Statement photo
       gsap.to(ring.current, { scale: el ? (text ? 3.2 : 2.2) : 1, duration: 0.35, ease: "power3.out", overwrite: "auto" });
       gsap.to(dot.current, { scale: el ? 0.4 : 1, duration: 0.25, overwrite: "auto" });
       gsap.to(ring.current, { backgroundColor: el ? "rgba(255,255,255,1)" : "rgba(255,255,255,0)", duration: 0.3, overwrite: false });

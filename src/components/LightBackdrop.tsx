@@ -26,6 +26,9 @@ export default function LightBackdrop() {
       trigger: about,
       start: "bottom bottom",
       end: "+=100%",
+      // this component mounts before Statement, so by default it would measure before Statement's pin adds its
+      // scroll distance and fire that far too early; refreshing last keeps it in step with the Skills pin
+      refreshPriority: -1,
       onUpdate: (self) => set(self.progress >= 1),
       onLeave: () => set(true),
       onEnterBack: () => set(false),
