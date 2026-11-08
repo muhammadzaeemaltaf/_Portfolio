@@ -110,13 +110,13 @@ export default function Skills() {
 
       <div className="mx-auto w-full max-w-6xl lg:max-w-none">
         {/* 1 · label */}
-        <p className="skills-fade flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-white/45 lg:gap-[0.83vw] lg:text-[0.83vw]">
+        <p className="skills-fade flex items-center gap-3 font-mono text-g-label uppercase tracking-[0.25em] text-white/45 lg:gap-[0.83vw] ">
           <span className="h-px w-8 bg-white/30 lg:w-[2.2vw]" />
           Skills
         </p>
 
         {/* 2 · headline */}
-        <h2 aria-label={HEADING} className="skills-heading mt-5 font-display text-4xl font-semibold leading-[1.1] tracking-[-0.035em] md:text-6xl lg:mt-[1.4vw] lg:text-[4.17vw]">
+        <h2 aria-label={HEADING} className="skills-heading mt-5 font-display text-g-4xl font-semibold leading-[1.1] tracking-[-0.035em] lg:mt-[1.4vw] ">
           {HEADING.split(" ").map((w, i) => (
             <span key={i} aria-hidden className="mr-[0.25em] inline-block overflow-hidden align-bottom">
               {w.split("").map((c, j) => (
@@ -143,14 +143,14 @@ export default function Skills() {
                 <span aria-hidden className={`absolute inset-x-0 top-0 h-px origin-left bg-white transition-transform duration-700 ease-[cubic-bezier(.7,0,.2,1)] ${on ? "scale-x-100" : "scale-x-0"}`} />
 
                 <div className="grid gap-4 py-7 md:grid-cols-[1fr_1.3fr] md:gap-12 md:py-9 lg:gap-[3.33vw] lg:py-[2.5vw]">
-                  <h3 className="flex items-baseline gap-4 font-display text-2xl font-medium tracking-[-0.02em] md:text-3xl lg:gap-[1.1vw] lg:text-[2.08vw]">
-                    <span className="font-mono text-xs tracking-widest text-white/35 lg:text-[0.83vw]">{String(i + 1).padStart(2, "0")}</span>
+                  <h3 className="flex items-baseline gap-4 font-display text-g-xl font-medium tracking-[-0.02em] lg:gap-[1.1vw] ">
+                    <span className="font-mono text-g-label tracking-widest text-white/35 ">{String(i + 1).padStart(2, "0")}</span>
                     <span className="inline-block overflow-hidden align-bottom">
                       <span className="skills-name inline-block">{cat.type}</span>
                     </span>
                   </h3>
 
-                  <ul className="skills-tools flex flex-wrap gap-x-6 gap-y-2 text-base text-white/50 md:text-lg lg:gap-x-[1.67vw] lg:gap-y-[0.55vw] lg:text-[1.25vw]">
+                  <ul className="skills-tools flex flex-wrap gap-x-6 gap-y-2 text-g-base text-white/50 lg:gap-x-[1.67vw] lg:gap-y-[0.55vw] ">
                     {cat.name.map((t) => (
                       <li key={t.label} className={`group/tool flex items-center transition-colors duration-300 hover:text-white ${on ? "text-white/80" : ""}`}>
                         {/* icon slides in from nothing, pushing the word along */}

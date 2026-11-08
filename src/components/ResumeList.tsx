@@ -53,7 +53,7 @@ export default function ResumeList({ id, label, rows }: Props) {
       ref={ref}
       className="scroll-mt-28 mx-auto w-full px-4 md:px-10 lg:px-[1vw] pt-20 pb-24 sm:pb-32 lg:pt-[8vw] lg:pb-[4vw] bg-black text-white"
     >
-      <h2 className="font-display font-semibold leading-[1.05] tracking-[-0.035em] text-5xl md:text-7xl lg:text-[7vw] mb-8 lg:mb-[3vw]">
+      <h2 className="font-display font-semibold leading-[1.05] tracking-[-0.035em] text-g-6xl mb-8 lg:mb-[3vw]">
         {label}
       </h2>
       <div className="rl-rule h-px w-full bg-white" />
@@ -68,23 +68,23 @@ export default function ResumeList({ id, label, rows }: Props) {
                   : {})}
                 className="group grid grid-cols-[2.5rem_1fr_auto] gap-x-4 gap-y-2 py-6 md:grid-cols-[5rem_1fr_16rem_7rem_2rem] md:gap-x-6 lg:grid-cols-[8vw_1fr_22vw_9vw_2vw] lg:gap-x-0 lg:py-[1.6vw]"
               >
-                <span className="pt-1.5 text-[11px] lg:pt-[0.4vw] lg:text-[0.7vw] uppercase">
+                <span className="pt-1.5 text-g-label lg:pt-[0.4vw] uppercase">
                   P. {String(i + 1).padStart(2, "0")}
                 </span>
                 <div>
                   <div>
-                    <h3 className="text-xl leading-tight tracking-tight md:text-2xl lg:text-[1.4vw] transition-opacity group-hover:opacity-60">
+                    <h3 className="text-g-lg leading-tight tracking-tight transition-opacity group-hover:opacity-60">
                       {row.title}
                     </h3>
-                    <p className="mt-3 max-w-md text-xs leading-relaxed text-white/80 md:text-[13px] lg:mt-[0.8vw] lg:max-w-[32vw] lg:text-[0.8vw]">
+                    <p className="mt-3 max-w-md text-g-sm leading-relaxed text-white/80 lg:mt-[0.8vw] lg:max-w-[32vw] ">
                       {row.description}
                     </p>
                   </div>
                 </div>
-                <span className="col-start-2 pt-1.5 text-[11px] lg:pt-[0.4vw] lg:text-[0.7vw] uppercase md:col-start-auto">
+                <span className="col-start-2 pt-1.5 text-g-label lg:pt-[0.4vw] uppercase md:col-start-auto">
                   {row.meta}
                 </span>
-                <span className="col-start-2 pt-1.5 text-[11px] lg:pt-[0.4vw] lg:text-[0.7vw] md:col-start-auto md:text-right">
+                <span className="col-start-2 pt-1.5 text-g-label lg:pt-[0.4vw] md:col-start-auto md:text-right">
                   {row.date}
                 </span>
                 <span className="col-start-3 row-start-1 flex justify-end pt-1.5 md:col-start-auto md:row-start-auto">

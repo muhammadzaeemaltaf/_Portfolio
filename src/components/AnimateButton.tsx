@@ -42,9 +42,9 @@ export const AnimatedButton = ({
   const isLink = href && href !== "#" && href !== "";
 
   // Common classes for both Link and button
-  const commonClasses = `group/button cursor-pointer flex w-fit items-center justify-center gap-x-2 font-bricolage shadow-[inset_0_2px_2px_rgba(10,60,207,0.5),inset_0_-2px_#1d4ed8,_0_0_0_4px_rgba(10,60,207,0.05),_0_20px_80px_-10px_rgba(10,60,207,0.43)] duration-300 hover:shadow-[inset_0_2px_2px_rgba(10,60,207,0.5),inset_0_-2px_#1d4ed8,_0_0_0_4px_rgba(10,60,207,0.05),_0_20px_80px_-10px_rgba(10,60,207,0.8),0_0_5px_#60a5fa,inset_0_0_5px_#60a5fa] __liquid-button-wrapper h-11 rounded-[1.5rem] px-6 text-base/4 font-medium md:h-10 md:px-6 md:text-sm ${bg} ${
-    expanded ? "expanded" : ""
-  }`;
+  const commonClasses = `group/button cursor-pointer flex w-fit items-center justify-center gap-x-2 font-bricolage shadow-[inset_0_2px_2px_rgba(10,60,207,0.5),inset_0_-2px_#1d4ed8,_0_0_0_4px_rgba(10,60,207,0.05),_0_20px_80px_-10px_rgba(10,60,207,0.43)] duration-300 hover:shadow-[inset_0_2px_2px_rgba(10,60,207,0.5),inset_0_-2px_#1d4ed8,_0_0_0_4px_rgba(10,60,207,0.05),_0_20px_80px_-10px_rgba(10,60,207,0.8),0_0_5px_#60a5fa,inset_0_0_5px_#60a5fa] __liquid-button-wrapper h-11 rounded-[1.5rem] px-6 text-g-base/4 font-medium md:h-10 md:px-6 ${bg} ${
+ expanded ? "expanded" : ""
+ }`;
 
   // Common button content
   const buttonContent = (

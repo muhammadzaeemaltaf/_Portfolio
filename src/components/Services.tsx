@@ -100,7 +100,7 @@ const isInternal = (href: string) => href.startsWith("#");
 
 // drawn stand-in for the AI card, which has no project screenshot
 const AgentLoop = () => (
-  <div className="absolute inset-0 flex flex-wrap items-center justify-center gap-3 bg-gradient-to-br from-[#1d2424] to-[#0f1111] p-8 font-mono text-xs uppercase tracking-wide text-white/80 lg:gap-[1vw] lg:text-[0.8vw]">
+  <div className="absolute inset-0 flex flex-wrap items-center justify-center gap-3 bg-gradient-to-br from-[#1d2424] to-[#0f1111] p-8 font-mono text-g-label uppercase tracking-wide text-white/80 lg:gap-[1vw] ">
     {["Prompt", "Agent", "MCP tools", "Your data", "Report"].map((n, i, a) => (
       <span key={n} className="flex items-center gap-3 lg:gap-[1vw]">
         <span className="rounded-full border border-white/25 px-4 py-2 lg:px-[1.2vw] lg:py-[0.6vw]">
@@ -245,7 +245,7 @@ export default function Services() {
         <header className="absolute inset-x-0 top-0 z-20 flex items-start justify-between bg-gradient-to-b from-black via-black/90 to-transparent px-4 pb-8 pt-6 lg:px-[1vw] lg:pt-[2.6vh]">
           <h2
             aria-label="Services"
-            className="font-display text-lg font-medium tracking-[-0.02em] lg:text-[1.2vw]"
+            className="font-display text-g-base font-medium tracking-[-0.02em] "
           >
             <span aria-hidden className="block overflow-hidden pb-[0.1em]">
               {"Services".split("").map((c, i) => (
@@ -267,10 +267,10 @@ export default function Services() {
                   onClick={() => goTo(i)}
                   className="block cursor-pointer text-left"
                 >
-                  <span className="block font-display text-[1.05vw] tracking-[-0.01em]">
+                  <span className="block font-display text-g-sm tracking-[-0.01em]">
                     ({pad(i + 1)})
                   </span>
-                  <span className="mt-[0.6vh] block font-display text-[3vw] font-medium leading-[1.05] tracking-[-0.04em]">
+                  <span className="mt-[0.6vh] block font-display text-g-3xl font-medium leading-[1.05] tracking-[-0.04em]">
                     {s.title}
                   </span>
                 </button>
@@ -300,15 +300,15 @@ export default function Services() {
                   <AgentLoop />
                 )}
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-black/20" />
-                <span className="absolute left-5 top-5 rounded-full bg-black/45 px-3 py-1.5 text-[0.7rem] font-medium uppercase tracking-wide backdrop-blur-md lg:left-[1.5vw] lg:top-[1.5vw] lg:px-[0.9vw] lg:py-[0.5vw] lg:text-[0.8vw]">
+                <span className="absolute left-5 top-5 rounded-full bg-black/45 px-3 py-1.5 text-g-label font-medium uppercase tracking-wide backdrop-blur-md lg:left-[1.5vw] lg:top-[1.5vw] lg:px-[0.9vw] lg:py-[0.5vw] ">
                   ({pad(i + 1)}) {s.tags.slice(0, 2).join(" · ")}
                 </span>
                 <div className="absolute inset-x-5 bottom-5 flex items-end justify-between gap-4 lg:inset-x-[1.5vw] lg:bottom-[1.5vw]">
                   <div>
-                    <p className="text-[0.65rem] font-medium uppercase tracking-wide text-white/70 lg:text-[0.75vw]">
+                    <p className="text-g-label font-medium uppercase tracking-wide text-white/70 ">
                       {s.media.caption}
                     </p>
-                    <h3 className="font-display text-2xl font-medium tracking-[-0.03em] lg:text-[2.4vw]">
+                    <h3 className="font-display text-g-2xl font-medium tracking-[-0.03em] ">
                       {s.title}
                     </h3>
                   </div>
@@ -322,7 +322,7 @@ export default function Services() {
                           },
                         }
                       : { target: "_blank", rel: "noopener noreferrer" })}
-                    className="shrink-0 rounded-full border border-white/30 bg-black/40 px-4 py-2 text-xs backdrop-blur-md transition-colors hover:bg-white hover:text-black lg:px-[1.1vw] lg:py-[0.6vw] lg:text-[0.85vw]"
+                    className="shrink-0 rounded-full border border-white/30 bg-black/40 px-4 py-2 text-g-label backdrop-blur-md transition-colors hover:bg-white hover:text-black lg:px-[1.1vw] lg:py-[0.6vw] "
                   >
                     View ↗
                   </a>

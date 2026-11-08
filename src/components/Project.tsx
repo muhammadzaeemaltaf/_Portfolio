@@ -125,13 +125,13 @@ const Project = () => {
       {/* intro: floating project cards dive into "My work" one by one until it is solid white */}
       <div className="pw-intro relative z-50 h-svh w-full overflow-hidden">
         <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
-          <h2 className="pw-word relative z-20 whitespace-nowrap font-display text-[12vw] font-extrabold leading-[0.9] tracking-[-0.02em] md:text-[6vw]">
+          <h2 className="pw-word relative z-20 whitespace-nowrap font-display text-g-6xl font-extrabold leading-[0.9] tracking-[-0.02em]">
             <span className="text-black [-webkit-text-stroke:3px_white] [paint-order:stroke_fill] [stroke-linejoin:round]">My Project</span>
             <span aria-hidden className="pw-fill absolute inset-0 text-white">My Project</span>
             {/* the three threads leave from here, from behind the heading (h2 is z-20, above the canvas) */}
             <span aria-hidden className="pw-dot absolute left-1/2 top-1/2 -z-10 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 opacity-0" />
           </h2>
-          <p className="mt-4 max-w-md text-sm text-white/60 md:text-base lg:mt-[1vw] lg:max-w-[30vw] lg:text-[1.1vw]">{TAGLINE}</p>
+          <p className="mt-4 max-w-md text-g-base text-white/60 lg:mt-[1vw] lg:max-w-[30vw] ">{TAGLINE}</p>
         </div>
         {photos.map((src, i) => {
           const [l, t, w] = SCATTER[i]
@@ -177,10 +177,10 @@ const Project = () => {
                     className="object-cover object-left-top transition-transform duration-[1.2s] ease-[cubic-bezier(.2,.8,.2,1)] group-hover:scale-[1.03]"
                   />
                 </div>
-                <h3 className="font-display text-2xl font-semibold tracking-[-0.02em] sm:w-7/12 md:text-3xl lg:text-[2vw]">{p.title}</h3>
+                <h3 className="font-display text-g-xl font-semibold tracking-[-0.02em] sm:w-7/12 ">{p.title}</h3>
                 <div className="mt-4 flex flex-col justify-between gap-6 sm:flex-row sm:items-end sm:gap-10">
-                  <p className="line-clamp-2 max-w-80 text-sm text-white/60 sm:w-7/12 lg:max-w-[22vw] lg:text-[0.9vw]">{p.role}</p>
-                  <span className="relative shrink-0 self-start pb-2 font-mono text-xs uppercase tracking-[0.2em] text-[#D8D8D8] lg:text-[0.75vw] sm:self-auto">
+                  <p className="line-clamp-2 max-w-80 text-g-sm text-white/60 sm:w-7/12 lg:max-w-[22vw] ">{p.role}</p>
+                  <span className="relative shrink-0 self-start pb-2 font-mono text-g-label uppercase tracking-[0.2em] text-[#D8D8D8] sm:self-auto">
                     Explore project
                     <span className="absolute inset-x-0 bottom-0 h-px origin-left bg-[#D8D8D8] transition-transform duration-500 group-hover:scale-x-0" />
                   </span>
@@ -230,14 +230,14 @@ const Project = () => {
             )}
             <div className="p-6 md:p-8">
               <div className="flex flex-wrap items-center justify-between gap-4">
-                <h3 className="font-display text-2xl font-semibold md:text-4xl">{project.title}</h3>
+                <h3 className="font-display text-g-2xl font-semibold ">{project.title}</h3>
                 {project.link && <AnimatedButton text="View Project" arrow href={project.link} expanded bg="shrink-0" target="_blank" />}
               </div>
               <p className="mt-3 text-white/70">{project.role}</p>
               {project.organization && project.organizationLogo && (
                 <div className="mt-4 flex items-center gap-2">
                   <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/20 bg-white/10">
-                    <project.organizationLogo className="text-xl text-primary-500" />
+                    <project.organizationLogo className="text-g-base text-primary-500" />
                   </span>
                   {project.organizationURL ? (
                     <Link href={project.organizationURL} target="_blank" className="font-semibold">
@@ -253,12 +253,12 @@ const Project = () => {
                   <Tag key={j} className="h-7 w-7" />
                 ))}
               </div>
-              <h4 className="mt-8 font-display text-2xl font-semibold">Project Overview</h4>
+              <h4 className="mt-8 font-display text-g-lg font-semibold">Project Overview</h4>
               <p className="mt-3 text-white/80">{project.description}</p>
               {project.feature && (
                 <>
-                  <h4 className="mt-8 font-display text-2xl font-semibold">Features</h4>
-                  <ul className="mt-4 grid grid-cols-1 gap-x-8 gap-y-2.5 text-sm leading-relaxed text-white/80 md:grid-cols-2">
+                  <h4 className="mt-8 font-display text-g-lg font-semibold">Features</h4>
+                  <ul className="mt-4 grid grid-cols-1 gap-x-8 gap-y-2.5 text-g-sm leading-relaxed text-white/80 md:grid-cols-2">
                     {project.feature.map((f) => (
                       <li key={f} className="flex items-start gap-2">
                         <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[#2563eb]" />
@@ -270,7 +270,7 @@ const Project = () => {
               )}
               {project.impact && (
                 <>
-                  <h4 className="mt-8 font-display text-2xl font-semibold">Impact</h4>
+                  <h4 className="mt-8 font-display text-g-lg font-semibold">Impact</h4>
                   <p className="mt-3 text-white/80">{project.impact}</p>
                 </>
               )}

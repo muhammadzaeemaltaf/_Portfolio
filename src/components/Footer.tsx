@@ -11,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const EMAIL = "official.zaeemaltaf@gmail.com";
 const slug = (s: string) => s.toLowerCase().replace(/\s+/g, "-");
-const small = "font-mono text-[10px] uppercase tracking-[0.15em] text-white/50 lg:text-[0.65vw]";
+const small = "font-mono text-g-label uppercase tracking-[0.15em] text-white/50 ";
 const link = "transition-colors duration-300 hover:text-white";
 
 export default function Footer() {
@@ -38,7 +38,7 @@ export default function Footer() {
         <p className={small}>Have an idea?</p>
         <a
           href={`mailto:${EMAIL}`}
-          className="mt-4 block break-words font-display text-3xl font-semibold tracking-[-0.03em] text-white/80 transition-colors duration-500 hover:text-white sm:text-5xl lg:mt-[1.2vw] lg:text-[4.4vw]"
+          className="mt-4 block break-words font-display text-g-4xl font-semibold tracking-[-0.03em] text-white/80 transition-colors duration-500 hover:text-white lg:mt-[1.2vw] "
         >
           Let’s build it together<span className="font-serif italic text-white/50"> →</span>
         </a>
@@ -47,7 +47,7 @@ export default function Footer() {
       <div className="ft-in mt-16 grid gap-10 sm:grid-cols-2 lg:mt-[6vw] lg:grid-cols-[1fr_1fr_1fr] lg:gap-[3vw]">
         <div>
           <p className={small}>Navigate</p>
-          <ul className="mt-4 grid grid-cols-2 gap-x-6 gap-y-2 text-sm text-white/70 lg:mt-[1.2vw] lg:gap-y-[0.5vw] lg:text-[0.95vw]">
+          <ul className="mt-4 grid grid-cols-2 gap-x-6 gap-y-2 text-g-sm text-white/70 lg:mt-[1.2vw] lg:gap-y-[0.5vw] ">
             {navlinks.map((n) => (
               <li key={n}>
                 <Link href={`#${slug(n)}`} className={link}>{n}</Link>
@@ -58,7 +58,7 @@ export default function Footer() {
 
         <div>
           <p className={small}>Elsewhere</p>
-          <ul className="mt-4 space-y-2 text-sm text-white/70 lg:mt-[1.2vw] lg:space-y-[0.5vw] lg:text-[0.95vw]">
+          <ul className="mt-4 space-y-2 text-g-sm text-white/70 lg:mt-[1.2vw] lg:space-y-[0.5vw] ">
             {contactLinks.map((c) => (
               <li key={c.label}>
                 <Link href={c.href} target="_blank" rel="noopener noreferrer" className={`${link} inline-flex items-center gap-2`}>
@@ -72,7 +72,7 @@ export default function Footer() {
 
         <div>
           <p className={small}>Based in</p>
-          <p className="mt-4 text-sm text-white/70 lg:mt-[1.2vw] lg:text-[0.95vw]">Pakistan · working worldwide</p>
+          <p className="mt-4 text-g-sm text-white/70 lg:mt-[1.2vw] ">Pakistan · working worldwide</p>
         </div>
       </div>
 

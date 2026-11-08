@@ -152,7 +152,7 @@ export default function Navbar() {
       ref={navRef}
     >
       <div className="flex flex-row items-center gap-[68px]">
-        <span className="text-2xl cursor-pointer font-bold text-transparent bg-gradient-to-r from-white to-gray-300 bg-clip-text"
+        <span className="text-g-lg cursor-pointer font-bold text-transparent bg-gradient-to-r from-white to-gray-300 bg-clip-text"
           onClick={() => scrollToView()}
          >
           <Image
@@ -170,7 +170,7 @@ export default function Navbar() {
           {navlinks.map((link, index) => (
             <span
               key={index}
-              className={`lg:text-[16px] cursor-pointer h-[26px] font-medium transition-all ease-in duration-150 ${activeLink === slugify(link) ? "text-blue-400" : "text-gray-200"} hover:text-blue-400`}
+              className={`text-g-base cursor-pointer h-[26px] font-medium transition-all ease-in duration-150 ${activeLink === slugify(link) ? "text-blue-400" : "text-gray-200"} hover:text-blue-400`}
               onClick={() => { scrollToView(slugify(link)); setIsMenuOpen(false); }}
             >
               {link}
@@ -181,7 +181,7 @@ export default function Navbar() {
 
       <div ref={buttonRef} className="flex gap-[10px] md:gap-[32px] items-center">
         <div className="flex-row md:gap-[8px] items-center hidden md:flex">
-          <AnimatedButton text="Contact me" arrow bg="!px-4 !text-xs !h-9 md:!h-11 md:!px-6 md:!text-sm bg-black/70" 
+          <AnimatedButton text="Contact me" arrow bg="!px-4 !text-g-sm !h-9 md:!h-11 md:!px-6 md:! bg-black/70" 
           onClick={() => { scrollToView("contact"); setIsMenuOpen(false); }}
           />
         </div>
@@ -212,14 +212,14 @@ export default function Navbar() {
           {navlinks.map((link, index) => (
             <span
               key={index}
-              className={`lg:text-[16px] cursor-pointer h-[26px] font-medium transition-all ease-in duration-150 ${activeLink === slugify(link) ? "text-blue-400" : "text-gray-200"} hover:text-blue-400`}
+              className={`text-g-base cursor-pointer h-[26px] font-medium transition-all ease-in duration-150 ${activeLink === slugify(link) ? "text-blue-400" : "text-gray-200"} hover:text-blue-400`}
               onClick={() => { scrollToView(slugify(link)); setIsMenuOpen(false); }}
             >
               {link}
             </span>
           ))}
           <span
-            className={`lg:text-[16px] cursor-pointer h-[26px] font-medium transition-all ease-in duration-150 ${activeLink === "contact" ? "text-blue-400" : "text-gray-200"} hover:text-blue-400`}
+            className={`text-g-base cursor-pointer h-[26px] font-medium transition-all ease-in duration-150 ${activeLink === "contact" ? "text-blue-400" : "text-gray-200"} hover:text-blue-400`}
             onClick={() => { scrollToView("contact"); setIsMenuOpen(false); }}
           >
             Contact

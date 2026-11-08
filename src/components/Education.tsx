@@ -179,10 +179,10 @@ export default function Education() {
       <div className="relative grid h-full grid-rows-[auto_1fr] gap-y-8 px-4 pb-10 pt-24 lg:grid-cols-[24vw_1fr] lg:grid-rows-1 lg:gap-x-[3vw] lg:px-[1vw] lg:py-[7vw]">
         <div className="flex flex-col lg:justify-between">
           <div>
-            <p className="ed-intro font-mono text-[11px] uppercase tracking-[0.25em] text-white/50 lg:text-[0.8vw]">
+            <p className="ed-intro font-mono text-g-label uppercase tracking-[0.25em] text-white/50 ">
               Education
             </p>
-            <h2 className="ed-intro mt-4 font-display text-4xl font-semibold leading-[1.05] tracking-[-0.035em] md:text-5xl lg:mt-[1.2vw] lg:text-[3.2vw]">
+            <h2 className="ed-intro mt-4 font-display text-g-3xl font-semibold leading-[1.05] tracking-[-0.035em] lg:mt-[1.2vw] ">
               Where I learned
             </h2>
           </div>
@@ -199,10 +199,10 @@ export default function Education() {
                     onClick={() => goTo(i)}
                     className="ed-row group text-left"
                   >
-                    <span className="block font-mono text-[0.7vw] uppercase tracking-[0.2em] text-white/50">
+                    <span className="block font-mono text-g-label uppercase tracking-[0.2em] text-white/50">
                       {pad(i + 1)} · {e.date}
                     </span>
-                    <span className="mt-[0.3vw] block text-[1vw] leading-snug transition-opacity group-hover:opacity-70">
+                    <span className="mt-[0.3vw] block text-g-sm leading-snug transition-opacity group-hover:opacity-70">
                       {e.title}
                     </span>
                   </button>
@@ -219,26 +219,26 @@ export default function Education() {
               aria-label={`${pad(i + 1)} of ${pad(entries.length)}`}
               className="ed-item absolute inset-0 flex flex-col justify-center"
             >
-              <p className="ed-part font-mono text-[11px] uppercase tracking-[0.25em] text-white/50 lg:text-[0.8vw]">
+              <p className="ed-part font-mono text-g-label uppercase tracking-[0.25em] text-white/50 ">
                 {pad(i + 1)} / {pad(entries.length)} · {e.kind}
               </p>
               <h3
                 style={GLOW}
-                className="ed-part mt-5 max-w-[22ch] font-display text-[2.4rem] font-bold uppercase leading-[0.98] tracking-[-0.03em] sm:text-6xl lg:mt-[1.6vw] lg:text-[4.6vw]"
+                className="ed-part mt-5 max-w-[22ch] font-display text-g-4xl font-bold uppercase leading-[0.98] tracking-[-0.03em] lg:mt-[1.6vw] "
               >
                 {e.title}
               </h3>
-              <p className="ed-part mt-6 max-w-[34rem] text-sm leading-relaxed text-white/70 lg:mt-[1.8vw] lg:max-w-[34vw] lg:text-[1vw]">
+              <p className="ed-part mt-6 max-w-[34rem] text-g-sm leading-relaxed text-white/70 lg:mt-[1.8vw] lg:max-w-[34vw] ">
                 {e.institution}
               </p>
               <div className="ed-part mt-8 flex flex-wrap items-center gap-2 lg:mt-[2.4vw] lg:gap-[0.6vw]">
-                <span className="rounded-full bg-white px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.15em] text-black lg:px-[0.9vw] lg:py-[0.4vw] lg:text-[0.65vw]">
+                <span className="rounded-full bg-white px-3 py-1.5 font-mono text-g-label uppercase tracking-[0.15em] text-black lg:px-[0.9vw] lg:py-[0.4vw] ">
                   {e.date}
                 </span>
                 {e.fields.map((f) => (
                   <span
                     key={f}
-                    className="rounded-full border border-white/25 px-3 py-1.5 text-xs text-white/80 lg:px-[0.9vw] lg:py-[0.4vw] lg:text-[0.8vw]"
+                    className="rounded-full border border-white/25 px-3 py-1.5 text-g-label text-white/80 lg:px-[0.9vw] lg:py-[0.4vw] "
                   >
                     {f}
                   </span>

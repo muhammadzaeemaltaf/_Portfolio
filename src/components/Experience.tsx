@@ -177,16 +177,16 @@ export default function Experience() {
             </div>
 
             <div className="relative flex w-full flex-col items-start text-left">
-              <p className="ex-part font-mono text-[11px] uppercase tracking-[0.25em] text-white/50 lg:text-[0.8vw]">
+              <p className="ex-part font-mono text-g-label uppercase tracking-[0.25em] text-white/50 ">
                 {s.eyebrow}
               </p>
               <h3
                 style={GLOW}
-                className="ex-part mt-5 font-display text-[2.9rem] font-bold uppercase leading-[0.95] tracking-[-0.03em] sm:text-7xl lg:mt-[1.6vw] lg:text-[6.2vw]"
+                className="ex-part mt-5 font-display text-g-6xl font-bold uppercase leading-[0.95] tracking-[-0.03em] lg:mt-[1.6vw] "
               >
                 {s.title}
               </h3>
-              <p className="ex-part mt-6 max-w-[34rem] text-sm leading-relaxed text-white/70 lg:mt-[1.8vw] lg:max-w-[34vw] lg:text-[1vw]">
+              <p className="ex-part mt-6 max-w-[34rem] text-g-sm leading-relaxed text-white/70 lg:mt-[1.8vw] lg:max-w-[34vw] ">
                 {s.description}
               </p>
 
@@ -197,10 +197,10 @@ export default function Experience() {
                       key={c.label}
                       className="border-t border-white/20 pt-3 lg:pt-[0.8vw]"
                     >
-                      <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/45 lg:text-[0.65vw]">
+                      <dt className="font-mono text-g-label uppercase tracking-[0.2em] text-white/45 ">
                         {c.label}
                       </dt>
-                      <dd className="mt-2 text-[13px] leading-snug text-white/85 lg:mt-[0.6vw] lg:text-[0.85vw]">
+                      <dd className="mt-2 text-g-sm leading-snug text-white/85 lg:mt-[0.6vw] ">
                         {c.value}
                       </dd>
                     </div>
@@ -213,7 +213,7 @@ export default function Experience() {
                   href={s.link.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="ex-part mt-9 inline-flex items-center gap-2 rounded-full border border-white/30 px-4 py-2 text-xs transition-colors hover:bg-white hover:text-black lg:mt-[2.6vw] lg:gap-[0.5vw] lg:px-[1.1vw] lg:py-[0.6vw] lg:text-[0.85vw]"
+                  className="ex-part mt-9 inline-flex items-center gap-2 rounded-full border border-white/30 px-4 py-2 text-g-label transition-colors hover:bg-white hover:text-black lg:mt-[2.6vw] lg:gap-[0.5vw] lg:px-[1.1vw] lg:py-[0.6vw] "
                 >
                   {s.link.label}
                   <ArrowUpRight className="h-3.5 w-3.5 lg:h-[0.9vw] lg:w-[0.9vw]" />

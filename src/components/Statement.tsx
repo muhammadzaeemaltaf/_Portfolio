@@ -201,10 +201,10 @@ export default function Statement() {
       <div className="st-content mx-auto grid w-full max-w-6xl gap-12 md:gap-16 lg:max-w-none lg:grid-cols-2 lg:gap-[1vw]">
         {/* left: the statement on top, a small note anchored to the bottom */}
         <div className="flex flex-col justify-between gap-16 lg:gap-[4vw]">
-          <p className="st-block max-w-[46rem] font-display text-4xl font-medium leading-[1.02] tracking-[-0.03em] md:text-6xl lg:max-w-[46vw] lg:text-[3.1vw]">
+          <p className="st-block max-w-[46rem] font-display text-g-4xl font-medium leading-[1.02] tracking-[-0.03em] lg:max-w-[46vw] ">
             <Words parts={HEADLINE} />
           </p>
-          <p className="st-block max-w-[26rem] text-sm leading-[1.25] lg:max-w-[26vw] lg:text-[1.05vw]">
+          <p className="st-block max-w-[26rem] text-g-base leading-[1.3] lg:max-w-[26vw] ">
             <Words parts={NOTE} />
           </p>
         </div>
@@ -226,7 +226,7 @@ export default function Statement() {
               />
             </div>
           </div>
-          <p className="st-block font-display text-3xl font-medium leading-[1.02] tracking-[-0.03em] md:text-5xl lg:text-[3.1vw]">
+          <p className="st-block font-display text-g-3xl font-medium leading-[1.02] tracking-[-0.03em] ">
             <Words parts={PATH} />
           </p>
         </div>

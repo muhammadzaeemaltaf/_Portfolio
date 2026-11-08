@@ -8,6 +8,48 @@
   --font-mono: var(--font-geist-mono, ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace);
 }
 
+/* Golden-ratio type scale: size(n) = --b * φ^(n/2). --b is fluid (16px phone → 18px @1440 → 22px cap). */
+:root {
+  --b: clamp(16px, 0.9vw + 5px, 22px);
+  --phi: 1.618;
+  --rphi: 1.272; /* √φ, the half-step */
+  --g-label: max(12px, calc(var(--b) / var(--phi)));
+  --g-sm: max(14px, calc(var(--b) / var(--rphi)));
+  --g-base: var(--b);
+  --g-lg: calc(var(--b) * var(--rphi));
+  --g-xl: calc(var(--b) * var(--phi));
+  --g-2xl: calc(var(--b) * var(--phi) * var(--rphi));
+  --g-3xl: calc(var(--b) * var(--phi) * var(--phi));
+  --g-4xl: calc(var(--b) * var(--phi) * var(--phi) * var(--rphi));
+  --g-5xl: calc(var(--b) * var(--phi) * var(--phi) * var(--phi));
+  --g-6xl: calc(var(--b) * var(--phi) * var(--phi) * var(--phi) * var(--rphi));
+  --g-hero: calc(var(--b) * var(--phi) * var(--phi) * var(--phi) * var(--phi) * var(--rphi));
+}
+@media (max-width: 767px) {
+  /* phones: step the big sizes down half a step so headings fit */
+  :root {
+    --g-2xl: calc(var(--b) * var(--phi));
+    --g-3xl: calc(var(--b) * var(--phi) * var(--rphi));
+    --g-4xl: calc(var(--b) * var(--phi) * var(--phi));
+    --g-5xl: calc(var(--b) * var(--phi) * var(--phi) * var(--rphi));
+    --g-6xl: calc(var(--b) * var(--phi) * var(--phi) * var(--rphi));
+    --g-hero: 11.2vw;
+  }
+}
+@theme inline {
+  --text-g-label: var(--g-label);
+  --text-g-sm: var(--g-sm);
+  --text-g-base: var(--g-base);
+  --text-g-lg: var(--g-lg);
+  --text-g-xl: var(--g-xl);
+  --text-g-2xl: var(--g-2xl);
+  --text-g-3xl: var(--g-3xl);
+  --text-g-4xl: var(--g-4xl);
+  --text-g-5xl: var(--g-5xl);
+  --text-g-6xl: var(--g-6xl);
+  --text-g-hero: var(--g-hero);
+}
+
 :root {
   --font-montserrat: "Montserrat";
   --font-poppins: "Poppins";

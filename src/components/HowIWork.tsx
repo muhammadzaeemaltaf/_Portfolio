@@ -339,13 +339,13 @@ export default function HowIWork() {
         ))}
       </div>
       <header className="px-4 pt-20 lg:px-[1vw] lg:pt-[4.17vh]">
-        <p className="hw-fade flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-white/45 lg:gap-[0.83vw] lg:text-[0.83vw]">
+        <p className="hw-fade flex items-center gap-3 font-mono text-g-label uppercase tracking-[0.25em] text-white/45 lg:gap-[0.83vw] ">
           <span className="h-px w-8 bg-white/30 lg:w-[2.2vw]" />
           Process
         </p>
         <h2
           aria-label={HEADING}
-          className="mt-4 font-display text-4xl font-semibold leading-[1.1] tracking-[-0.035em] md:text-6xl lg:mt-[1vw] lg:text-[4.17vw]"
+          className="mt-4 font-display text-g-4xl font-semibold leading-[1.1] tracking-[-0.035em] lg:mt-[1vw] "
         >
           {HEADING.split(" ").map((w, i) => (
             <span
@@ -370,15 +370,15 @@ export default function HowIWork() {
               key={step.title}
               className="hw-col relative flex h-full w-[78vw] max-w-[22rem] shrink-0 flex-col justify-end bg-white p-5 text-black lg:h-auto lg:w-auto lg:max-w-none lg:flex-1 lg:p-[1vw] lg:pb-[1.3vw]"
             >
-              <span className="absolute left-5 top-5 font-mono text-xs lg:left-[1vw] lg:top-[1.3vw] lg:text-[0.65vw]">
+              <span className="absolute left-5 top-5 font-mono text-g-label lg:left-[1vw] lg:top-[1.3vw] ">
                 0{i + 1}
               </span>
-              <h3 className="font-display text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.02em] lg:text-[1.5vw] lg:leading-[1.15]">
+              <h3 className="font-display text-g-xl font-semibold leading-[1.15] tracking-[-0.02em] lg:leading-[1.15]">
                 {step.title}
                 <br />
                 <span className="opacity-55">{step.accent}</span>
               </h3>
-              <p className="mt-5 max-w-[26rem] text-sm leading-snug lg:mt-[1.4vw] lg:max-w-[21vw] lg:text-[0.85vw] lg:leading-[1.35]">
+              <p className="mt-5 max-w-[26rem] text-g-sm leading-snug lg:mt-[1.4vw] lg:max-w-[21vw] lg:leading-[1.35]">
                 {step.description}
               </p>
             </article>

@@ -111,11 +111,11 @@ export default function About() {
 
         {/* text */}
         <div className="relative z-20 flex w-full flex-col justify-center">
-          <p className="flex items-center gap-3 text-xs font-medium uppercase tracking-[0.25em] text-black/45 lg:gap-[0.83vw] lg:text-[0.83vw]">
+          <p className="flex items-center gap-3 text-g-label font-medium uppercase tracking-[0.25em] text-black/45 lg:gap-[0.83vw] ">
             <span className="h-px w-8 bg-black/30 lg:w-[2.2vw]" />
             About me
           </p>
-          <h2 aria-label={`${HEADING}.`} className="about-heading mb-8 mt-4 text-4xl font-semibold leading-[1.15] tracking-[-0.03em] md:text-6xl lg:mb-[2.2vw] lg:mt-[1.1vw] lg:text-[4.17vw]">
+          <h2 aria-label={`${HEADING}.`} className="about-heading mb-8 mt-4 text-g-4xl font-semibold leading-[1.15] tracking-[-0.03em] lg:mb-[2.2vw] lg:mt-[1.1vw] ">
             {HEADING.split("").map((c, i) => (
               <span key={i} aria-hidden className="inline-block overflow-hidden align-bottom">
                 <span className="about-char inline-block">{c === " " ? "\u00A0" : c}</span>
@@ -125,7 +125,7 @@ export default function About() {
               <span className="about-char inline-block text-black/25">.</span>
             </span>
           </h2>
-          <div className="about-text space-y-5 text-base leading-relaxed text-black/75 md:text-[18px] lg:space-y-[1.4vw] lg:text-[1.25vw]">
+          <div className="about-text space-y-5 text-g-base leading-relaxed text-black/75 lg:space-y-[1.4vw] ">
             {paragraphs.map((p, i) => (
               <p key={i}>
                 {p.split(" ").map((w, j) => (
@@ -146,8 +146,8 @@ export default function About() {
             {facts.map(([k, v]) => (
               <div key={k} data-cursor="" className="about-fact group relative flex items-baseline justify-between gap-6 overflow-hidden px-3 py-4 lg:px-[0.83vw] lg:py-[1.1vw]">
                 <span aria-hidden className="absolute inset-0 -z-0 translate-y-full bg-[#1d1d1f] transition-transform duration-500 ease-[cubic-bezier(.7,0,.2,1)] group-hover:translate-y-0" />
-                <dt className="relative text-xs uppercase tracking-[0.2em] text-black/40 lg:text-[0.83vw] transition-colors duration-500 group-hover:text-white/60">{k}</dt>
-                <dd className="relative text-right text-sm text-[#1d1d1f] transition-all duration-500 group-hover:-translate-x-1 group-hover:text-white md:text-base lg:text-[1.1vw]">{v}</dd>
+                <dt className="relative text-g-label uppercase tracking-[0.2em] text-black/40 transition-colors duration-500 group-hover:text-white/60">{k}</dt>
+                <dd className="relative text-right text-g-base text-[#1d1d1f] transition-all duration-500 group-hover:-translate-x-1 group-hover:text-white ">{v}</dd>
               </div>
             ))}
           </dl>
