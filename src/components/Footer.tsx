@@ -1,60 +1,84 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRef } from "react";
 import Link from "next/link";
-import { contactLinks } from "@/libs/data";
-gsap.registerPlugin(ScrollTrigger);
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { contactLinks, navlinks } from "@/libs/data";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
+const EMAIL = "official.zaeemaltaf@gmail.com";
+const slug = (s: string) => s.toLowerCase().replace(/\s+/g, "-");
+const small = "font-mono text-[10px] uppercase tracking-[0.15em] text-white/50 lg:text-[0.65vw]";
+const link = "transition-colors duration-300 hover:text-white";
 
 export default function Footer() {
-  const footerRef = useRef(null);
+  const root = useRef<HTMLElement>(null);
 
-  useEffect(() => {
-    if (!footerRef.current) return;
-
-    gsap.fromTo(
-      footerRef.current,
-      { opacity: 0, y: 50 },
-      {
-        opacity: 1,
-        y: 0,
+  useGSAP(
+    () => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      gsap.from(".ft-in", {
+        opacity: 0,
+        y: 30,
         duration: 1,
         ease: "power3.out",
-        scrollTrigger: {
-          trigger: footerRef.current,
-          start: "top 90%",
-        },
-      }
-    );
-  }, []);
-  
+        stagger: 0.12,
+        scrollTrigger: { trigger: root.current, start: "top 85%" },
+      });
+    },
+    { scope: root },
+  );
 
   return (
-    <footer
-      ref={footerRef}
-      className="py-10 text-center text-sm text-gray-600 dark:text-gray-400"
-    >
-      <div className="flex justify-center gap-6 text-xl mb-4">
-        {contactLinks.map((item, index) => (
-          <div key={index} className="relative group flex items-center justify-center">
-            <Link
-              href={item.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={item.label}
-              className="text-xl hover:text-[#0077b5] transition-colors"
-            >
-              {item.icon}
-            </Link>
-            {/* Tooltip */}
-            <span className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 opacity-0 group-hover:opacity-100 transition-all duration-200 ease-in-out bg-black text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10">
-              {item.tooltip}
-            </span>
-          </div>
-        ))}
+    <footer ref={root} className="w-full border-t border-white/10 bg-black px-4 pb-8 pt-20 text-white lg:px-[1vw] lg:pb-[2vw] lg:pt-[6vw]">
+      <div className="ft-in">
+        <p className={small}>Have an idea?</p>
+        <a
+          href={`mailto:${EMAIL}`}
+          className="mt-4 block break-words font-display text-3xl font-semibold tracking-[-0.03em] text-white/80 transition-colors duration-500 hover:text-white sm:text-5xl lg:mt-[1.2vw] lg:text-[4.4vw]"
+        >
+          Let’s build it together<span className="font-serif italic text-white/50"> →</span>
+        </a>
       </div>
-      <p>© {new Date().getFullYear()} Muhammad Zaeem Altaf. All rights reserved.</p>
+
+      <div className="ft-in mt-16 grid gap-10 sm:grid-cols-2 lg:mt-[6vw] lg:grid-cols-[1fr_1fr_1fr] lg:gap-[3vw]">
+        <div>
+          <p className={small}>Navigate</p>
+          <ul className="mt-4 grid grid-cols-2 gap-x-6 gap-y-2 text-sm text-white/70 lg:mt-[1.2vw] lg:gap-y-[0.5vw] lg:text-[0.95vw]">
+            {navlinks.map((n) => (
+              <li key={n}>
+                <Link href={`#${slug(n)}`} className={link}>{n}</Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <p className={small}>Elsewhere</p>
+          <ul className="mt-4 space-y-2 text-sm text-white/70 lg:mt-[1.2vw] lg:space-y-[0.5vw] lg:text-[0.95vw]">
+            {contactLinks.map((c) => (
+              <li key={c.label}>
+                <Link href={c.href} target="_blank" rel="noopener noreferrer" className={`${link} inline-flex items-center gap-2`}>
+                  {c.icon}
+                  {c.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <p className={small}>Based in</p>
+          <p className="mt-4 text-sm text-white/70 lg:mt-[1.2vw] lg:text-[0.95vw]">Pakistan · working worldwide</p>
+        </div>
+      </div>
+
+      <p className={`ft-in mt-16 border-t border-white/10 pt-6 lg:mt-[5vw] lg:pt-[1.5vw] ${small}`}>
+        © {new Date().getFullYear()} Muhammad Zaeem Altaf. All rights reserved.
+      </p>
     </footer>
   );
 }

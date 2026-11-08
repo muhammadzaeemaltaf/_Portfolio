@@ -30,34 +30,32 @@ const BackToTop = () => {
     };
   }, []);
  
-  return (
-    isVisible && (
-      <button
-        type="button"
-        aria-label="Back to top"
-        onClick={() => scrollToView()}
-        className="fixed bottom-8 right-8 group text-white rounded-full p-4 cursor-pointer flex justify-center items-center scale-150"
-        style={{ width: "60px", height: "60px" }}
-      >
-        {/* Circular progress SVG */}
-        <svg aria-hidden="true" width="60" height="60" viewBox="0 0 60 60" className="rotate-90">
-          <circle
-            cx="30"
-            cy="30"
-            r="27"
-            stroke="#1d4ed8"
-            strokeWidth="4"
-            fill="none"
-            strokeDasharray="169.65"
-            strokeDashoffset={(1 - scrollPercentage / 100) * 169.65}
-            className="transition-[strokeDashoffset,stroke,box-shadow] duration-300 ease-in-out group-hover:stroke-blue-400 group-hover:shadow-[0_0_12px_rgba(59,130,246,0.8),0_0_20px_rgba(59,130,246,0.5)]"
-          />
-        </svg>
+  const C = 2 * Math.PI * 21; // ring circumference, r=21
 
-        {/* Arrow Icon */}
-        <FiArrowUp className="absolute text-white group-hover:text-blue-200 transition-colors duration-300" size={20} />
-      </button>
-    )
+  return (
+    <button
+      type="button"
+      aria-label="Back to top"
+      tabIndex={isVisible ? 0 : -1}
+      onClick={() => scrollToView()}
+      className={`fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-black text-white transition-all duration-500 lg:bottom-[2vw] lg:right-[2vw] ${isVisible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"}`}
+    >
+      <svg aria-hidden="true" viewBox="0 0 48 48" className="absolute inset-0 -rotate-90">
+        <circle cx="24" cy="24" r="21" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5" />
+        <circle
+          cx="24"
+          cy="24"
+          r="21"
+          fill="none"
+          stroke="#fff"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeDasharray={C}
+          strokeDashoffset={(1 - scrollPercentage / 100) * C}
+        />
+      </svg>
+      <FiArrowUp size={18} />
+    </button>
   );
 };
 

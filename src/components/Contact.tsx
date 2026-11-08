@@ -1,148 +1,101 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import React, { useRef, useState } from "react";
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Heading from "./Heading";
-import { AnimatedButton } from "./AnimateButton";
-import { FaPaperPlane } from "react-icons/fa6";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
+const FIELDS = [
+  { name: "name", label: "What should I call you?", type: "text", placeholder: "Your name", hint: "A name would help." },
+  { name: "email", label: "Where can I reach you?", type: "email", placeholder: "you@example.com", hint: "A valid email, please." },
+  { name: "message", label: "Tell me what’s on your mind.", type: "textarea", placeholder: "The idea, the sticking point, or the question…", hint: "Tell me a little about the idea." },
+] as const;
+
+const line =
+  "w-full resize-none bg-transparent pb-4 text-xl text-white outline-none transition-colors duration-500 placeholder:text-white/40 focus:placeholder:text-white/20 lg:text-[1.6vw] lg:pb-[1vw]";
 
 export default function Contact() {
-    const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
-    const [error, setError] = useState<string | null>(null);
-    const [success, setSuccess] = useState<string | null>(null);
-    const sectionRef = useRef(null);
-    const formRef = useRef<HTMLFormElement | null>(null);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [touched, setTouched] = useState(false); // hints show only after the first submit attempt
+  const root = useRef<HTMLElement>(null);
 
-    useEffect(() => {
-        if (!sectionRef.current) return;
+  useGSAP(
+    () => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      gsap.from(".ct-in", {
+        opacity: 0,
+        y: 30,
+        duration: 1,
+        ease: "power3.out",
+        stagger: 0.12,
+        scrollTrigger: { trigger: root.current, start: "top 70%" },
+      });
+    },
+    { scope: root },
+  );
 
-        gsap.fromTo(
-            sectionRef.current,
-            { opacity: 0, y: 50 },
-            {
-                opacity: 1,
-                y: 0,
-                duration: 1,
-                ease: "power3.out",
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top 80%",
-                    toggleActions: "play none none none",
-                },
-            }
-        );
-    }, []);
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    setTouched(true);
+    if (!form.checkValidity()) return;
+    setStatus("sending");
+    try {
+      const res = await fetch("/api/contact", { method: "POST", body: new FormData(form) });
+      if (!res.ok) throw new Error();
+      form.reset();
+      setTouched(false);
+      setStatus("sent");
+    } catch {
+      setStatus("error");
+    }
+  };
 
-    // Handle form submission
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setIsSubmitting(true);
-        setError(null);
-        setSuccess(null);
+  return (
+    <section id="contact" ref={root} className="relative w-full bg-black px-4 py-24 text-white lg:px-[1vw] lg:py-[7vw]">
+      <div className="grid gap-4 lg:grid-cols-2 lg:gap-x-[3vw]">
+        <p className="ct-in font-mono text-[10px] uppercase tracking-[0.15em] text-white/50 lg:text-[0.65vw]">The first few words</p>
+        <p className="ct-in text-base text-white/90 lg:text-[1.1vw]">No presentation needed. Just enough to begin</p>
+      </div>
 
-        const formData = new FormData(e.currentTarget);
-        try {
-            const res = await fetch("/api/contact", {
-                method: "POST",
-                body: formData,
-            });
-            if (res) {
-                setError(null);
-                setSuccess("Message sent successfully!");
-                if (formRef.current) {
-                    formRef.current.reset();
-                }
-            } else {
-                setError("Error sending message. Please try again later.");
-                setSuccess(null);
-            }
-        } catch (err) {
-            setError("Error sending message. Please try again later.");
-            setSuccess(null);
-        } finally {
-            setIsSubmitting(false);
-            setSuccess(null);
-            setError(null);
-        }
-    };
+      <form noValidate onSubmit={onSubmit} className="mt-12 flex flex-col gap-10 lg:mt-[5vw] lg:gap-[3vw]">
+        {FIELDS.map((f, i) => (
+          <label key={f.name} className="ct-in group grid gap-4 lg:grid-cols-2 lg:gap-x-[3vw]">
+            <span className="flex gap-4 text-2xl text-white/60 transition-colors duration-500 group-focus-within:text-white lg:gap-[1.2vw] lg:text-[2vw]">
+              <span className="pt-1 font-mono text-[10px] lg:text-[0.65vw]">0{i + 1}</span>
+              {f.label}
+            </span>
+            <span className="block">
+              <span className="relative block border-b border-white/20 after:absolute after:inset-x-0 after:-bottom-px after:h-px after:origin-left after:scale-x-0 after:bg-white after:transition-transform after:duration-700 after:ease-out group-focus-within:after:scale-x-100">
+              {f.type === "textarea" ? (
+                <textarea name={f.name} required maxLength={5000} rows={7} placeholder={f.placeholder} className={line} />
+              ) : (
+                <input name={f.name} type={f.type} required maxLength={500} placeholder={f.placeholder} className={line} />
+              )}
+              </span>
+              <span className={`mt-3 block min-h-4 text-xs text-white/60 transition-all duration-500 ${touched ? "opacity-0 -translate-y-1 group-has-[:invalid]:translate-y-0 group-has-[:invalid]:opacity-100" : "opacity-0"}`}>
+                {f.hint}
+              </span>
+            </span>
+          </label>
+        ))}
 
-    return (
-        <section
-            id="contact"
-            className="mb-20 sm:mb-28 w-[min(100%,38rem)] text-center mx-auto px-5"
-            ref={sectionRef}
-        >
-
-            <Heading
-                heading="Contact Me"
-            />
-
-            <p className="text-gray-700 mt-6 dark:text-white/80">
-                Contact me directly at{" "}
-                <Link
-                    className="underline text-blue-500"
-                    href="mailto:official.zaeemaltaf@gmail.com"
-                >
-                    official.zaeemaltaf@gmail.com
-                </Link>{" "}
-                or through this form.
-            </p>
-
-            <form
-                className="mt-8 flex flex-col dark:text-black"
-                onSubmit={handleSubmit}
-                ref={formRef}
-            >
-
-                <input
-                    className="h-14 px-4 rounded-lg borderBlack dark:bg-gray-800/50 dark:text-gray-50 dark:bg-opacity-80 dark:focus:bg-opacity-100 transition-all dark:outline-none"
-                    name="email"
-                    type="email"
-                    required
-                    maxLength={500}
-                    placeholder="Your email"
-                />
-                <input
-                    className="h-14 my-3 px-4 rounded-lg borderBlack dark:bg-gray-800/50 dark:text-gray-50 dark:bg-opacity-80 dark:focus:bg-opacity-100 transition-all dark:outline-none"
-                    name="subject"
-                    type="text"
-                    required
-                    maxLength={500}
-                    placeholder="Your subject"
-                />
-                <textarea
-                    className="h-52 mb-3 rounded-lg borderBlack p-4 dark:bg-gray-800/50 dark:text-gray-50 dark:bg-opacity-80 dark:focus:bg-opacity-100 transition-all dark:outline-none"
-                    name="message"
-                    placeholder="Your message"
-                    required
-                    maxLength={5000}
-                />
-                {error && (
-                    <div className="text-red-500 mb-3">{error}</div>
-                )}
-                {success && (
-                    <div className="text-green-500 mb-3">{success}</div>
-                )}
-                <div className={`block relative w-fit ${isSubmitting ? "cursor-not-allowed" : ""}`}>
-                    {isSubmitting && (
-                        <div className="absolute z-10 inset-0 flex items-center justify-center cursor-not-allowed"/>
-                       
-                    )}
-                    <AnimatedButton
-                        text={isSubmitting ? "Sending..." : "Send"}
-                        is_disabled={isSubmitting}
-                        bg="text-white !py-6 group"
-                        type="submit"
-                        icon={
-                            <FaPaperPlane className="text-xs opacity-70 transition-all group-hover:translate-x-1 group-hover:-translate-y-1" />
-                        }
-                    />
-                </div>
-            </form>
-        </section>
-    );
+        <div className="ct-in flex items-center gap-6 lg:justify-end">
+          <p role="status" className={`text-sm ${status === "error" ? "text-red-400" : "text-white/60"}`}>
+            {status === "sent" && "Sent. I’ll get back to you soon."}
+            {status === "error" && "Couldn’t send. Please try again."}
+          </p>
+          <button
+            type="submit"
+            disabled={status === "sending"}
+            className="rounded-full bg-white px-8 py-3 text-sm font-medium text-black transition-all duration-500 disabled:opacity-50 lg:px-[2.4vw] lg:py-[0.9vw] lg:text-[0.9vw]"
+          >
+            {status === "sending" ? "Sending…" : "Send"}
+          </button>
+        </div>
+      </form>
+    </section>
+  );
 }

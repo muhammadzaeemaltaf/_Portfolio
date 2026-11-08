@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
   const formData = await request.formData();
   const email = formData.get("email");
   const message = formData.get("message");
-  const subject = formData.get("subject");
+  const subject = `Message from ${formData.get("name")}`;
 
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
