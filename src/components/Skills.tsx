@@ -29,25 +29,26 @@ export default function Skills() {
         about.style.visibility = over ? "hidden" : "";
       };
       if (!reduce) {
-        gsap.fromTo(
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: about, // an element, not "#about": selectors are scoped to this section
+            start: "bottom bottom",
+            end: "+=100%",
+            pin: true,
+            scrub: true, // exact, so onLeave only fires once every band is fully closed
+            onLeave: () => done(true),
+            onEnterBack: () => done(false),
+          },
+        });
+        tl.fromTo(
           ".skills-band",
           { scaleY: 0 },
-          {
-            scaleY: 1,
-            ease: "power2.inOut",
-            duration: 1,
-            stagger: { each: 0.1, from: "end" },
-            scrollTrigger: {
-              trigger: about, // an element, not "#about": selectors are scoped to this section
-              start: "bottom bottom",
-              end: "+=100%",
-              pin: true,
-              scrub: true, // exact, so onLeave only fires once every band is fully closed
-              onLeave: () => done(true),
-              onEnterBack: () => done(false),
-            },
-          }
-        );
+          { scaleY: 1, ease: "power2.inOut", duration: 1, stagger: { each: 0.1, from: "end" } },
+          0
+        )
+          // About's content (not its light backdrop) fades out in the first half, so none of it
+          // stays readable through the gaps between the bands while they close
+          .to(about.firstElementChild, { opacity: 0, ease: "power1.in", duration: 0.85 }, 0);
       }
 
       gsap.from(".skills-char", {

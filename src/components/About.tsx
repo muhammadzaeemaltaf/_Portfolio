@@ -79,12 +79,23 @@ export default function About() {
       if (reduce) return;
 
       // Subtle zoom: photo sits normally until the section's top reaches the top of the screen, then eases in slightly as you keep scrolling
-      gsap.to(".about-zoom", {
-        scale: 1.06,
-        ease: "none",
-        scrollTrigger: { trigger: "#about", start: "top top", end: "bottom top", scrub: 1 },
+      // (not on phones: the zoom pushes the top of the picture out of its frame and cuts the head off)
+      gsap.matchMedia().add("(min-width: 768px)", () => {
+        gsap.to(".about-zoom", {
+          scale: 1.06,
+          ease: "none",
+          scrollTrigger: { trigger: "#about", start: "top top", end: "bottom top", scrub: 1 },
+        });
       });
 
+
+      // phones: photo and text are stacked, so give them different speeds — the photo drifts down against the scroll
+      // (reads slow) while the text climbs (reads fast). Positive/negative y are over the whole pass through the screen.
+      gsap.matchMedia().add("(max-width: 767px)", () => {
+        const scrub = { trigger: section.current, start: "top bottom", end: "bottom top", scrub: 0.5 };
+        gsap.fromTo(".about-photo", { y: -30 }, { y: 70, ease: "none", scrollTrigger: scrub });
+        gsap.fromTo(".about-copy", { y: 70 }, { y: -70, ease: "none", scrollTrigger: scrub });
+      });
     },
     { scope: section }
   );
@@ -93,8 +104,8 @@ export default function About() {
     <section ref={section} className="relative flex min-h-[100svh] w-full flex-col justify-center overflow-hidden px-4 py-20 lg:px-[1vw] lg:py-[5.5vw] text-[#1d1d1f]" id="about">
       <div ref={root} className="relative mx-auto grid w-full max-w-6xl items-stretch gap-12 md:grid-cols-[1fr_1fr] md:gap-16 lg:max-w-none lg:gap-[4.4vw]">
         {/* portrait: slow scroll zoom */}
-        <div className="about-photo relative h-full min-h-[460px] w-full md:ml-[calc(-1*max(1rem,(100vw_-_72rem)/2))] md:min-h-[640px] md:w-[calc(100%+max(1rem,(100vw_-_72rem)/2))] lg:ml-[-1vw] lg:min-h-[44vw] lg:w-[calc(100%+1vw)]">
-          <div className="about-card absolute inset-0 overflow-hidden" style={{ maskImage: "radial-gradient(ellipse 98% 82% at 56% 36%, #000 0%, #000 48%, rgba(0,0,0,.9) 58%, rgba(0,0,0,.7) 68%, rgba(0,0,0,.45) 78%, rgba(0,0,0,.2) 89%, transparent 100%)", WebkitMaskImage: "radial-gradient(ellipse 94% 72% at 46% 36%, #000 0%, #000 48%, rgba(0,0,0,.9) 58%, rgba(0,0,0,.7) 68%, rgba(0,0,0,.45) 78%, rgba(0,0,0,.2) 89%, transparent 100%)" }}>
+        <div className="about-photo relative h-full min-h-[460px] -ml-4 w-[calc(100%+2rem)] md:ml-[calc(-1*max(1rem,(100vw_-_72rem)/2))] md:min-h-[640px] md:w-[calc(100%+max(1rem,(100vw_-_72rem)/2))] lg:ml-[-1vw] lg:min-h-[44vw] lg:w-[calc(100%+1vw)]">
+          <div className="about-card absolute inset-0 overflow-hidden [mask-image:linear-gradient(to_bottom,#000_60%,rgba(0,0,0,.92)_68%,rgba(0,0,0,.7)_77%,rgba(0,0,0,.4)_86%,rgba(0,0,0,.12)_94%,transparent_100%)] md:[mask-image:radial-gradient(ellipse_98%_82%_at_56%_36%,#000_0%,#000_48%,rgba(0,0,0,.9)_58%,rgba(0,0,0,.7)_68%,rgba(0,0,0,.45)_78%,rgba(0,0,0,.2)_89%,transparent_100%)]">
             <div className="about-zoom absolute inset-0 origin-[left_bottom] will-change-transform">
             <Image src={PHOTO} alt="Muhammad Zaeem Altaf" fill priority sizes="(min-width:768px) 100vw, 100vw" className="select-none object-cover object-[left_bottom] lg:object-contain drop-shadow-[0_30px_40px_rgba(0,0,0,0.18)]" />
             </div>
@@ -102,15 +113,15 @@ export default function About() {
 
           {/* radial mask on the photo + blurred blocks over the left, bottom and right edges, so no hard edge survives.
               They use the same pinned bone-bg as the section, so they match the page exactly at any scroll position. */}
-          <div aria-hidden className="bone-bg pointer-events-none absolute -bottom-44 -left-24 -right-12 z-10 h-80 blur-[55px]" />
-          <div aria-hidden className="bone-bg pointer-events-none absolute -bottom-32 -left-24 -right-12 z-10 h-[26rem] opacity-70 blur-[90px]" />
-          <div aria-hidden className="bone-bg pointer-events-none absolute -bottom-44 -left-28 -top-10 z-10 w-52 blur-[55px]" />
-          <div aria-hidden className="bone-bg pointer-events-none absolute -bottom-40 -right-12 -top-10 z-10 w-40 blur-[45px]" />
-          <div aria-hidden className="bone-bg pointer-events-none absolute -bottom-40 -left-40 z-10 h-[30rem] w-[10rem] rounded-full blur-[90px]" />
+          <div aria-hidden className="bone-bg pointer-events-none absolute hidden md:block -bottom-44 -left-24 -right-12 z-10 h-80 blur-[55px]" />
+          <div aria-hidden className="bone-bg pointer-events-none absolute hidden md:block -bottom-32 -left-24 -right-12 z-10 h-[26rem] opacity-70 blur-[90px]" />
+          <div aria-hidden className="bone-bg pointer-events-none absolute hidden md:block -bottom-44 -left-28 -top-10 z-10 w-52 blur-[55px]" />
+          <div aria-hidden className="bone-bg pointer-events-none absolute hidden md:block -bottom-40 -right-12 -top-10 z-10 w-40 blur-[45px]" />
+          <div aria-hidden className="bone-bg pointer-events-none absolute hidden md:block -bottom-40 -left-40 z-10 h-[30rem] w-[10rem] rounded-full blur-[90px]" />
         </div>
 
         {/* text */}
-        <div className="relative z-20 flex w-full flex-col justify-center">
+        <div className="about-copy relative z-20 flex w-full flex-col justify-center">
           <p className="flex items-center gap-3 text-g-label font-medium uppercase tracking-[0.25em] text-black/45 lg:gap-[0.83vw] ">
             <span className="h-px w-8 bg-black/30 lg:w-[2.2vw]" />
             About me

@@ -29,7 +29,7 @@ const Btn = ({ href, onClick, icon, label, solid, round, cursor }: { cursor?: st
       </span>
     </>
   );
-  const cls = `group relative inline-flex h-12 items-center justify-center overflow-hidden rounded-full border lg:h-[3.33vw] ${round ? "w-12 lg:w-[3.33vw]" : "px-6 lg:px-[1.67vw]"} ${solid ? "border-black bg-black text-white" : "border-black/20 text-[#1d1d1f]"}`;
+  const cls = `group relative inline-flex h-11 shrink-0 items-center justify-center overflow-hidden rounded-full border sm:h-12 lg:h-[3.33vw] ${round ? "w-10 min-[380px]:w-11 sm:w-12 lg:w-[3.33vw]" : "px-3.5 min-[380px]:px-4 sm:px-6 lg:px-[1.67vw]"} ${solid ? "border-black bg-black text-white" : "border-black/20 text-[#1d1d1f]"}`;
   return href ? (
     <a href={href} target="_blank" aria-label={label} data-cursor={cursor} className={cls}>{body}</a>
   ) : (
@@ -82,12 +82,24 @@ const HeroSection = () => {
         clearTimeout(failsafe);
       });
 
-      // scroll parallax: name lags behind, portrait rises faster; a soft mask edge (--f) sweeps up from the bottom, fading the hero out
+      // scroll parallax: a soft mask edge (--f) sweeps up from the bottom on desktop, fading the hero out
       if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        const tl = gsap.timeline({ scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: true } });
-        tl.to(".hero-word", { y: 160, ease: "none" }, 0)
-          .to(".hero-portrait-inner", { y: -90, ease: "none" }, 0)
-          .to(root.current, { "--f": 1, ease: "none" }, 0);
+        const scrub = { trigger: root.current, start: "top top", end: "bottom top", scrub: true };
+        const mm = gsap.matchMedia();
+        mm.add("(min-width: 1024px)", () => {
+          // name lags behind, portrait rises faster
+          gsap.timeline({ scrollTrigger: scrub })
+            .to(".hero-word", { y: 160, ease: "none" }, 0)
+            .to(".hero-portrait-inner", { y: -90, ease: "none" }, 0)
+            .to(root.current, { "--f": 1, ease: "none" }, 0);
+        });
+        mm.add("(max-width: 1023px)", () => {
+          // phones: portrait drifts down against the scroll (reads slow), name and card climb (read fast)
+          gsap.timeline({ scrollTrigger: scrub })
+            .to(".hero-portrait-inner", { y: 90, ease: "none" }, 0)
+            .to(".hero-word", { y: -60, ease: "none" }, 0)
+            .to(".hero-card", { y: -120, ease: "none" }, 0);
+        });
       }
     }, root);
     return () => {
@@ -100,7 +112,7 @@ const HeroSection = () => {
     <section
       ref={root}
       style={{ "--f": 0, ...fadeMask } as React.CSSProperties}
-      className="relative isolate flex min-h-[100svh] w-full max-w-[100vw] flex-col overflow-hidden bone-bg px-6 pb-[80vw] pt-20 sm:pb-[60vw] lg:pb-0 lg:pt-[5.5vw] text-[#1d1d1f] sm:px-10 lg:px-[1vw]"
+      className="relative isolate flex min-h-[100svh] lg:h-[52vw] lg:min-h-0 w-full max-w-[100vw] flex-col overflow-hidden bone-bg px-4 pb-4 pt-24 sm:px-8 lg:pb-0 lg:pt-[5.5vw] text-[#1d1d1f] lg:px-[1vw]"
     >
       <p className="sr-only">
         Portfolio of Muhammad Zaeem Altaf – Full-Stack Developer skilled in Next.js, React, TypeScript, Laravel, and PHP.
@@ -109,28 +121,32 @@ const HeroSection = () => {
 
 
       {/* 1. dominant name, full width */}
-      <h1 className="hero-word relative z-0 flex font-display justify-center whitespace-nowrap text-g-hero lg:text-[11.5vw] lg:-ml-[0.6vw] font-bold leading-[0.95] tracking-[0em] select-none lg:-mt-4 ">
+      <h1 className="hero-word relative z-0 flex flex-col items-center lg:flex-row lg:justify-center font-display whitespace-nowrap text-[18vw] lg:text-[11.5vw] lg:-ml-[0.6vw] font-bold leading-[0.9] lg:leading-[0.95] tracking-[0em] select-none lg:-mt-4 ">
         <span className="sr-only">Muhammad Zaeem Altaf</span>
-        {"M.ZAEEM ALTAF".split("").map((c, i) => (
-          <span key={i} aria-hidden className="pb-[0.04em]">
-            <span className="hero-letter inline-block">{c === " " ? " " : c}</span>
+        {"M.ZAEEM ALTAF".split(" ").map((w, wi) => (
+          <span key={wi} aria-hidden className={`flex ${wi === 0 ? "lg:mr-[0.3em]" : ""}`}>
+            {w.split("").map((c, i) => (
+              <span key={i} className="pb-[0.04em]">
+                <span className="hero-letter inline-block">{c}</span>
+              </span>
+            ))}
           </span>
         ))}
       </h1>
 
       {/* 2. portrait rises in front of the name's lower edge */}
-      <div className="hero-portrait pointer-events-none absolute inset-x-0 -bottom-[20%] z-10 flex justify-center">
-        <div id="hero-portrait" className="hero-portrait-inner relative aspect-square w-[92vw] max-w-[640px] sm:w-[66vw] lg:w-[50vw] lg:max-w-none">
+      <div className="hero-portrait pointer-events-none absolute inset-x-0 top-[calc(6rem+19.5vw)] sm:top-[calc(6rem+22vw)] z-10 lg:top-[6.75vw] flex justify-center">
+        <div id="hero-portrait" className="hero-portrait-inner relative aspect-square w-[125vw] shrink-0 sm:w-[92vw] lg:w-[50vw] [mask-image:linear-gradient(to_bottom,#000_80%,transparent_100%)] lg:[mask-image:none]">
           <Image src="/new-profile.png" alt="Muhammad Zaeem Altaf" fill priority sizes="(min-width:1024px) 50vw, 92vw" className="object-contain object-bottom" />
         </div>
       </div>
 
       {/* 3. intro, left */}
-      <div className="hero-fade relative z-20 mt-8 max-w-[22rem] lg:absolute lg:left-[1vw] lg:top-[56%] lg:mt-0 lg:max-w-[25.5vw]">
-        <p className="text-g-lg font-normal leading-snug tracking-tight ">
+      <div className="hero-fade hero-card relative z-20 mt-auto w-full rounded-3xl border border-black/10 bg-white/55 p-5 max-[380px]:p-4 shadow-[0_10px_40px_rgba(0,0,0,0.08)] backdrop-blur-xl lg:absolute lg:left-[1vw] lg:top-[27.4vw] lg:mt-0 lg:w-auto lg:max-w-[27vw] lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none lg:backdrop-blur-none">
+        <p className="text-g-lg max-[380px]:text-g-base font-normal leading-snug tracking-tight ">
           Hey there! I am full-stack and creative developer building fast, scalable web apps and AI-powered products.
         </p>
-        <div className="mt-8 flex flex-wrap items-center gap-3 lg:mt-[2.2vw] lg:gap-[0.83vw]">
+        <div className="mt-5 max-[380px]:mt-3 flex flex-wrap items-center gap-2 sm:gap-3 lg:flex-nowrap lg:mt-[2.2vw] lg:gap-[0.83vw]">
           <Btn solid cursor="talk" onClick={() => scrollToView("contact")} label="Hire me" icon={<FiArrowUpRight className="text-g-base " />} />
           <Btn cursor="cv" href="/MUHAMMAD ZAEEM ALTAF.pdf" label="CV" icon={<HiDownload className="text-g-base " />} />
           <Btn round href="https://github.com/muhammadzaeemaltaf/" label="GitHub" icon={<FiGithub className="text-g-base " />} />
@@ -139,7 +155,7 @@ const HeroSection = () => {
       </div>
 
       {/* 4. roles, right: one lights up at a time */}
-      <ul className="hero-fade absolute lg:right-[1vw] top-[56%] z-20 hidden space-y-2.5 text-right text-g-base font-medium lg:space-y-[0.7vw] tracking-tight lg:block">
+      <ul className="hero-fade absolute lg:right-[1vw] lg:top-[27.4vw] z-20 hidden space-y-2.5 text-right text-g-base font-medium lg:space-y-[0.7vw] tracking-tight lg:block">
         {roles.map((r, i) => (
           <li key={r} className={`transition-colors duration-700 ${i === active ? "text-[#1d1d1f]" : "text-black/20"}`}>
             {r}
