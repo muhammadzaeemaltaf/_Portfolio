@@ -54,6 +54,8 @@ import Lexnis6 from "../../public/project/lexnis_6.png";
 import Lexnis7 from "../../public/project/lexnis_7.png";
 import LexnisBh from "../../public/project/lexnis-bh.png";
 import SquareOneMall from "../../public/project/squareonemall.png";
+import OneDeveloper from "../../public/project/one-developer.png";
+import Irongate from "../../public/project/irongate.jpeg";
 import Recrot from "../../public/project/recrot.png";
 import { StaticImageData } from "next/image";
 import { BiSolidInstitution } from "react-icons/bi";
@@ -2317,6 +2319,27 @@ export const topProjects: {
 }[] =
   [
     {
+      title: "One Developers",
+      description: "A frontend-only landing page for One Developers, a real estate developer in Pakistan, presenting its vision, projects, facilities, and booking enquiries through a motion-led, video-rich experience.",
+      role:
+        "As a Frontend developer, I built the landing page, animations, and responsive layout. This is a frontend-only project with no backend.",
+      tags: [RiNextjsFill, RiTailwindCssFill, SiTypescript, SiGreensock],
+      feature: [
+        "Animated preloader with logo reveal leading into a video hero",
+        "Per-project pages with hero, facilities, gallery, and booking form",
+        "Video bands and scroll-driven evidence and standard storytelling sections",
+        "GSAP animations, Lenis smooth scrolling, and split-word text reveals",
+        "Project showcase and marquee highlighting developments",
+        "Vision and mission, about, and contact sections",
+        "Responsive layout across mobile, tablet, and desktop"
+      ],
+      image: [OneDeveloper],
+      impact: "Gave One Developers a premium, modern online presence for its real estate developments.",
+      organization: "Innovative Widget",
+      organizationLogo: InnovativeWidget,
+      organizationURL: "https://innovativewidget.com/",
+    },
+    {
       title: "BookMySpot",
       role:
         "Currently working as a led full-stack developer: Laravel back-end, MySQL database, Bootstrap front-end; ensured scalability and managed deployments.",
@@ -2469,6 +2492,27 @@ export const topProjects: {
       image: [SquareOneMall],
       impact: "Turned a traditional mall site into an engaging, brand-forward digital experience.",
       link: "https://squareonemall.vercel.app/",
+      organization: "Innovative Widget",
+      organizationLogo: InnovativeWidget,
+      organizationURL: "https://innovativewidget.com/",
+    },
+    {
+      title: "Irongate Security",
+      description: "A frontend-only landing page for Irongate Security, a private security services company in Dubai, presenting its protection services, city coverage, and consultation enquiries through a cinematic scroll-driven story.",
+      role:
+        "As a Frontend developer, I built the landing page, scroll animations, and responsive layout. This is a frontend-only project with no backend.",
+      tags: [RiNextjsFill, RiTailwindCssFill, SiTypescript, SiGreensock],
+      feature: [
+        "Cinematic scroll-driven story sections built with GSAP ScrollTrigger and Lenis",
+        "Custom cursor, motion components, and animated hero",
+        "Sections for services, planning, screening, motorcade, and city hub",
+        "Testimonials and group marquee",
+        "Consultation form with validation, honeypot, and rate-limited API route",
+        "Floating WhatsApp contact button",
+        "SEO metadata with JSON-LD, Open Graph, and responsive design"
+      ],
+      image: [Irongate],
+      impact: "Delivered a commanding, trust-building brand presence for a Dubai security provider.",
       organization: "Innovative Widget",
       organizationLogo: InnovativeWidget,
       organizationURL: "https://innovativewidget.com/",
